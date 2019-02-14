@@ -256,8 +256,20 @@ function _createProviderInstance(view: ViewData, def: NodeDef): any {
       return createClass(
           view, def.parent!, allowPrivateServices, providerDef!.value, providerDef!.deps);
     case NodeFlags.TypeFactoryProvider:
-      return callFactory(
-          view, def.parent!, allowPrivateServices, providerDef!.value, providerDef!.deps);
+      let injectable: any;
+      injectable = callFactory(
+          view, def.parent !, allowPrivateServices, providerDef !.value, providerDef !.deps);
+      // Update def flags if factory injectable has ngOnDestroy function.
+      if (injectable != null && typeof injectable === 'object' &&
+          !(def.flags & NodeFlags.OnDestroy) && typeof injectable.ngOnDestroy === 'function') {
+        def.flags |= NodeFlags.OnDestroy;
+        view.def.nodeFlags |= NodeFlags.OnDestroy;
+        if (def.parent) {
+          def.parent.childFlags |= NodeFlags.OnDestroy;
+          def.parent.directChildFlags |= NodeFlags.OnDestroy;
+        }
+      }
+      return injectable;
     case NodeFlags.TypeUseExistingProvider:
       return resolveDep(view, def.parent!, allowPrivateServices, providerDef!.deps[0]);
     case NodeFlags.TypeValueProvider:

@@ -7,7 +7,7 @@
  */
 
 import {CommonModule} from '@angular/common';
-import {Component, Directive, forwardRef, Inject, Injectable, InjectionToken, Injector, NgModule, Optional} from '@angular/core';
+import {Component, Directive, ElementRef, forwardRef, Inject, Injectable, InjectionToken, Injector, NgModule, Optional} from '@angular/core';
 import {inject, TestBed, waitForAsync} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
 import {expect} from '@angular/platform-browser/testing/src/matchers';
@@ -507,6 +507,75 @@ describe('providers', () => {
 
           expect(destroyCalls).toBe(0);
         });
+
+    it('should invoke ngOnDestroy for useFactory providers provided in Component', () => {
+      const logs: string[] = [];
+
+      @Injectable()
+      class InjectableWithDestroyHook {
+        ngOnDestroy() {
+          logs.push('OnDestroy');
+        }
+      }
+
+      @Component({
+        template: '',
+        providers: [{
+          provide: InjectableWithDestroyHook,
+          useFactory: () => new InjectableWithDestroyHook(),
+        }],
+      })
+      class App {
+        constructor(public injectableWithDestroyHook: InjectableWithDestroyHook) {}
+      }
+
+      TestBed.configureTestingModule({declarations: [App]});
+
+      const fixture = TestBed.createComponent(App);
+      fixture.detectChanges();
+      fixture.destroy();
+
+      expect(logs).toEqual(['OnDestroy']);
+    });
+
+    it('should invoke ngOnDestroy for useFactory providers provided in Directive', () => {
+      const logs: string[] = [];
+
+      @Injectable()
+      class InjectableWithDestroyHook {
+        ngOnDestroy() {
+          logs.push('ngOnDestroy');
+        }
+      }
+
+      @Directive({
+        selector: '[dir]',
+        providers: [{
+          provide: InjectableWithDestroyHook,
+          useFactory: () => new InjectableWithDestroyHook(),
+        }],
+      })
+      class MyDirective {
+        constructor(public elRef: ElementRef, public injectableWithDestroyHook: InjectableWithDestroyHook) {}
+      }
+
+      @Component({
+        selector: 'my-comp',
+        template: '<div dir></div>',
+      })
+      class MyComponent {
+      }
+
+      TestBed.configureTestingModule({
+        declarations: [MyDirective, MyComponent],
+      });
+
+      const fixture = TestBed.createComponent(MyComponent);
+      fixture.detectChanges();
+      fixture.destroy();
+
+      expect(logs).toEqual(['ngOnDestroy']);
+    });
 
     it('should call ngOnDestroy if host component is destroyed', () => {
       const logs: string[] = [];

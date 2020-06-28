@@ -51,6 +51,7 @@ INTEGRATION_TESTS = {
         # TODO: cli-hello-world-lazy-rollup fails on a bundle size check because Ivy and VE sizes are different
         "tags": ["no-ivy-aot"],
     },
+    "cli-test-coverage": {},
     "dynamic-compiler": {"tags": ["no-ivy-aot"]},
     "hello_world__closure": {
         # TODO: Re-enable the payload_size_tracking command:

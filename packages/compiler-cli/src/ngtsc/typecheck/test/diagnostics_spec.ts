@@ -87,6 +87,27 @@ runInEachFileSystem(() => {
       ]);
     });
 
+    it('infers type of forward element references within a template', () => {
+      const messages = diagnose(
+          `<ng-template>{{ render(el) }}</ng-template><div dir #el></div>`, `
+        class Dir {
+          value: number;
+        }
+        class TestComponent {
+          render(input: string): string { return input; }
+        }`,
+          [{
+            type: 'directive',
+            name: 'Dir',
+            selector: '[dir]',
+            exportAs: ['dir'],
+          }]);
+
+      expect(messages).toEqual([
+        `synthetic.html(1, 24): Argument of type 'HTMLDivElement' is not assignable to parameter of type 'string'.`,
+      ]);
+    });
+
     it('infers type of directive references', () => {
       const messages = diagnose(
           `<div dir #dir="dir">{{ render(dir) }}</div>`, `

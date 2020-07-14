@@ -18,10 +18,196 @@ import {DomSchemaChecker} from './dom';
 import {Environment} from './environment';
 import {astToTypescript, NULL_AS_ANY} from './expression';
 import {OutOfBandDiagnosticRecorder} from './oob';
-import {ExpressionSemanticVisitor} from './template_semantics';
 import {checkIfClassIsExported, checkIfGenericTypesAreUnbound, tsCallMethod, tsCastToAny, tsCreateElement, tsCreateVariable, tsDeclareVariable} from './ts_util';
+import {TemplateValidator, TypeCheckCodegen} from './validator';
 
+class TcbGenerator implements TypeCheckCodegen {
+  private readonly tcb: Context;
+  private readonly rootScope: Scope;
+  private currentScope: Scope|null;
 
+  constructor(private env: Environment, private meta: TypeCheckBlockMetadata) {
+    this.tcb = new Context(env, meta.id, meta.boundTarget, meta.pipes, meta.schemas);
+    this.rootScope = Scope.create(this.tcb, /* parent */ null, /* guard */ null);
+    this.currentScope = this.rootScope;
+  }
+
+  visitElement(node: TmplAstElement): void {
+    if (this.currentScope === null) {
+      return;
+    }
+
+    this.currentScope.queueElement(node);
+  }
+
+  visitBoundText(node: TmplAstBoundText): void {
+    if (this.currentScope === null) {
+      return;
+    }
+
+    this.currentScope.queueBoundText(node);
+  }
+
+  visitTemplate(node: TmplAstTemplate, processChildren: () => void): void {
+    const outerScope = this.currentScope;
+    if (outerScope === null) {
+      processChildren();
+      return;
+    }
+
+    const tmplScope = this.enterTemplate(node, outerScope);
+
+    this.currentScope = tmplScope;
+    processChildren();
+    this.currentScope = outerScope;
+
+    if (tmplScope === null) {
+      return;
+    }
+
+    let tmplBlock: ts.Statement = ts.createBlock(tmplScope.render());
+    if (tmplScope.guard !== null) {
+      // The scope has a guard that needs to be applied, so wrap the template block into an `if`
+      // statement containing the guard expression.
+      tmplBlock = ts.createIf(/* expression */ tmplScope.guard, /* thenStatement */ tmplBlock);
+    }
+    outerScope.addStatement(tmplBlock);
+  }
+
+  visitBindings(
+    node: TmplAstElement | TmplAstTemplate, directives: TypeCheckableDirectiveMeta[] | null): void {
+    if (this.currentScope === null) {
+      return;
+    }
+
+    this.currentScope.queueDirectivesAndInputsOfNode(node, directives);
+    this.currentScope.queueOutputsOfNode(node, directives);
+  }
+
+  private enterTemplate(template: TmplAstTemplate, outerScope: Scope): Scope|null {
+    if (!this.env.config.checkTemplateBodies) {
+      return null;
+    }
+
+    outerScope.queueTemplate(template);
+
+    const guard = this.createTemplateGuards(template, outerScope);
+
+    // Template children are rendered in a child scope.
+    const tmplScope = Scope.create(this.tcb, outerScope, guard);
+
+    tmplScope.queueVariables(template);
+
+    return tmplScope;
+  }
+
+  private createTemplateGuards(template: TmplAstTemplate, scope: Scope): ts.Expression|null {
+    // An `if` will be constructed, within which the template's children will be type checked. The
+    // `if` is used for two reasons: it creates a new syntactic scope, isolating variables declared
+    // in the template's TCB from the outer context, and it allows any directives on the templates
+    // to perform type narrowing of either expressions or the template's context.
+    //
+    // The guard is the `if` block's condition. It's usually set to `true` but directives that exist
+    // on the template can trigger extra guard expressions that serve to narrow types within the
+    // `if`. `guard` is calculated by starting with `true` and adding other conditions as needed.
+    // Collect these into `guards` by processing the directives.
+    const directiveGuards: ts.Expression[] = [];
+
+    const directives = this.tcb.boundTarget.getDirectivesOfNode(template);
+    if (directives !== null) {
+      for (const dir of directives) {
+        const dirInstId = scope.resolve(template, dir);
+        const dirId =
+            this.tcb.env.reference(dir.ref as Reference<ClassDeclaration<ts.ClassDeclaration>>);
+
+        // There are two kinds of guards. Template guards (ngTemplateGuards) allow type narrowing of
+        // the expression passed to an @Input of the directive. Scan the directive to see if it has
+        // any template guards, and generate them if needed.
+        dir.ngTemplateGuards.forEach(guard => {
+          // For each template guard function on the directive, look for a binding to that input.
+          const boundInput = template.inputs.find(i => i.name === guard.inputName) ||
+              template.templateAttrs.find(
+                  (i: TmplAstTextAttribute|TmplAstBoundAttribute): i is TmplAstBoundAttribute =>
+                      i instanceof TmplAstBoundAttribute && i.name === guard.inputName);
+          if (boundInput !== undefined) {
+            // If there is such a binding, generate an expression for it.
+            const expr = tcbExpression(boundInput.value, this.tcb, scope);
+
+            // The expression has already been checked in the type constructor invocation, so
+            // it should be ignored when used within a template guard.
+            ignoreDiagnostics(expr);
+
+            if (guard.type === 'binding') {
+              // Use the binding expression itself as guard.
+              directiveGuards.push(expr);
+            } else {
+              // Call the guard function on the directive with the directive instance and that
+              // expression.
+              const guardInvoke = tsCallMethod(dirId, `ngTemplateGuard_${guard.inputName}`, [
+                dirInstId,
+                expr,
+              ]);
+              addParseSpanInfo(guardInvoke, boundInput.value.sourceSpan);
+              directiveGuards.push(guardInvoke);
+            }
+          }
+        });
+
+        // The second kind of guard is a template context guard. This guard narrows the template
+        // rendering context variable `ctx`.
+        if (dir.hasNgTemplateContextGuard && this.tcb.env.config.applyTemplateContextGuards) {
+          const ctx = scope.resolve(template);
+          const guardInvoke = tsCallMethod(dirId, 'ngTemplateContextGuard', [dirInstId, ctx]);
+          addParseSpanInfo(guardInvoke, template.sourceSpan);
+          directiveGuards.push(guardInvoke);
+        }
+      }
+    }
+
+    if (directiveGuards.length === 0) {
+      return null;
+    }
+
+    // Pop the first value and use it as the initializer to reduce(). This way, a single guard
+    // will be used on its own, but two or more will be combined into binary AND expressions.
+    return directiveGuards.reduce(
+        (expr, dirGuard) => ts.createBinary(expr, ts.SyntaxKind.AmpersandAmpersandToken, dirGuard),
+        directiveGuards.pop()!);
+  }
+
+  generate(ref: Reference<ClassDeclaration<ts.ClassDeclaration>>, name: ts.Identifier):
+      ts.FunctionDeclaration {
+    const {env, meta} = this;
+    const ctxRawType = env.referenceType(ref);
+    if (!ts.isTypeReferenceNode(ctxRawType)) {
+      throw new Error(
+          `Expected TypeReferenceNode when referencing the ctx param for ${ref.debugName}`);
+    }
+    const paramList =
+        [tcbCtxParam(ref.node, ctxRawType.typeName, env.config.useContextGenericType)];
+
+    const scopeStatements = this.rootScope.render();
+    const innerBody = ts.createBlock([
+      ...env.getPreludeStatements(),
+      ...scopeStatements,
+    ]);
+
+    // Wrap the body in an "if (true)" expression. This is unnecessary but has the effect of causing
+    // the `ts.Printer` to format the type-check block nicely.
+    const body = ts.createBlock([ts.createIf(ts.createTrue(), innerBody, undefined)]);
+    const fnDecl = ts.createFunctionDeclaration(
+        /* decorators */ undefined,
+        /* modifiers */ undefined,
+        /* asteriskToken */ undefined,
+        /* name */ name,
+        /* typeParameters */ env.config.useContextGenericType ? ref.node.typeParameters : undefined,
+        /* parameters */ paramList,
+        /* type */ undefined,
+        /* body */ body);
+    addTemplateId(fnDecl, meta.id);
+    return fnDecl;
+  }
+}
 
 /**
  * Given a `ts.ClassDeclaration` for a component, and metadata regarding that component, compose a
@@ -49,36 +235,18 @@ export function generateTypeCheckBlock(
     env: Environment, ref: Reference<ClassDeclaration<ts.ClassDeclaration>>, name: ts.Identifier,
     meta: TypeCheckBlockMetadata, domSchemaChecker: DomSchemaChecker,
     oobRecorder: OutOfBandDiagnosticRecorder): ts.FunctionDeclaration {
-  const tcb = new Context(
-      env, domSchemaChecker, oobRecorder, meta.id, meta.boundTarget, meta.pipes, meta.schemas);
-  const scope = Scope.forNodes(tcb, null, tcb.boundTarget.target.template !, /* guard */ null);
-  const ctxRawType = env.referenceType(ref);
-  if (!ts.isTypeReferenceNode(ctxRawType)) {
-    throw new Error(
-        `Expected TypeReferenceNode when referencing the ctx param for ${ref.debugName}`);
+  const tcbGenerator = new TcbGenerator(env, meta);
+
+  // FIXME(joost): this is currently a circular ref; this function should be pulled out into a
+  //  separate file
+  const validator = new TemplateValidator(meta, domSchemaChecker, oobRecorder, tcbGenerator);
+
+  const {template} = meta.boundTarget.target;
+  if (template !== undefined) {
+    validator.validate(template);
   }
-  const paramList = [tcbCtxParam(ref.node, ctxRawType.typeName, env.config.useContextGenericType)];
 
-  const scopeStatements = scope.render();
-  const innerBody = ts.createBlock([
-    ...env.getPreludeStatements(),
-    ...scopeStatements,
-  ]);
-
-  // Wrap the body in an "if (true)" expression. This is unnecessary but has the effect of causing
-  // the `ts.Printer` to format the type-check block nicely.
-  const body = ts.createBlock([ts.createIf(ts.createTrue(), innerBody, undefined)]);
-  const fnDecl = ts.createFunctionDeclaration(
-      /* decorators */ undefined,
-      /* modifiers */ undefined,
-      /* asteriskToken */ undefined,
-      /* name */ name,
-      /* typeParameters */ env.config.useContextGenericType ? ref.node.typeParameters : undefined,
-      /* parameters */ paramList,
-      /* type */ undefined,
-      /* body */ body);
-  addTemplateId(fnDecl, meta.id);
-  return fnDecl;
+  return tcbGenerator.generate(ref, name);
 }
 
 /**
@@ -187,110 +355,6 @@ class TcbTemplateContextOp extends TcbOp {
 }
 
 /**
- * A `TcbOp` which descends into a `TmplAstTemplate`'s children and generates type-checking code for
- * them.
- *
- * This operation wraps the children's type-checking code in an `if` block, which may include one
- * or more type guard conditions that narrow types within the template body.
- */
-class TcbTemplateBodyOp extends TcbOp {
-  constructor(private tcb: Context, private scope: Scope, private template: TmplAstTemplate) {
-    super();
-  }
-  execute(): null {
-    // An `if` will be constructed, within which the template's children will be type checked. The
-    // `if` is used for two reasons: it creates a new syntactic scope, isolating variables declared
-    // in the template's TCB from the outer context, and it allows any directives on the templates
-    // to perform type narrowing of either expressions or the template's context.
-    //
-    // The guard is the `if` block's condition. It's usually set to `true` but directives that exist
-    // on the template can trigger extra guard expressions that serve to narrow types within the
-    // `if`. `guard` is calculated by starting with `true` and adding other conditions as needed.
-    // Collect these into `guards` by processing the directives.
-    const directiveGuards: ts.Expression[] = [];
-
-    const directives = this.tcb.boundTarget.getDirectivesOfNode(this.template);
-    if (directives !== null) {
-      for (const dir of directives) {
-        const dirInstId = this.scope.resolve(this.template, dir);
-        const dirId =
-            this.tcb.env.reference(dir.ref as Reference<ClassDeclaration<ts.ClassDeclaration>>);
-
-        // There are two kinds of guards. Template guards (ngTemplateGuards) allow type narrowing of
-        // the expression passed to an @Input of the directive. Scan the directive to see if it has
-        // any template guards, and generate them if needed.
-        dir.ngTemplateGuards.forEach(guard => {
-          // For each template guard function on the directive, look for a binding to that input.
-          const boundInput = this.template.inputs.find(i => i.name === guard.inputName) ||
-              this.template.templateAttrs.find(
-                  (i: TmplAstTextAttribute|TmplAstBoundAttribute): i is TmplAstBoundAttribute =>
-                      i instanceof TmplAstBoundAttribute && i.name === guard.inputName);
-          if (boundInput !== undefined) {
-            // If there is such a binding, generate an expression for it.
-            const expr = tcbExpression(boundInput.value, this.tcb, this.scope);
-
-            // The expression has already been checked in the type constructor invocation, so
-            // it should be ignored when used within a template guard.
-            ignoreDiagnostics(expr);
-
-            if (guard.type === 'binding') {
-              // Use the binding expression itself as guard.
-              directiveGuards.push(expr);
-            } else {
-              // Call the guard function on the directive with the directive instance and that
-              // expression.
-              const guardInvoke = tsCallMethod(dirId, `ngTemplateGuard_${guard.inputName}`, [
-                dirInstId,
-                expr,
-              ]);
-              addParseSpanInfo(guardInvoke, boundInput.value.sourceSpan);
-              directiveGuards.push(guardInvoke);
-            }
-          }
-        });
-
-        // The second kind of guard is a template context guard. This guard narrows the template
-        // rendering context variable `ctx`.
-        if (dir.hasNgTemplateContextGuard && this.tcb.env.config.applyTemplateContextGuards) {
-          const ctx = this.scope.resolve(this.template);
-          const guardInvoke = tsCallMethod(dirId, 'ngTemplateContextGuard', [dirInstId, ctx]);
-          addParseSpanInfo(guardInvoke, this.template.sourceSpan);
-          directiveGuards.push(guardInvoke);
-        }
-      }
-    }
-
-    // By default the guard is simply `true`.
-    let guard: ts.Expression|null = null;
-
-    // If there are any guards from directives, use them instead.
-    if (directiveGuards.length > 0) {
-      // Pop the first value and use it as the initializer to reduce(). This way, a single guard
-      // will be used on its own, but two or more will be combined into binary AND expressions.
-      guard = directiveGuards.reduce(
-          (expr, dirGuard) =>
-              ts.createBinary(expr, ts.SyntaxKind.AmpersandAmpersandToken, dirGuard),
-          directiveGuards.pop()!);
-    }
-
-    // Create a new Scope for the template. This constructs the list of operations for the template
-    // children, as well as tracks bindings within the template.
-    const tmplScope = Scope.forNodes(this.tcb, this.scope, this.template, guard);
-
-    // Render the template's `Scope` into a block.
-    let tmplBlock: ts.Statement = ts.createBlock(tmplScope.render());
-    if (guard !== null) {
-      // The scope has a guard that needs to be applied, so wrap the template block into an `if`
-      // statement containing the guard expression.
-      tmplBlock = ts.createIf(/* expression */ guard, /* thenStatement */ tmplBlock);
-    }
-    this.scope.addStatement(tmplBlock);
-
-    return null;
-  }
-}
-
-/**
  * A `TcbOp` which renders a text binding (interpolation) into the TCB.
  *
  * Executing this operation returns nothing.
@@ -369,49 +433,6 @@ class TcbDirectiveCircularFallbackOp extends TcbOp {
     return id;
   }
 }
-
-/**
- * A `TcbOp` which feeds elements and unclaimed properties to the `DomSchemaChecker`.
- *
- * The DOM schema is not checked via TCB code generation. Instead, the `DomSchemaChecker` ingests
- * elements and property bindings and accumulates synthetic `ts.Diagnostic`s out-of-band. These are
- * later merged with the diagnostics generated from the TCB.
- *
- * For convenience, the TCB iteration of the template is used to drive the `DomSchemaChecker` via
- * the `TcbDomSchemaCheckerOp`.
- */
-class TcbDomSchemaCheckerOp extends TcbOp {
-  constructor(
-      private tcb: Context, private element: TmplAstElement, private checkElement: boolean,
-      private claimedInputs: Set<string>) {
-    super();
-  }
-
-  execute(): ts.Expression|null {
-    if (this.checkElement) {
-      this.tcb.domSchemaChecker.checkElement(this.tcb.id, this.element, this.tcb.schemas);
-    }
-
-    // TODO(alxhub): this could be more efficient.
-    for (const binding of this.element.inputs) {
-      if (binding.type === BindingType.Property && this.claimedInputs.has(binding.name)) {
-        // Skip this binding as it was claimed by a directive.
-        continue;
-      }
-
-      if (binding.type === BindingType.Property) {
-        if (binding.name !== 'style' && binding.name !== 'class') {
-          // A direct binding to a property.
-          const propertyName = ATTR_TO_PROP[binding.name] || binding.name;
-          this.tcb.domSchemaChecker.checkProperty(
-              this.tcb.id, this.element, propertyName, binding.sourceSpan, this.tcb.schemas);
-        }
-      }
-    }
-    return null;
-  }
-}
-
 
 /**
  * Mapping between attributes names that don't correspond to their element property names.
@@ -546,9 +567,6 @@ class TcbDirectiveOutputsOp extends TcbOp {
         const handler = tcbCreateEventHandler(output, this.tcb, this.scope, EventParamType.Any);
         this.scope.addStatement(ts.createExpressionStatement(handler));
       }
-
-      ExpressionSemanticVisitor.visit(
-          output.handler, this.tcb.id, this.tcb.boundTarget, this.tcb.oobRecorder);
     }
 
     return null;
@@ -607,9 +625,6 @@ class TcbUnclaimedOutputsOp extends TcbOp {
         const handler = tcbCreateEventHandler(output, this.tcb, this.scope, EventParamType.Any);
         this.scope.addStatement(ts.createExpressionStatement(handler));
       }
-
-      ExpressionSemanticVisitor.visit(
-          output.handler, this.tcb.id, this.tcb.boundTarget, this.tcb.oobRecorder);
     }
 
     return null;
@@ -636,8 +651,7 @@ export class Context {
   private nextId = 1;
 
   constructor(
-      readonly env: Environment, readonly domSchemaChecker: DomSchemaChecker,
-      readonly oobRecorder: OutOfBandDiagnosticRecorder, readonly id: TemplateId,
+      readonly env: Environment, readonly id: TemplateId,
       readonly boundTarget: BoundTarget<TypeCheckableDirectiveMeta>,
       private pipes: Map<string, Reference<ClassDeclaration<ts.ClassDeclaration>>>,
       readonly schemas: SchemaMetadata[]) {}
@@ -721,51 +735,10 @@ class Scope {
 
   private constructor(
       private tcb: Context, private parent: Scope|null = null,
-      private guard: ts.Expression|null = null) {}
+      public guard: ts.Expression|null = null) {}
 
-  /**
-   * Constructs a `Scope` given either a `TmplAstTemplate` or a list of `TmplAstNode`s.
-   *
-   * @param tcb the overall context of TCB generation.
-   * @param parent the `Scope` of the parent template (if any) or `null` if this is the root
-   * `Scope`.
-   * @param templateOrNodes either a `TmplAstTemplate` representing the template for which to
-   * calculate the `Scope`, or a list of nodes if no outer template object is available.
-   * @param guard an expression that is applied to this scope for type narrowing purposes.
-   */
-  static forNodes(
-      tcb: Context, parent: Scope|null, templateOrNodes: TmplAstTemplate|(TmplAstNode[]),
-      guard: ts.Expression|null): Scope {
-    const scope = new Scope(tcb, parent, guard);
-
-    let children: TmplAstNode[];
-
-    // If given an actual `TmplAstTemplate` instance, then process any additional information it
-    // has.
-    if (templateOrNodes instanceof TmplAstTemplate) {
-      // The template's variable declarations need to be added as `TcbVariableOp`s.
-      const varMap = new Map<string, TmplAstVariable>();
-
-      for (const v of templateOrNodes.variables) {
-        // Validate that variables on the `TmplAstTemplate` are only declared once.
-        if (!varMap.has(v.name)) {
-          varMap.set(v.name, v);
-        } else {
-          const firstDecl = varMap.get(v.name)!;
-          tcb.oobRecorder.duplicateTemplateVar(tcb.id, v, firstDecl);
-        }
-
-        const opIndex = scope.opQueue.push(new TcbVariableOp(tcb, scope, templateOrNodes, v)) - 1;
-        scope.varMap.set(v, opIndex);
-      }
-      children = templateOrNodes.children;
-    } else {
-      children = templateOrNodes;
-    }
-    for (const node of children) {
-      scope.appendNode(node);
-    }
-    return scope;
+  static create(tcb: Context, parent: Scope|null, guard: ts.Expression|null): Scope {
+    return new Scope(tcb, parent, guard);
   }
 
   /**
@@ -907,50 +880,36 @@ class Scope {
     return res;
   }
 
-  private appendNode(node: TmplAstNode): void {
-    if (node instanceof TmplAstElement) {
-      const opIndex = this.opQueue.push(new TcbElementOp(this.tcb, this, node)) - 1;
-      this.elementOpMap.set(node, opIndex);
-      this.appendDirectivesAndInputsOfNode(node);
-      this.appendOutputsOfNode(node);
-      for (const child of node.children) {
-        this.appendNode(child);
-      }
-      this.checkReferencesOfNode(node);
-    } else if (node instanceof TmplAstTemplate) {
-      // Template children are rendered in a child scope.
-      this.appendDirectivesAndInputsOfNode(node);
-      this.appendOutputsOfNode(node);
-      if (this.tcb.env.config.checkTemplateBodies) {
-        const ctxIndex = this.opQueue.push(new TcbTemplateContextOp(this.tcb, this)) - 1;
-        this.templateCtxOpMap.set(node, ctxIndex);
-        this.opQueue.push(new TcbTemplateBodyOp(this.tcb, this, node));
-      }
-      this.checkReferencesOfNode(node);
-    } else if (node instanceof TmplAstBoundText) {
-      this.opQueue.push(new TcbTextInterpolationOp(this.tcb, this, node));
+  queueElement(node: TmplAstElement): void {
+    const opIndex = this.opQueue.push(new TcbElementOp(this.tcb, this, node)) - 1;
+    this.elementOpMap.set(node, opIndex);
+  }
+
+  queueTemplate(template: TmplAstTemplate): void {
+    const ctxIndex = this.opQueue.push(new TcbTemplateContextOp(this.tcb, this)) - 1;
+    this.templateCtxOpMap.set(template, ctxIndex);
+  }
+
+  queueVariables(template: TmplAstTemplate): void {
+    for (const v of template.variables) {
+      const opIndex = this.opQueue.push(new TcbVariableOp(this.tcb, this, template, v)) - 1;
+      this.varMap.set(v, opIndex);
     }
   }
 
-  private checkReferencesOfNode(node: TmplAstElement|TmplAstTemplate): void {
-    for (const ref of node.references) {
-      if (this.tcb.boundTarget.getReferenceTarget(ref) === null) {
-        this.tcb.oobRecorder.missingReferenceTarget(this.tcb.id, ref);
-      }
-    }
+  queueBoundText(node: TmplAstBoundText): void {
+    this.opQueue.push(new TcbTextInterpolationOp(this.tcb, this, node));
   }
 
-  private appendDirectivesAndInputsOfNode(node: TmplAstElement|TmplAstTemplate): void {
+  queueDirectivesAndInputsOfNode(
+      node: TmplAstElement|TmplAstTemplate, directives: TypeCheckableDirectiveMeta[]|null): void {
     // Collect all the inputs on the element.
     const claimedInputs = new Set<string>();
-    const directives = this.tcb.boundTarget.getDirectivesOfNode(node);
     if (directives === null || directives.length === 0) {
       // If there are no directives, then all inputs are unclaimed inputs, so queue an operation
       // to add them if needed.
       if (node instanceof TmplAstElement) {
         this.opQueue.push(new TcbUnclaimedInputsOp(this.tcb, this, node, claimedInputs));
-        this.opQueue.push(
-            new TcbDomSchemaCheckerOp(this.tcb, node, /* checkElement */ true, claimedInputs));
       }
       return;
     }
@@ -974,19 +933,13 @@ class Scope {
       }
 
       this.opQueue.push(new TcbUnclaimedInputsOp(this.tcb, this, node, claimedInputs));
-      // If there are no directives which match this element, then it's a "plain" DOM element (or a
-      // web component), and should be checked against the DOM schema. If any directives match,
-      // we must assume that the element could be custom (either a component, or a directive like
-      // <router-outlet>) and shouldn't validate the element name itself.
-      const checkElement = directives.length === 0;
-      this.opQueue.push(new TcbDomSchemaCheckerOp(this.tcb, node, checkElement, claimedInputs));
     }
   }
 
-  private appendOutputsOfNode(node: TmplAstElement|TmplAstTemplate): void {
+  queueOutputsOfNode(
+      node: TmplAstElement|TmplAstTemplate, directives: TypeCheckableDirectiveMeta[]|null) {
     // Collect all the outputs on the element.
     const claimedOutputs = new Set<string>();
-    const directives = this.tcb.boundTarget.getDirectivesOfNode(node);
     if (directives === null || directives.length === 0) {
       // If there are no directives, then all outputs are unclaimed outputs, so queue an operation
       // to add them if needed.
@@ -1109,9 +1062,6 @@ class TcbExpressionTranslator {
       if (this.tcb.env.config.checkTypeOfPipes) {
         pipe = this.tcb.getPipeByName(ast.name);
         if (pipe === null) {
-          // No pipe by that name exists in scope. Record this as an error.
-          this.tcb.oobRecorder.missingPipe(this.tcb.id, ast);
-
           // Return an 'any' value to at least allow the rest of the expression to be checked.
           pipe = NULL_AS_ANY;
         }

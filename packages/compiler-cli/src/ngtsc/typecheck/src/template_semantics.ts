@@ -7,6 +7,8 @@
  */
 
 import {AST, BoundTarget, ImplicitReceiver, PropertyWrite, RecursiveAstVisitor, TmplAstVariable} from '@angular/compiler';
+import {BindingPipe} from '../../../../../compiler';
+import {Reference} from '../../imports';
 
 import {TemplateId} from './api';
 import {OutOfBandDiagnosticRecorder} from './oob';
@@ -17,8 +19,16 @@ import {OutOfBandDiagnosticRecorder} from './oob';
 export class ExpressionSemanticVisitor extends RecursiveAstVisitor {
   constructor(
       private templateId: TemplateId, private boundTarget: BoundTarget<any>,
-      private oob: OutOfBandDiagnosticRecorder) {
+      private pipes: Map<string, Reference>, private oob: OutOfBandDiagnosticRecorder) {
     super();
+  }
+
+  visitPipe(ast: BindingPipe, context: any): void {
+    super.visitPipe(ast, context);
+
+    if (!this.pipes.has(ast.name)) {
+      this.oob.missingPipe(this.templateId, ast);
+    }
   }
 
   visitPropertyWrite(ast: PropertyWrite, context: any): void {
@@ -36,8 +46,8 @@ export class ExpressionSemanticVisitor extends RecursiveAstVisitor {
   }
 
   static visit(
-      ast: AST, id: TemplateId, boundTarget: BoundTarget<any>,
+      ast: AST, id: TemplateId, boundTarget: BoundTarget<any>, pipes: Map<string, Reference>,
       oob: OutOfBandDiagnosticRecorder): void {
-    ast.visit(new ExpressionSemanticVisitor(id, boundTarget, oob));
+    ast.visit(new ExpressionSemanticVisitor(id, boundTarget, pipes, oob));
   }
 }

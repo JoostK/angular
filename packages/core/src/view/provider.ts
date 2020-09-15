@@ -258,14 +258,18 @@ function _createProviderInstance(view: ViewData, def: NodeDef): any {
     case NodeFlags.TypeFactoryProvider:
       let injectable: any;
       injectable = callFactory(
-          view, def.parent !, allowPrivateServices, providerDef !.value, providerDef !.deps);
+          view, def.parent!, allowPrivateServices, providerDef!.value, providerDef!.deps);
       // Update def flags if factory injectable has ngOnDestroy function.
       if (injectable != null && typeof injectable === 'object' &&
           !(def.flags & NodeFlags.OnDestroy) && typeof injectable.ngOnDestroy === 'function') {
         def.flags |= NodeFlags.OnDestroy;
         view.def.nodeFlags |= NodeFlags.OnDestroy;
         if (def.parent) {
-          def.parent.childFlags |= NodeFlags.OnDestroy;
+          let parent: NodeDef|null = def.parent;
+          while (parent !== null) {
+            parent.childFlags |= NodeFlags.OnDestroy;
+            parent = parent.parent;
+          }
           def.parent.directChildFlags |= NodeFlags.OnDestroy;
         }
       }
@@ -585,6 +589,9 @@ function callProviderLifecycles(
     provider.ngAfterViewChecked();
   }
   if (lifecycles & NodeFlags.OnDestroy) {
-    provider.ngOnDestroy();
+    const onDestroy = provider && provider.ngOnDestroy;
+    if (onDestroy) {
+      onDestroy.call(provider);
+    }
   }
 }

@@ -8,16 +8,17 @@
 import {NodePath, Scope} from '@babel/traverse';
 import * as t from '@babel/types';
 
-import {assert} from '../../ast/utils';
-import {FatalLinkerError} from '../../fatal_linker_error';
 import {ConstantScope, GetConstantScope} from '../constant_pool_scope';
 
 export class ConstantPoolRegistry {
-  private registryMap = new Map<Scope, ConstantScope<t.Statement>>();
+  private registryMap = new Map<Scope, ConstantScope<t.Statement>|null>();
 
   forScope(scope: Scope): GetConstantScope<t.Statement, t.Expression> {
     return ngImport => {
       const scope = getScopeFor(ngImport, scope);
+      if (scope === null) {
+        return null;
+      }
       if (!this.registryMap.has(scope)) {
         const insertionScope = getInsertionScope(scope);
         this.registryMap.set(scope, insertionScope);
@@ -58,22 +59,19 @@ class FunctionScope implements ConstantScope<t.Statement> {
  * @returns The lexical scope for the binding of the identifier on the far LHS of the `expression`
  *     (e.g. `foo` in both examples above).
  */
-function getScopeFor(expression: t.Expression, currentScope: Scope): Scope {
+function getScopeFor(expression: t.Expression, currentScope: Scope): Scope|null {
   // If the expression is of the form `a.b.c` then we want to get the far LHS (e.g. `a`).
   let bindingExpression = expression;
   while (t.isMemberExpression(bindingExpression)) {
     bindingExpression = bindingExpression.object;
   }
 
-  // We only support expressions that can be reduced to a identifier that has a binding.
-  assert(
-      expression, t.isIdentifier,
-      '`ngImport` to be an identifier or a simple member access with an identifier on the far LHS.');
+  if (!t.isIdentifier(expression)) {
+    return null;
+  }
   const binding = currentScope.getBinding(expression.name);
   if (binding === undefined) {
-    throw new FatalLinkerError(
-        expression,
-        'Invalid `ngImport` property. No variable binding can be found for this expression.');
+    return null;
   }
   return binding.scope;
 }
@@ -88,7 +86,7 @@ function getScopeFor(expression: t.Expression, currentScope: Scope): Scope {
  *
  * @param scope The lexical scope into which we want to insert statements.
  */
-function getInsertionScope(scope: Scope): ConstantScope<t.Statement> {
+function getInsertionScope(scope: Scope): ConstantScope<t.Statement>|null {
   const path = scope.path;
 
   // If the scope corresponds to a function then insert at the start of the function body.
@@ -103,7 +101,5 @@ function getInsertionScope(scope: Scope): ConstantScope<t.Statement> {
   }
 
   // Don't know what kind of container this is...
-  throw new FatalLinkerError(
-      path.node,
-      'Unsupported binding location. It was not possible to identify where to insert constant pool statements based on this binding expression.');
+  return null;
 }

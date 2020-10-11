@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 export type GetConstantScope<TStatement, TExpression> = (ngImport: TExpression) =>
-    ConstantScope<TStatement>;
+    ConstantScope<TStatement>|null;
 
 export interface ConstantScope<TStatement> {
   insert(statements: TStatement[]): void;

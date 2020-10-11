@@ -51,8 +51,10 @@ export class FileLinker<TStatement, TExpression> {
 
     const version = getVersion(metaObj);
     const linker = this.linkerSelector.getLinker(declarationFn, version);
-    return linker.linkPartialDeclaration(
+    const definition = linker.linkPartialDeclaration(
         this.linkerEnvironment, this.sourceUrl, this.code, emitScope.pool, metaObj);
+
+    return emitScope.transform(definition);
   }
 
   finalize(): void {
@@ -68,8 +70,11 @@ export class FileLinker<TStatement, TExpression> {
       ngImport: TExpression,
       getConstantScope: GetConstantScope<TStatement, TExpression>): EmitScope<TExpression> {
     const constantScope = getConstantScope(ngImport);
+    if (constantScope === null) {
+      return new IifeEmitScope(ngImport, this.linkerEnvironment);
+    }
     if (!this.scopes.has(constantScope)) {
-      this.scopes.set(constantScope, new EmitScope<TExpression>(ngImport));
+      this.scopes.set(constantScope, new EmitScope(ngImport));
     }
     return this.scopes.get(constantScope)!;
   }
@@ -81,6 +86,29 @@ class EmitScope<TExpression> {
 
   constructor(ngImport: TExpression) {
     this.importGenerator = new LinkerImportGenerator(ngImport);
+  }
+
+  transform(definition: TExpression): TExpression {
+    return definition;
+  }
+}
+
+class IifeEmitScope<TStatement, TExpression> extends EmitScope<TExpression> {
+  constructor(
+      ngImport: TExpression,
+      private readonly linkerEnvironment: LinkerEnvironment<TStatement, TExpression>) {
+    super(ngImport);
+  }
+
+  transform(definition: TExpression): TExpression {
+    const {translator, factory} = this.linkerEnvironment;
+    const constantStatements = this.pool.statements.map(
+        statement => translator.translateStatement(statement, this.importGenerator));
+
+    const body =
+        factory.createBlock([...constantStatements, factory.createReturnStatement(definition)]);
+    const fn = factory.createFunctionExpression(/* name */ null, /* args */[], body);
+    return factory.createCallExpression(fn, /* args */[], /* pure */ false);
   }
 }
 

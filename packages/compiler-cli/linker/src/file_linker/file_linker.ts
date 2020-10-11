@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {ConstantPool} from '@angular/compiler';
+import * as o from '@angular/compiler/src/output/output_ast';
 import {AstObject} from '../ast/ast_value';
 import {LinkerImportGenerator} from '../linker_import_generator';
 import {ConstantScope, GetConstantScope} from './constant_pool_scope';
@@ -52,7 +53,7 @@ export class FileLinker<TStatement, TExpression> {
     const definition = linker.linkPartialDeclaration(
         this.linkerEnvironment, this.sourceUrl, this.code, emitScope.constantPool, metaObj);
 
-    return emitScope.transform(definition);
+    return emitScope.translate(definition);
   }
 
   finalize(): void {
@@ -83,8 +84,9 @@ class EmitScope<TStatement, TExpression> {
       protected readonly ngImport: TExpression,
       protected readonly linkerEnvironment: LinkerEnvironment<TStatement, TExpression>) {}
 
-  transform(definition: TExpression): TExpression {
-    return definition;
+  translate(definition: o.Expression): TExpression {
+    return this.linkerEnvironment.translator.translateExpression(
+        definition, new LinkerImportGenerator(this.ngImport));
   }
 
   getConstantStatements(): TStatement[] {
@@ -96,12 +98,12 @@ class EmitScope<TStatement, TExpression> {
 }
 
 class IifeEmitScope<TStatement, TExpression> extends EmitScope<TStatement, TExpression> {
-  transform(definition: TExpression): TExpression {
+  translate(definition: o.Expression): TExpression {
     const {factory} = this.linkerEnvironment;
     const constantStatements = this.getConstantStatements();
 
-    const body =
-        factory.createBlock([...constantStatements, factory.createReturnStatement(definition)]);
+    const returnStatement = factory.createReturnStatement(super.translate(definition));
+    const body = factory.createBlock([...constantStatements, returnStatement]);
     const fn = factory.createFunctionExpression(/* name */ null, /* args */[], body);
     return factory.createCallExpression(fn, /* args */[], /* pure */ false);
   }

@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {ConstantPool} from '@angular/compiler';
+import * as o from '@angular/compiler/src/output/output_ast';
 import {AstObject} from '../../ast/ast_value';
 import {LinkerEnvironment} from '../linker_environment';
 
@@ -18,5 +19,5 @@ export interface PartialLinker<TStatement, TExpression> {
    */
   linkPartialDeclaration(
       linkerEnvironment: LinkerEnvironment<TStatement, TExpression>, sourceUrl: string,
-      code: string, constantPool: ConstantPool, metaObj: AstObject<TExpression>): TExpression;
+      code: string, constantPool: ConstantPool, metaObj: AstObject<TExpression>): o.Expression;
 }

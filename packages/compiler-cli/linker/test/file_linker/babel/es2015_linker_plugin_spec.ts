@@ -5,13 +5,11 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {ConstantPool} from '@angular/compiler';
 import * as o from '@angular/compiler/src/output/output_ast';
 import {transformSync} from '@babel/core';
 import generate from '@babel/generator';
 import * as t from '@babel/types';
 
-import {AstObject} from '../../../src/ast/ast_value';
 import {createEs2015LinkerPlugin} from '../../../src/file_linker/babel/es2015_linker_plugin';
 import {FileLinker} from '../../../src/file_linker/file_linker';
 import {DEFAULT_LINKER_OPTIONS} from '../../../src/file_linker/linker_options';
@@ -112,8 +110,7 @@ describe('createEs2015LinkerPlugin()', () => {
                         // We have to add the constant twice or it will not create a shared
                         // statement
                         constantPool.getConstLiteral(o.literalArr([o.literal(callCount)]));
-                        constantPool.getConstLiteral(o.literalArr([o.literal(callCount)]));
-                        return t.identifier('REPLACEMENT');
+                        return constantPool.getConstLiteral(o.literalArr([o.literal(callCount)]));
                       }) as typeof PartialDirectiveLinkerVersion1.prototype.linkPartialDeclaration);
     const result = transformSync(
         [
@@ -131,7 +128,7 @@ describe('createEs2015LinkerPlugin()', () => {
         });
     expect(result!.code)
         .toEqual(
-            'import*as core from\'some-module\';import{id}from\'other-module\';const _c0=[1];const _c1=[2];const _c2=[3];REPLACEMENT;REPLACEMENT;REPLACEMENT;');
+            'import*as core from\'some-module\';import{id}from\'other-module\';const _c0=[1];const _c1=[2];const _c2=[3];_c0;_c1;_c2;');
   });
 
   it('should return a Babel plugin that adds shared statements at the start of the program if there are no imports',
@@ -143,8 +140,7 @@ describe('createEs2015LinkerPlugin()', () => {
                  callCount++;
                  // We have to add the constant twice or it will not create a shared statement
                  constantPool.getConstLiteral(o.literalArr([o.literal(callCount)]));
-                 constantPool.getConstLiteral(o.literalArr([o.literal(callCount)]));
-                 return t.identifier('REPLACEMENT');
+                 return constantPool.getConstLiteral(o.literalArr([o.literal(callCount)]));
                }) as typeof PartialDirectiveLinkerVersion1.prototype.linkPartialDeclaration);
        const result = transformSync(
            [
@@ -160,8 +156,7 @@ describe('createEs2015LinkerPlugin()', () => {
              generatorOpts: {compact: true},
            });
        expect(result!.code)
-           .toEqual(
-               'const _c0=[1];const _c1=[2];const _c2=[3];var core;REPLACEMENT;REPLACEMENT;REPLACEMENT;');
+           .toEqual('const _c0=[1];const _c1=[2];const _c2=[3];var core;_c0;_c1;_c2;');
      });
 
   it('should return a Babel plugin that adds shared statements at the start of the function body if the ngImport is from a function parameter',
@@ -173,8 +168,7 @@ describe('createEs2015LinkerPlugin()', () => {
                  callCount++;
                  // We have to add the constant twice or it will not create a shared statement
                  constantPool.getConstLiteral(o.literalArr([o.literal(callCount)]));
-                 constantPool.getConstLiteral(o.literalArr([o.literal(callCount)]));
-                 return t.identifier('REPLACEMENT');
+                 return constantPool.getConstLiteral(o.literalArr([o.literal(callCount)]));
                }) as typeof PartialDirectiveLinkerVersion1.prototype.linkPartialDeclaration);
        const result = transformSync(
            [
@@ -189,8 +183,7 @@ describe('createEs2015LinkerPlugin()', () => {
              generatorOpts: {compact: true},
            });
        expect(result!.code)
-           .toEqual(
-               'function run(core){const _c0=[1];const _c1=[2];const _c2=[3];REPLACEMENT;REPLACEMENT;REPLACEMENT;}');
+           .toEqual('function run(core){const _c0=[1];const _c1=[2];const _c2=[3];_c0;_c1;_c2;}');
      });
 
   it('should return a Babel plugin that adds shared statements into an IIFE if no scope could not be derived for the ngImport',
@@ -202,8 +195,7 @@ describe('createEs2015LinkerPlugin()', () => {
                  callCount++;
                  // We have to add the constant twice or it will not create a shared statement
                  constantPool.getConstLiteral(o.literalArr([o.literal(callCount)]));
-                 constantPool.getConstLiteral(o.literalArr([o.literal(callCount)]));
-                 return t.identifier('REPLACEMENT');
+                 return constantPool.getConstLiteral(o.literalArr([o.literal(callCount)]));
                }) as typeof PartialDirectiveLinkerVersion1.prototype.linkPartialDeclaration);
        const result = transformSync(
            [
@@ -218,9 +210,9 @@ describe('createEs2015LinkerPlugin()', () => {
              generatorOpts: {compact: true},
            });
        expect(result!.code).toEqual([
-         `function run(){`, `(function(){const _c0=[1];return REPLACEMENT;})();`,
-         `(function(){const _c0=[2];return REPLACEMENT;})();`,
-         `(function(){const _c0=[3];return REPLACEMENT;})();`, `}`
+         `function run(){`, `(function(){const _c0=[1];return _c0;})();`,
+         `(function(){const _c0=[2];return _c0;})();`, `(function(){const _c0=[3];return _c0;})();`,
+         `}`
        ].join(''));
      });
 });

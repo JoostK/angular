@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {LinkerEnvironment} from '@angular/compiler-cli/linker/src/file_linker/linker_environment';
+import * as o from '@angular/compiler/src/output/output_ast';
 import * as t from '@babel/types';
 
 import {AstHost} from '../../src/ast/ast_host';
@@ -63,7 +64,7 @@ describe('FileLinker', () => {
     it('should call `linkPartialDeclaration()` on the appropriate partial compiler', () => {
       const {fileLinker} = createFileLinker();
       const compileSpy = spyOn(PartialDirectiveLinkerVersion1.prototype, 'linkPartialDeclaration')
-                             .and.returnValue(t.stringLiteral('compilation result'));
+                             .and.returnValue(o.literal('compilation result'));
 
       const ngImport = t.identifier('@angular/core');
       const version = t.numericLiteral(1);

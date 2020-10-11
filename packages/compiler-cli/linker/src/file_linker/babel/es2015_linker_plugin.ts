@@ -64,20 +64,18 @@ export function createEs2015LinkerPlugin(options: Partial<LinkerOptions>): Plugi
           assertNotNull(fileLinker);
           assertNotNull(constantScopeRegistry);
 
-          const callee = call.get('callee');
-          if (!callee.isIdentifier()) {
+          const callee = call.node.callee;
+          if (!t.isIdentifier(callee)) {
             return;
           }
-          const calleeName = callee.node.name;
-          const args = call.get('arguments');
+          const calleeName = callee.name;
+          const args = call.node.arguments;
           if (!fileLinker.isPartialDeclaration(calleeName) || !isExpressionArray(args)) {
             return;
           }
 
           const getConstantScope = constantScopeRegistry.forScope(call.scope);
-
-          const replacement = fileLinker.linkPartialDeclaration(
-              calleeName, args.map(path => path.node), getConstantScope);
+          const replacement = fileLinker.linkPartialDeclaration(calleeName, args, getConstantScope);
 
           call.skip();  // TODO: check if skipping breaks stuff
           call.replaceWith(replacement);
@@ -93,8 +91,8 @@ export function createEs2015LinkerPlugin(options: Partial<LinkerOptions>): Plugi
 /**
  * Returns true if all the `nodes` are Babel expressions.
  */
-function isExpressionArray(nodes: NodePath<t.Node>[]): nodes is NodePath<t.Expression>[] {
-  return nodes.every(node => node.isExpression());
+function isExpressionArray(nodes: t.Node[]): nodes is t.Expression[] {
+  return nodes.every(node => t.isExpression(node));
 }
 
 /**

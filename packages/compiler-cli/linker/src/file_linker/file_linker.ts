@@ -5,10 +5,10 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {ConstantPool} from '@angular/compiler';
-
 import {AstObject} from '../ast/ast_value';
 import {FatalLinkerError} from '../fatal_linker_error';
+import {LinkerImportGenerator} from '../linker_import_generator';
+import {ConstantPoolScope, ConstantScope} from './constant_pool_scope';
 
 import {LinkerEnvironment} from './linker_environment';
 import {PartialLinkerSelector} from './partial_linkers/partial_linker_selector';
@@ -18,9 +18,11 @@ import {PartialLinkerSelector} from './partial_linkers/partial_linker_selector';
  */
 export class FileLinker<TStatement, TExpression> {
   private linkerSelector = new PartialLinkerSelector<TStatement, TExpression>();
+  private pendingScopes = new Set<ConstantScope<TStatement>>();
 
   constructor(
       private linkerEnvironment: LinkerEnvironment<TStatement, TExpression>,
+      private constantPoolScope: ConstantPoolScope<TStatement, TExpression>,
       private sourceUrl: string, readonly code: string) {}
 
   /**
@@ -33,13 +35,33 @@ export class FileLinker<TStatement, TExpression> {
   /**
    * Link the metadata extracted from the args of a call to a partial declaration function.
    */
-  linkPartialDeclaration(
-      declarationFn: string, metaObj: AstObject<TExpression>,
-      constantPool: ConstantPool): TExpression {
+  linkPartialDeclaration(declarationFn: string, args: TExpression[]): TExpression {
+    if (args.length !== 1) {
+      throw new Error(
+          `Invalid function call: It should have only a single object literal argument, but contained ${
+              args.length}.`);
+    }
+
+    const metaObj = AstObject.parse(args[0], this.linkerEnvironment.host);
+    const ngImport = metaObj.getNode('ngImport');
+    const constantScope = this.constantPoolScope.getConstantScope(ngImport);
+
+    this.pendingScopes.add(constantScope);
+
     const version = getVersion(metaObj);
     const linker = this.linkerSelector.getLinker(declarationFn, version);
     return linker.linkPartialDeclaration(
-        this.linkerEnvironment, this.sourceUrl, this.code, constantPool, metaObj);
+        this.linkerEnvironment, this.sourceUrl, this.code, constantScope.pool, metaObj);
+  }
+
+  finalize(): void {
+    for (const constantScope of this.pendingScopes) {
+      const importGenerator = new LinkerImportGenerator(constantScope.ngImport);
+      const statements = constantScope.pool.statements.map(
+          statement =>
+              this.linkerEnvironment.translator.translateStatement(statement, importGenerator));
+      constantScope.insert(statements);
+    }
   }
 }
 

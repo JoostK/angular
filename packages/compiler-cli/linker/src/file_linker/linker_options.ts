@@ -11,10 +11,6 @@
  */
 export interface LinkerOptions {
   /**
-   * Whether this file should be considered an ECMAScript module.
-   */
-  isESModule: boolean;
-  /**
    * Whether to generate legacy i18n message ids.
    */
   enableI18nLegacyMessageIdFormat: boolean;
@@ -25,10 +21,9 @@ export interface LinkerOptions {
 }
 
 /**
- * The default linker options to use if properities are not provided.
+ * The default linker options to use if properties are not provided.
  */
 export const DEFAULT_LINKER_OPTIONS: LinkerOptions = {
-  isESModule: true,
   enableI18nLegacyMessageIdFormat: true,
   i18nNormalizeLineEndingsInICUs: false,
 };

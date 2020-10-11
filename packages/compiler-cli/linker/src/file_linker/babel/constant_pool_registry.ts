@@ -6,56 +6,37 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {ConstantPool} from '@angular/compiler';
-import {NodePath, Scope} from '@babel/traverse';
+import {Scope} from '@babel/traverse';
 import * as t from '@babel/types';
 
 import {assert} from '../../ast/utils';
 import {FatalLinkerError} from '../../fatal_linker_error';
-import {LinkerImportGenerator} from '../../linker_import_generator';
-import {Translator} from '../translator';
+import {ConstantPoolScope, ConstantScope} from '../constant_pool_scope';
 
-/**
- * A registry that tracks `ngImport` and `ConstantPool` values by the lexical scope of the binding
- * of the `ngImport` expression.
- */
-export class ConstantPoolRegistry {
-  private registryMap = new Map<Scope, {ngImport: NodePath<t.Expression>, pool: ConstantPool}>();
+export class ConstantPoolRegistry implements ConstantPoolScope<t.Statement, t.Expression> {
+  private registryMap = new Map<Scope, ConstantScope<t.Statement>>();
+  currentScope: Scope|null = null;
 
-  constructor(private translator: Translator<t.Statement, t.Expression>) {}
-
-  /**
-   * Get, or create and register, a `ConstantPool` for the scope of the given `ngImport`
-   * expression`.
-   *
-   * For any `ngImport` expression, we identify the lexical scope of its binding (i.e. where it was
-   * declared). There is a `ConstantPool` associated with each lexical scope, which is returned.
-   *
-   * It is assumed that all `ngImport` expressions within a single file are compatible and
-   * interchangeable, so the registry only tracks the first `ngImport` expression for which we
-   * request a `ConstantPool`.
-   *
-   * @param ngImport The `ngImport` expression for which we need a `ConstantPool`.
-   */
-  getConstantPoolFor(ngImport: NodePath<t.Expression>): ConstantPool {
-    const scope = getScopeFor(ngImport);
+  getConstantScope(ngImport: t.Expression): ConstantScope<t.Statement> {
+    if (this.currentScope === null) {
+      throw new FatalLinkerError(ngImport, 'Assertion error: a scope should be available');
+    }
+    const scope = getScopeFor(ngImport, this.currentScope);
     if (!this.registryMap.has(scope)) {
-      this.registryMap.set(scope, {ngImport, pool: new ConstantPool()});
+      this.registryMap.set(scope, new DynamicScope(scope, ngImport));
     }
-    return this.registryMap.get(scope)!.pool;
+    return this.registryMap.get(scope)!;
   }
+}
 
-  /**
-   * Iterate through all the `ConstantPool`s in the registry, translating and inserting the
-   * statements from each into the appropriate point in the code.
-   */
-  insertStatements(): void {
-    for (const [binding, {ngImport, pool}] of this.registryMap.entries()) {
-      const importGenerator = new LinkerImportGenerator<t.Expression>(ngImport.node);
-      const statements = pool.statements.map(
-          statement => this.translator.translateStatement(statement, importGenerator));
-      const insertionFn = getInsertionFn(binding);
-      insertionFn(statements);
-    }
+class DynamicScope implements ConstantScope<t.Statement> {
+  readonly pool = new ConstantPool();
+
+  constructor(private scope: Scope, readonly ngImport: t.Expression) {}
+
+  insert(statements: t.Statement[]): void {
+    const insertionFn = getInsertionFn(this.scope);
+    insertionFn(statements);
   }
 }
 
@@ -67,20 +48,21 @@ export class ConstantPoolRegistry {
  * @returns The lexical scope for the binding of the identifier on the far LHS of the `expression`
  *     (e.g. `foo` in both examples above).
  */
-function getScopeFor(expression: NodePath<t.Expression>): Scope {
+function getScopeFor(expression: t.Expression, currentScope: Scope): Scope {
   // If the expression is of the form `a.b.c` then we want to get the far LHS (e.g. `a`).
   let bindingExpression = expression;
-  while (bindingExpression.isMemberExpression()) {
-    bindingExpression = bindingExpression.get('object');
+  while (t.isMemberExpression(bindingExpression)) {
+    bindingExpression = bindingExpression.object;
   }
+
   // We only support expressions that can be reduced to a identifier that has a binding.
   assert(
-      expression.node, t.isIdentifier,
+      expression, t.isIdentifier,
       '`ngImport` to be an identifier or a simple member access with an identifier on the far LHS.');
-  const binding = expression.scope.getBinding(expression.node.name);
+  const binding = currentScope.getBinding(expression.name);
   if (binding === undefined) {
     throw new FatalLinkerError(
-        expression.node,
+        expression,
         'Invalid `ngImport` property. No variable binding can be found for this expression.');
   }
   return binding.scope;

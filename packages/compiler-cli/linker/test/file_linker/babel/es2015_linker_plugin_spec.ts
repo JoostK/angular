@@ -28,7 +28,7 @@ describe('createEs2015LinkerPlugin()', () => {
        });
      });
 
-  it('should return a Babel plugin that calls FileLinker.isPartialDeclaration() on each "normal" call expression',
+  it('should return a Babel plugin that calls FileLinker.isPartialDeclaration() on each call expression',
      () => {
        const isPartialDeclarationSpy = spyOn(FileLinker.prototype, 'isPartialDeclaration');
 
@@ -46,6 +46,7 @@ describe('createEs2015LinkerPlugin()', () => {
          ['fn1'],
          ['fn2'],
          ['fn3'],
+         ['method'],
          ['fn4'],
          ['spread'],
        ]);

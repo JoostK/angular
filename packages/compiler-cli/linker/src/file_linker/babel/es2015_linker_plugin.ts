@@ -23,7 +23,7 @@ import {ConstantScopeRegistry} from './constant_pool_registry';
  * The plugin delegates most of its work to a generic `FileLinker` for each file (`t.Program` in
  * Babel) that is visited.
  */
-export function createEs2015LinkerPlugin(options: Partial<LinkerOptions>): PluginObj {
+export function createEs2015LinkerPlugin(options: Partial<LinkerOptions> = {}): PluginObj {
   let fileLinker: FileLinker<t.Statement, t.Expression>|null = null;
   let constantScopeRegistry: ConstantScopeRegistry|null = null;
 
@@ -65,10 +65,13 @@ export function createEs2015LinkerPlugin(options: Partial<LinkerOptions>): Plugi
           assertNotNull(constantScopeRegistry);
 
           const callee = call.node.callee;
-          if (!t.isIdentifier(callee)) {
+          if (!t.isExpression(callee)) {
             return;
           }
-          const calleeName = callee.name;
+          const calleeName = linkerEnvironment.host.getSymbolName(callee);
+          if (calleeName === null) {
+            return;
+          }
           const args = call.node.arguments;
           if (!fileLinker.isPartialDeclaration(calleeName) || !isExpressionArray(args)) {
             return;

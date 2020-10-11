@@ -6,9 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {ConstantPool} from '@angular/compiler';
-import {ImportGenerator} from '../../../src/ngtsc/translator';
 import {AstObject} from '../ast/ast_value';
-import {FatalLinkerError} from '../fatal_linker_error';
 import {LinkerImportGenerator} from '../linker_import_generator';
 import {ConstantScope, GetConstantScope} from './constant_pool_scope';
 
@@ -20,7 +18,7 @@ import {PartialLinkerSelector} from './partial_linkers/partial_linker_selector';
  */
 export class FileLinker<TStatement, TExpression> {
   private linkerSelector = new PartialLinkerSelector<TStatement, TExpression>();
-  private scopes = new Map<ConstantScope<TStatement>, EmitScope<TExpression>>();
+  private scopes = new Map<ConstantScope<TStatement>, EmitScope<TStatement, TExpression>>();
 
   constructor(
       private linkerEnvironment: LinkerEnvironment<TStatement, TExpression>,
@@ -49,76 +47,62 @@ export class FileLinker<TStatement, TExpression> {
     const ngImport = metaObj.getNode('ngImport');
     const emitScope = this.getEmitScope(ngImport, getConstantScope);
 
-    const version = getVersion(metaObj);
+    const version = metaObj.getNumber('version');
     const linker = this.linkerSelector.getLinker(declarationFn, version);
     const definition = linker.linkPartialDeclaration(
-        this.linkerEnvironment, this.sourceUrl, this.code, emitScope.pool, metaObj);
+        this.linkerEnvironment, this.sourceUrl, this.code, emitScope.constantPool, metaObj);
 
     return emitScope.transform(definition);
   }
 
   finalize(): void {
     for (const [constantScope, emitScope] of this.scopes.entries()) {
-      const statements = emitScope.pool.statements.map(
-          statement => this.linkerEnvironment.translator.translateStatement(
-              statement, emitScope.importGenerator));
+      const statements = emitScope.getConstantStatements();
       constantScope.insert(statements);
     }
   }
 
   private getEmitScope(
-      ngImport: TExpression,
-      getConstantScope: GetConstantScope<TStatement, TExpression>): EmitScope<TExpression> {
+      ngImport: TExpression, getConstantScope: GetConstantScope<TStatement, TExpression>):
+      EmitScope<TStatement, TExpression> {
     const constantScope = getConstantScope(ngImport);
     if (constantScope === null) {
       return new IifeEmitScope(ngImport, this.linkerEnvironment);
     }
     if (!this.scopes.has(constantScope)) {
-      this.scopes.set(constantScope, new EmitScope(ngImport));
+      this.scopes.set(constantScope, new EmitScope(ngImport, this.linkerEnvironment));
     }
     return this.scopes.get(constantScope)!;
   }
 }
 
-class EmitScope<TExpression> {
-  readonly pool = new ConstantPool();
-  readonly importGenerator: ImportGenerator<TExpression>;
+class EmitScope<TStatement, TExpression> {
+  readonly constantPool = new ConstantPool();
 
-  constructor(ngImport: TExpression) {
-    this.importGenerator = new LinkerImportGenerator(ngImport);
-  }
+  constructor(
+      protected readonly ngImport: TExpression,
+      protected readonly linkerEnvironment: LinkerEnvironment<TStatement, TExpression>) {}
 
   transform(definition: TExpression): TExpression {
     return definition;
   }
+
+  getConstantStatements(): TStatement[] {
+    const {translator} = this.linkerEnvironment;
+    const importGenerator = new LinkerImportGenerator(this.ngImport);
+    return this.constantPool.statements.map(
+        statement => translator.translateStatement(statement, importGenerator));
+  }
 }
 
-class IifeEmitScope<TStatement, TExpression> extends EmitScope<TExpression> {
-  constructor(
-      ngImport: TExpression,
-      private readonly linkerEnvironment: LinkerEnvironment<TStatement, TExpression>) {
-    super(ngImport);
-  }
-
+class IifeEmitScope<TStatement, TExpression> extends EmitScope<TStatement, TExpression> {
   transform(definition: TExpression): TExpression {
-    const {translator, factory} = this.linkerEnvironment;
-    const constantStatements = this.pool.statements.map(
-        statement => translator.translateStatement(statement, this.importGenerator));
+    const {factory} = this.linkerEnvironment;
+    const constantStatements = this.getConstantStatements();
 
     const body =
         factory.createBlock([...constantStatements, factory.createReturnStatement(definition)]);
     const fn = factory.createFunctionExpression(/* name */ null, /* args */[], body);
     return factory.createCallExpression(fn, /* args */[], /* pure */ false);
-  }
-}
-
-/**
- * Extract the `version` number from the `metaObj`.
- */
-function getVersion<TExpression>(metaObj: AstObject<TExpression>): number {
-  try {
-    return metaObj.getNumber('version');
-  } catch (e) {
-    throw new FatalLinkerError(metaObj.expression, `Invalid declaration property: ${e.message}`);
   }
 }

@@ -10,18 +10,18 @@ import * as t from '@babel/types';
 
 import {ConstantScope, GetConstantScope} from '../constant_pool_scope';
 
-export class ConstantPoolRegistry {
+export class ConstantScopeRegistry {
   private registryMap = new Map<Scope, ConstantScope<t.Statement>|null>();
 
-  forScope(scope: Scope): GetConstantScope<t.Statement, t.Expression> {
+  forScope(declarationScope: Scope): GetConstantScope<t.Statement, t.Expression> {
     return ngImport => {
-      const scope = getScopeFor(ngImport, scope);
+      const scope = getScopeFor(ngImport, declarationScope);
       if (scope === null) {
         return null;
       }
       if (!this.registryMap.has(scope)) {
-        const insertionScope = getInsertionScope(scope);
-        this.registryMap.set(scope, insertionScope);
+        const constantScope = createConstantScope(scope);
+        this.registryMap.set(scope, constantScope);
       }
       return this.registryMap.get(scope)!;
     };
@@ -43,10 +43,10 @@ class ProgramScope implements ConstantScope<t.Statement> {
 }
 
 class FunctionScope implements ConstantScope<t.Statement> {
-  constructor(private function: NodePath<t.FunctionParent>) {}
+  constructor(private fn: NodePath<t.FunctionParent>) {}
 
   insert(statements: t.Statement[]): void {
-    const body = this.function.get('body');
+    const body = this.fn.get('body');
     body.unshiftContainer('body', statements);
   }
 }
@@ -59,7 +59,7 @@ class FunctionScope implements ConstantScope<t.Statement> {
  * @returns The lexical scope for the binding of the identifier on the far LHS of the `expression`
  *     (e.g. `foo` in both examples above).
  */
-function getScopeFor(expression: t.Expression, currentScope: Scope): Scope|null {
+function getScopeFor(expression: t.Expression, declarationScope: Scope): Scope|null {
   // If the expression is of the form `a.b.c` then we want to get the far LHS (e.g. `a`).
   let bindingExpression = expression;
   while (t.isMemberExpression(bindingExpression)) {
@@ -69,37 +69,21 @@ function getScopeFor(expression: t.Expression, currentScope: Scope): Scope|null 
   if (!t.isIdentifier(expression)) {
     return null;
   }
-  const binding = currentScope.getBinding(expression.name);
+  const binding = declarationScope.getBinding(expression.name);
   if (binding === undefined) {
     return null;
   }
   return binding.scope;
 }
 
-/**
- * Get a function that can insert statements into the given lexical `scope`.
- *
- * The insertion point is:
- *
- * - at the top of a function body
- * - after the last import statement in a top level file
- *
- * @param scope The lexical scope into which we want to insert statements.
- */
-function getInsertionScope(scope: Scope): ConstantScope<t.Statement>|null {
+function createConstantScope(scope: Scope): ConstantScope<t.Statement>|null {
   const path = scope.path;
 
-  // If the scope corresponds to a function then insert at the start of the function body.
   if (path.isFunctionParent()) {
     return new FunctionScope(path);
-  }
-
-  // If the scope corresponds to a file (`t.Program`) then insert after the last import statement
-  // (or at the top of the file if there are no imports).
-  if (path.isProgram()) {
+  } else if (path.isProgram()) {
     return new ProgramScope(path);
+  } else {
+    return null;
   }
-
-  // Don't know what kind of container this is...
-  return null;
 }

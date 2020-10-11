@@ -13,9 +13,9 @@ import {BabelAstFactory} from '../../ast/babel/babel_ast_factory';
 import {BabelAstHost} from '../../ast/babel/babel_ast_host';
 import {isFatalLinkerError} from '../../fatal_linker_error';
 import {FileLinker} from '../file_linker';
-import {LinkerEnvironment} from '../linker_environment';
-import {DEFAULT_LINKER_OPTIONS, LinkerOptions} from '../linker_options';
-import {ConstantPoolRegistry} from './constant_pool_registry';
+import {createLinkerEnvironment} from '../linker_environment';
+import {LinkerOptions} from '../linker_options';
+import {ConstantScopeRegistry} from './constant_pool_registry';
 
 /**
  * Create a Babel plugin that visits the program, identifying and linking partial declarations.
@@ -25,10 +25,10 @@ import {ConstantPoolRegistry} from './constant_pool_registry';
  */
 export function createEs2015LinkerPlugin(options: Partial<LinkerOptions>): PluginObj {
   let fileLinker: FileLinker<t.Statement, t.Expression>|null = null;
-  let constantPoolRegistry: ConstantPoolRegistry|null = null;
+  let constantScopeRegistry: ConstantScopeRegistry|null = null;
 
-  const linkerEnvironment = new LinkerEnvironment<t.Statement, t.Expression>(
-      new BabelAstHost(), new BabelAstFactory(), {...DEFAULT_LINKER_OPTIONS, ...options});
+  const linkerEnvironment = createLinkerEnvironment<t.Statement, t.Expression>(
+      new BabelAstHost(), new BabelAstFactory(), options);
 
   return {
     visitor: {
@@ -38,10 +38,10 @@ export function createEs2015LinkerPlugin(options: Partial<LinkerOptions>): Plugi
          */
         enter(path: NodePath<t.Program>): void {
           assertNull(fileLinker);
-          assertNull(constantPoolRegistry);
-          constantPoolRegistry = new ConstantPoolRegistry();
-          fileLinker = new FileLinker<t.Statement, t.Expression>(
-              linkerEnvironment, path.hub.file.opts.filename, path.hub.file.code);
+          assertNull(constantScopeRegistry);
+          const file: BabelFile = path.hub.file;
+          fileLinker = linkerEnvironment.createFileLinker(file.opts.filename ?? '', file.code);
+          constantScopeRegistry = new ConstantScopeRegistry();
         },
         /**
          * On exiting the file, we insert any top-level statements that were generated during
@@ -49,9 +49,9 @@ export function createEs2015LinkerPlugin(options: Partial<LinkerOptions>): Plugi
          */
         exit(): void {
           assertNotNull(fileLinker);
-          assertNotNull(constantPoolRegistry);
+          assertNotNull(constantScopeRegistry);
           fileLinker.finalize();
-          constantPoolRegistry = null;
+          constantScopeRegistry = null;
           fileLinker = null;
         }
       },
@@ -62,7 +62,7 @@ export function createEs2015LinkerPlugin(options: Partial<LinkerOptions>): Plugi
       CallExpression(call: NodePath<t.CallExpression>): void {
         try {
           assertNotNull(fileLinker);
-          assertNotNull(constantPoolRegistry);
+          assertNotNull(constantScopeRegistry);
 
           const callee = call.get('callee');
           if (!callee.isIdentifier()) {
@@ -74,7 +74,7 @@ export function createEs2015LinkerPlugin(options: Partial<LinkerOptions>): Plugi
             return;
           }
 
-          const getConstantScope = constantPoolRegistry.forScope(call.scope);
+          const getConstantScope = constantScopeRegistry.forScope(call.scope);
 
           const replacement = fileLinker.linkPartialDeclaration(
               calleeName, args.map(path => path.node), getConstantScope);
@@ -125,6 +125,7 @@ function buildCodeFrameError(file: BabelFile, message: string, node: t.Node): st
 }
 
 interface BabelFile {
+  code: string;
   opts: {filename?: string;};
 
   buildCodeFrameError(node: t.Node, message: string): Error;

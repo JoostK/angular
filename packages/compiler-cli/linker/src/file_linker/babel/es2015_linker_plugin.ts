@@ -41,8 +41,7 @@ export function createEs2015LinkerPlugin(options: Partial<LinkerOptions>): Plugi
           assertNull(constantPoolRegistry);
           constantPoolRegistry = new ConstantPoolRegistry();
           fileLinker = new FileLinker<t.Statement, t.Expression>(
-              linkerEnvironment, constantPoolRegistry, path.hub.file.opts.filename,
-              path.hub.file.code);
+              linkerEnvironment, path.hub.file.opts.filename, path.hub.file.code);
         },
         /**
          * On exiting the file, we insert any top-level statements that were generated during
@@ -75,10 +74,10 @@ export function createEs2015LinkerPlugin(options: Partial<LinkerOptions>): Plugi
             return;
           }
 
-          constantPoolRegistry.currentScope = call.scope;
+          const getConstantScope = constantPoolRegistry.forScope(call.scope);
 
-          const replacement =
-              fileLinker.linkPartialDeclaration(calleeName, args.map(path => path.node));
+          const replacement = fileLinker.linkPartialDeclaration(
+              calleeName, args.map(path => path.node), getConstantScope);
 
           call.skip();  // TODO: check if skipping breaks stuff
           call.replaceWith(replacement);

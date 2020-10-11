@@ -10,7 +10,7 @@ import {ImportGenerator} from '../../../src/ngtsc/translator';
 import {AstObject} from '../ast/ast_value';
 import {FatalLinkerError} from '../fatal_linker_error';
 import {LinkerImportGenerator} from '../linker_import_generator';
-import {ConstantPoolScope, ConstantScope} from './constant_pool_scope';
+import {ConstantScope, GetConstantScope} from './constant_pool_scope';
 
 import {LinkerEnvironment} from './linker_environment';
 import {PartialLinkerSelector} from './partial_linkers/partial_linker_selector';
@@ -24,7 +24,6 @@ export class FileLinker<TStatement, TExpression> {
 
   constructor(
       private linkerEnvironment: LinkerEnvironment<TStatement, TExpression>,
-      private constantPoolScope: ConstantPoolScope<TStatement, TExpression>,
       private sourceUrl: string, readonly code: string) {}
 
   /**
@@ -37,7 +36,9 @@ export class FileLinker<TStatement, TExpression> {
   /**
    * Link the metadata extracted from the args of a call to a partial declaration function.
    */
-  linkPartialDeclaration(declarationFn: string, args: TExpression[]): TExpression {
+  linkPartialDeclaration(
+      declarationFn: string, args: TExpression[],
+      getConstantScope: GetConstantScope<TStatement, TExpression>): TExpression {
     if (args.length !== 1) {
       throw new Error(
           `Invalid function call: It should have only a single object literal argument, but contained ${
@@ -46,7 +47,7 @@ export class FileLinker<TStatement, TExpression> {
 
     const metaObj = AstObject.parse(args[0], this.linkerEnvironment.host);
     const ngImport = metaObj.getNode('ngImport');
-    const emitScope = this.getEmitScope(ngImport);
+    const emitScope = this.getEmitScope(ngImport, getConstantScope);
 
     const version = getVersion(metaObj);
     const linker = this.linkerSelector.getLinker(declarationFn, version);
@@ -63,8 +64,10 @@ export class FileLinker<TStatement, TExpression> {
     }
   }
 
-  private getEmitScope(ngImport: TExpression): EmitScope<TExpression> {
-    const constantScope = this.constantPoolScope.getConstantScope(ngImport);
+  private getEmitScope(
+      ngImport: TExpression,
+      getConstantScope: GetConstantScope<TStatement, TExpression>): EmitScope<TExpression> {
+    const constantScope = getConstantScope(ngImport);
     if (!this.scopes.has(constantScope)) {
       this.scopes.set(constantScope, new EmitScope<TExpression>(ngImport));
     }

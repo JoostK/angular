@@ -10,21 +10,19 @@ import * as t from '@babel/types';
 
 import {assert} from '../../ast/utils';
 import {FatalLinkerError} from '../../fatal_linker_error';
-import {ConstantPoolScope, ConstantScope} from '../constant_pool_scope';
+import {ConstantScope, GetConstantScope} from '../constant_pool_scope';
 
-export class ConstantPoolRegistry implements ConstantPoolScope<t.Statement, t.Expression> {
+export class ConstantPoolRegistry {
   private registryMap = new Map<Scope, ConstantScope<t.Statement>>();
-  currentScope: Scope|null = null;
 
-  getConstantScope(ngImport: t.Expression): ConstantScope<t.Statement> {
-    if (this.currentScope === null) {
-      throw new FatalLinkerError(ngImport, 'Assertion error: a scope should be available');
-    }
-    const scope = getScopeFor(ngImport, this.currentScope);
-    if (!this.registryMap.has(scope)) {
-      this.registryMap.set(scope, new DynamicScope(scope));
-    }
-    return this.registryMap.get(scope)!;
+  forScope(scope: Scope): GetConstantScope<t.Statement, t.Expression> {
+    return ngImport => {
+      const scope = getScopeFor(ngImport, scope);
+      if (!this.registryMap.has(scope)) {
+        this.registryMap.set(scope, new DynamicScope(scope));
+      }
+      return this.registryMap.get(scope)!;
+    };
   }
 }
 

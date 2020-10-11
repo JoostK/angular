@@ -105,7 +105,7 @@ describe('createEs2015LinkerPlugin()', () => {
   it('should return a Babel plugin that adds shared statements after any imports', () => {
     let callCount = 0;
     spyOn(PartialDirectiveLinkerVersion1.prototype, 'linkPartialDeclaration')
-        .and.callFake(((linkerEnvironment, sourceUrl, code, constantPool, metaObj) => {
+        .and.callFake(((sourceUrl, code, constantPool, metaObj) => {
                         callCount++;
                         // We have to add the constant twice or it will not create a shared
                         // statement
@@ -136,7 +136,7 @@ describe('createEs2015LinkerPlugin()', () => {
        let callCount = 0;
        spyOn(PartialDirectiveLinkerVersion1.prototype, 'linkPartialDeclaration')
            .and.callFake(
-               ((linkerEnvironment, sourceUrl, code, constantPool, metaObj) => {
+               ((sourceUrl, code, constantPool, metaObj) => {
                  callCount++;
                  // We have to add the constant twice or it will not create a shared statement
                  constantPool.getConstLiteral(o.literalArr([o.literal(callCount)]));
@@ -164,7 +164,7 @@ describe('createEs2015LinkerPlugin()', () => {
        let callCount = 0;
        spyOn(PartialDirectiveLinkerVersion1.prototype, 'linkPartialDeclaration')
            .and.callFake(
-               ((linkerEnvironment, sourceUrl, code, constantPool, metaObj) => {
+               ((sourceUrl, code, constantPool, metaObj) => {
                  callCount++;
                  // We have to add the constant twice or it will not create a shared statement
                  constantPool.getConstLiteral(o.literalArr([o.literal(callCount)]));
@@ -191,7 +191,7 @@ describe('createEs2015LinkerPlugin()', () => {
        let callCount = 0;
        spyOn(PartialDirectiveLinkerVersion1.prototype, 'linkPartialDeclaration')
            .and.callFake(
-               ((linkerEnvironment, sourceUrl, code, constantPool, metaObj) => {
+               ((sourceUrl, code, constantPool, metaObj) => {
                  callCount++;
                  // We have to add the constant twice or it will not create a shared statement
                  constantPool.getConstLiteral(o.literalArr([o.literal(callCount)]));

@@ -9,7 +9,6 @@ import {ConstantPool} from '@angular/compiler';
 import * as o from '@angular/compiler/src/output/output_ast';
 
 import {AstObject} from '../../ast/ast_value';
-import {LinkerEnvironment} from '../linker_environment';
 
 import {PartialLinker} from './partial_linker';
 
@@ -19,8 +18,8 @@ import {PartialLinker} from './partial_linker';
 export class PartialComponentLinkerVersion1<TStatement, TExpression> implements
     PartialLinker<TStatement, TExpression> {
   linkPartialDeclaration(
-      linkerEnvironment: LinkerEnvironment<TStatement, TExpression>, sourceUrl: string,
-      code: string, constantPool: ConstantPool, metaObj: AstObject<TExpression>): o.Expression {
+      sourceUrl: string, code: string, constantPool: ConstantPool,
+      metaObj: AstObject<TExpression>): o.Expression {
     throw new Error('Not implemented.');
   }
 }

@@ -78,7 +78,7 @@ describe('FileLinker', () => {
 
       expect(compilationResult).toEqual(t.stringLiteral('compilation result'));
       expect(compileSpy).toHaveBeenCalled();
-      expect(compileSpy.calls.mostRecent().args[4].getNode('ngImport')).toBe(ngImport);
+      expect(compileSpy.calls.mostRecent().args[3].getNode('ngImport')).toBe(ngImport);
     });
   });
 

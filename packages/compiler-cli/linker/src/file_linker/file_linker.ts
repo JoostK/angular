@@ -50,8 +50,8 @@ export class FileLinker<TStatement, TExpression> {
 
     const version = metaObj.getNumber('version');
     const linker = this.linkerSelector.getLinker(declarationFn, version);
-    const definition = linker.linkPartialDeclaration(
-        this.linkerEnvironment, this.sourceUrl, this.code, emitScope.constantPool, metaObj);
+    const definition =
+        linker.linkPartialDeclaration(this.sourceUrl, this.code, emitScope.constantPool, metaObj);
 
     return emitScope.translate(definition);
   }

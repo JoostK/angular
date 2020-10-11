@@ -5,7 +5,6 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {ConstantPool} from '@angular/compiler';
 import {Scope} from '@babel/traverse';
 import * as t from '@babel/types';
 
@@ -23,16 +22,14 @@ export class ConstantPoolRegistry implements ConstantPoolScope<t.Statement, t.Ex
     }
     const scope = getScopeFor(ngImport, this.currentScope);
     if (!this.registryMap.has(scope)) {
-      this.registryMap.set(scope, new DynamicScope(scope, ngImport));
+      this.registryMap.set(scope, new DynamicScope(scope));
     }
     return this.registryMap.get(scope)!;
   }
 }
 
 class DynamicScope implements ConstantScope<t.Statement> {
-  readonly pool = new ConstantPool();
-
-  constructor(private scope: Scope, readonly ngImport: t.Expression) {}
+  constructor(private scope: Scope) {}
 
   insert(statements: t.Statement[]): void {
     const insertionFn = getInsertionFn(this.scope);

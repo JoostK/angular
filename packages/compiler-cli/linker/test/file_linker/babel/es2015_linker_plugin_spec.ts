@@ -216,6 +216,90 @@ describe('createEs2015LinkerPlugin()', () => {
          `}`
        ].join(''));
      });
+
+  it('should work (delete this test, should be compliance test)', () => {
+    const result = transformSync(
+        `
+           import * as ng from '@angular/core';
+
+           class Dir {}
+           Dir.ɵdir = ng.$ngDeclareDirective({
+             version: 1,
+             type: Dir,
+             selector: 'my-dir',
+             host: {
+               attributes: {},
+               listeners: {},
+               properties: {},
+             },
+             inputs: {},
+             outputs: {},
+             queries: [],
+             viewQueries: [],
+             providers: [],
+             usesInheritance: false,
+             fullInheritance: false,
+             usesOnChanges: false,
+             ngImport: ng,
+           });
+
+           class Cmp {}
+           Cmp.ɵcmp = ng.$ngDeclareComponent({
+             version: 1,
+             type: Cmp,
+             selector: 'my-cmp',
+             host: {
+               attributes: {},
+               listeners: {},
+               properties: {},
+             },
+             inputs: {},
+             outputs: {},
+             queries: [],
+             viewQueries: [],
+             providers: [],
+             usesInheritance: false,
+             fullInheritance: false,
+             usesOnChanges: false,
+             template: '<span></span>',
+             preserveWhitespaces: false,
+             directives: [],
+             pipes: {},
+             styles: [],
+             interpolation: ['{{', '}}'],
+             ngImport: ng,
+           });
+           `,
+        {
+          plugins: [createEs2015LinkerPlugin()],
+          filename: '/test.js',
+          parserOpts: {sourceType: 'unambiguous'},
+          generatorOpts: {compact: true},
+        });
+    expect(result!.code).toEqual([
+      `import*as ng from'@angular/core';`,     //
+      `class Dir{}`,                           //
+      `Dir.ɵdir=ng.ɵɵdefineDirective({`,       //
+      `type:Dir,`,                             //
+      `selectors:[["my-dir"]],`,               //
+      `features:[ng.ɵɵProvidersFeature([])]`,  //
+      `});`,                                   //
+      //
+      `class Cmp{}`,                              //
+      `Cmp.ɵcmp=ng.ɵɵdefineComponent({`,          //
+      `type:Cmp,`,                                //
+      `selectors:[["my-cmp"]],`,                  //
+      `features:[ng.ɵɵProvidersFeature([])],`,    //
+      `decls:1,`,                                 //
+      `vars:0,`,                                  //
+      `template:function Cmp_Template(rf,ctx){`,  //
+      `if(rf&1){`,                                //
+      `ng.ɵɵelement(0,"span");`,                  //
+      `}},`,                                      //
+      `encapsulation:2`,                          //
+      `});`
+    ].join(''))
+  });
 });
 
 function humanizeLinkerCalls(

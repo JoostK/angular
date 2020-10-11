@@ -18,7 +18,8 @@ import {PartialLinkerSelector} from './partial_linkers/partial_linker_selector';
  * This class is responsible for linking all the partial declarations found in a single file.
  */
 export class FileLinker<TStatement, TExpression> {
-  private linkerSelector = new PartialLinkerSelector<TStatement, TExpression>();
+  private linkerSelector =
+      new PartialLinkerSelector<TStatement, TExpression>(this.linkerEnvironment);
   private scopes = new Map<ConstantScope<TStatement>, EmitScope<TStatement, TExpression>>();
 
   constructor(

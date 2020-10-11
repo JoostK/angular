@@ -5,19 +5,22 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
+import {LinkerEnvironment} from '../linker_environment';
 import {PartialComponentLinkerVersion1} from './partial_component_linker_1';
 import {PartialDirectiveLinkerVersion1} from './partial_directive_linker_1';
 import {PartialLinker} from './partial_linker';
 
 export class PartialLinkerSelector<TStatement, TExpression> {
-  private linkers: Record<string, Record<number, PartialLinker<TStatement, TExpression>>> = {
+  private linkers: Record<string, Record<number, PartialLinker<TExpression>>> = {
     '$ngDeclareDirective': {
       1: new PartialDirectiveLinkerVersion1(),
     },
     '$ngDeclareComponent': {
-      1: new PartialComponentLinkerVersion1(),
+      1: new PartialComponentLinkerVersion1(this.linkerEnvironment.options),
     },
   };
+
+  constructor(private readonly linkerEnvironment: LinkerEnvironment<TStatement, TExpression>) {}
 
   /**
    * Returns true if there are `PartialLinker` classes that can handle functions with this name.
@@ -30,7 +33,7 @@ export class PartialLinkerSelector<TStatement, TExpression> {
    * Returns the `PartialLinker` that can handle functions with the given name and version.
    * Throws an error if there is none.
    */
-  getLinker(functionName: string, version: number): PartialLinker<TStatement, TExpression> {
+  getLinker(functionName: string, version: number): PartialLinker<TExpression> {
     const versions = this.linkers[functionName];
     if (versions === undefined) {
       throw new Error(`Unknown partial declaration function ${functionName}.`);

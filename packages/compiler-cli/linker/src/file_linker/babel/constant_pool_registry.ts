@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Scope} from '@babel/traverse';
+import {NodePath, Scope} from '@babel/traverse';
 import * as t from '@babel/types';
 
 import {assert} from '../../ast/utils';
@@ -19,19 +19,34 @@ export class ConstantPoolRegistry {
     return ngImport => {
       const scope = getScopeFor(ngImport, scope);
       if (!this.registryMap.has(scope)) {
-        this.registryMap.set(scope, new DynamicScope(scope));
+        const insertionScope = getInsertionScope(scope);
+        this.registryMap.set(scope, insertionScope);
       }
       return this.registryMap.get(scope)!;
     };
   }
 }
 
-class DynamicScope implements ConstantScope<t.Statement> {
-  constructor(private scope: Scope) {}
+class ProgramScope implements ConstantScope<t.Statement> {
+  constructor(private program: NodePath<t.Program>) {}
 
   insert(statements: t.Statement[]): void {
-    const insertionFn = getInsertionFn(this.scope);
-    insertionFn(statements);
+    const body = this.program.get('body');
+    const importStatements = body.filter(statement => statement.isImportDeclaration());
+    if (importStatements.length === 0) {
+      this.program.unshiftContainer('body', statements);
+    } else {
+      importStatements[importStatements.length - 1].insertAfter(statements);
+    }
+  }
+}
+
+class FunctionScope implements ConstantScope<t.Statement> {
+  constructor(private function: NodePath<t.FunctionParent>) {}
+
+  insert(statements: t.Statement[]): void {
+    const body = this.function.get('body');
+    body.unshiftContainer('body', statements);
   }
 }
 
@@ -73,25 +88,18 @@ function getScopeFor(expression: t.Expression, currentScope: Scope): Scope {
  *
  * @param scope The lexical scope into which we want to insert statements.
  */
-function getInsertionFn(scope: Scope): (nodes: t.Statement[]) => void {
+function getInsertionScope(scope: Scope): ConstantScope<t.Statement> {
   const path = scope.path;
 
   // If the scope corresponds to a function then insert at the start of the function body.
   if (path.isFunctionParent()) {
-    const body = path.get('body');
-    return nodes => body.unshiftContainer('body', nodes);
+    return new FunctionScope(path);
   }
 
   // If the scope corresponds to a file (`t.Program`) then insert after the last import statement
   // (or at the top of the file if there are no imports).
   if (path.isProgram()) {
-    const body = path.get('body');
-    const importStatements = body.filter(statement => statement.isImportDeclaration());
-    if (importStatements.length === 0) {
-      return nodes => path.unshiftContainer('body', nodes);
-    } else {
-      return nodes => importStatements[importStatements.length - 1].insertAfter(nodes);
-    }
+    return new ProgramScope(path);
   }
 
   // Don't know what kind of container this is...

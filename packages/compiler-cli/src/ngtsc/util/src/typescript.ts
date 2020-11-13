@@ -10,7 +10,7 @@ const TS = /\.tsx?$/i;
 const D_TS = /\.d\.ts$/i;
 
 import * as ts from 'typescript';
-import {AbsoluteFsPath, absoluteFrom} from '../../file_system';
+import {AbsoluteFsPath, resolve} from '../../file_system';
 import {DeclarationNode} from '../../reflection';
 
 export function isDtsPath(filePath: string): boolean {
@@ -106,7 +106,7 @@ export function getRootDirs(host: ts.CompilerHost, options: ts.CompilerOptions):
   // See:
   // https://github.com/Microsoft/TypeScript/blob/3f7357d37f66c842d70d835bc925ec2a873ecfec/src/compiler/sys.ts#L650
   // Also compiler options might be set via an API which doesn't normalize paths
-  return rootDirs.map(rootDir => absoluteFrom(host.getCanonicalFileName(rootDir)));
+  return rootDirs.map(rootDir => resolve(host.getCanonicalFileName(rootDir)));
 }
 
 export function nodeDebugInfo(node: ts.Node): string {

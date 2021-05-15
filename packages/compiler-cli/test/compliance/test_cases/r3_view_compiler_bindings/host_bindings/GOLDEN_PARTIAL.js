@@ -30,16 +30,16 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: host_bindings.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵDirectiveDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class HostBindingDir {
     dirId: string;
-    static ɵfac: i0.ɵɵFactoryDeclaration<HostBindingDir, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<HostBindingDir, "[hostBindingDir]", never, {}, {}, never>;
+    static ɵfac: ɵɵFactoryDeclaration<HostBindingDir, never>;
+    static ɵdir: ɵɵDirectiveDeclaration<HostBindingDir, "[hostBindingDir]", never, {}, {}, never>;
 }
 export declare class MyModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyModule, [typeof HostBindingDir], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyModule>;
+    static ɵfac: ɵɵFactoryDeclaration<MyModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyModule, [typeof HostBindingDir], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyModule>;
 }
 
 /****************************************************************************************************
@@ -68,18 +68,18 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: host_bindings_with_temporaries.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵDirectiveDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class HostBindingDir {
     getData?: () => {
         id: number;
     };
-    static ɵfac: i0.ɵɵFactoryDeclaration<HostBindingDir, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<HostBindingDir, "[hostBindingDir]", never, {}, {}, never>;
+    static ɵfac: ɵɵFactoryDeclaration<HostBindingDir, never>;
+    static ɵdir: ɵɵDirectiveDeclaration<HostBindingDir, "[hostBindingDir]", never, {}, {}, never>;
 }
 export declare class MyModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyModule, [typeof HostBindingDir], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyModule>;
+    static ɵfac: ɵɵFactoryDeclaration<MyModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyModule, [typeof HostBindingDir], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyModule>;
 }
 
 /****************************************************************************************************
@@ -111,16 +111,16 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: host_bindings_with_pure_functions.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class HostBindingComp {
     id: string;
-    static ɵfac: i0.ɵɵFactoryDeclaration<HostBindingComp, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<HostBindingComp, "host-binding-comp", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<HostBindingComp, never>;
+    static ɵcmp: ɵɵComponentDeclaration<HostBindingComp, "host-binding-comp", never, {}, {}, never, never>;
 }
 export declare class MyModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyModule, [typeof HostBindingComp], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyModule>;
+    static ɵfac: ɵɵFactoryDeclaration<MyModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyModule, [typeof HostBindingComp], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyModule>;
 }
 
 /****************************************************************************************************
@@ -152,16 +152,16 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: host_attribute_bindings.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵDirectiveDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class HostAttributeDir {
     required: boolean;
-    static ɵfac: i0.ɵɵFactoryDeclaration<HostAttributeDir, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<HostAttributeDir, "[hostAttributeDir]", never, {}, {}, never>;
+    static ɵfac: ɵɵFactoryDeclaration<HostAttributeDir, never>;
+    static ɵdir: ɵɵDirectiveDeclaration<HostAttributeDir, "[hostAttributeDir]", never, {}, {}, never>;
 }
 export declare class MyModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyModule, [typeof HostAttributeDir], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyModule>;
+    static ɵfac: ɵɵFactoryDeclaration<MyModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyModule, [typeof HostAttributeDir], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyModule>;
 }
 
 /****************************************************************************************************
@@ -190,15 +190,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: host_attributes.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵDirectiveDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class HostAttributeDir {
-    static ɵfac: i0.ɵɵFactoryDeclaration<HostAttributeDir, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<HostAttributeDir, "[hostAttributeDir]", never, {}, {}, never>;
+    static ɵfac: ɵɵFactoryDeclaration<HostAttributeDir, never>;
+    static ɵdir: ɵɵDirectiveDeclaration<HostAttributeDir, "[hostAttributeDir]", never, {}, {}, never>;
 }
 export declare class MyModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyModule, [typeof HostAttributeDir], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyModule>;
+    static ɵfac: ɵɵFactoryDeclaration<MyModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyModule, [typeof HostAttributeDir], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyModule>;
 }
 
 /****************************************************************************************************
@@ -248,19 +248,19 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: host_attributes_with_classes_and_styles.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration, ɵɵDirectiveDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class HostAttributeComp {
-    static ɵfac: i0.ɵɵFactoryDeclaration<HostAttributeComp, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<HostAttributeComp, "my-host-attribute-component", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<HostAttributeComp, never>;
+    static ɵcmp: ɵɵComponentDeclaration<HostAttributeComp, "my-host-attribute-component", never, {}, {}, never, never>;
 }
 export declare class HostAttributeDir {
-    static ɵfac: i0.ɵɵFactoryDeclaration<HostAttributeDir, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<HostAttributeDir, "[hostAttributeDir]", never, {}, {}, never>;
+    static ɵfac: ɵɵFactoryDeclaration<HostAttributeDir, never>;
+    static ɵdir: ɵɵDirectiveDeclaration<HostAttributeDir, "[hostAttributeDir]", never, {}, {}, never>;
 }
 export declare class MyModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyModule, [typeof HostAttributeComp, typeof HostAttributeDir], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyModule>;
+    static ɵfac: ɵɵFactoryDeclaration<MyModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyModule, [typeof HostAttributeComp, typeof HostAttributeDir], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyModule>;
 }
 
 /****************************************************************************************************
@@ -284,12 +284,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: chain_multiple_property_bindings.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵDirectiveDeclaration } from "@angular/core";
 export declare class MyDirective {
     myTitle: string;
     myId: string;
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<MyDirective, "[my-dir]", never, {}, {}, never>;
+    static ɵfac: ɵɵFactoryDeclaration<MyDirective, never>;
+    static ɵdir: ɵɵDirectiveDeclaration<MyDirective, "[my-dir]", never, {}, {}, never>;
 }
 
 /****************************************************************************************************
@@ -319,12 +319,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: chain_property_bindings_all.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵDirectiveDeclaration } from "@angular/core";
 export declare class MyDirective {
     myTitle: string;
     myId: string;
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<MyDirective, "[my-dir]", never, {}, {}, never>;
+    static ɵfac: ɵɵFactoryDeclaration<MyDirective, never>;
+    static ɵdir: ɵɵDirectiveDeclaration<MyDirective, "[my-dir]", never, {}, {}, never>;
 }
 
 /****************************************************************************************************
@@ -347,10 +347,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: chain_property_bindings_mixed.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵDirectiveDeclaration } from "@angular/core";
 export declare class MyDirective {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<MyDirective, "[my-dir]", never, {}, {}, never>;
+    static ɵfac: ɵɵFactoryDeclaration<MyDirective, never>;
+    static ɵdir: ɵɵDirectiveDeclaration<MyDirective, "[my-dir]", never, {}, {}, never>;
 }
 
 /****************************************************************************************************
@@ -377,12 +377,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: chain_synthetic_properties.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵDirectiveDeclaration } from "@angular/core";
 export declare class MyDirective {
     expandedState: string;
     isSmall: boolean;
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<MyDirective, "[my-dir]", never, {}, {}, never>;
+    static ɵfac: ɵɵFactoryDeclaration<MyDirective, never>;
+    static ɵdir: ɵɵDirectiveDeclaration<MyDirective, "[my-dir]", never, {}, {}, never>;
 }
 
 /****************************************************************************************************
@@ -409,12 +409,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: chain_multiple_attribute_bindings.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵDirectiveDeclaration } from "@angular/core";
 export declare class MyDirective {
     myTitle: string;
     myId: string;
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<MyDirective, "[my-dir]", never, {}, {}, never>;
+    static ɵfac: ɵɵFactoryDeclaration<MyDirective, never>;
+    static ɵdir: ɵɵDirectiveDeclaration<MyDirective, "[my-dir]", never, {}, {}, never>;
 }
 
 /****************************************************************************************************
@@ -444,12 +444,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: chain_attribute_bindings_all.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵDirectiveDeclaration } from "@angular/core";
 export declare class MyDirective {
     myTitle: string;
     myId: string;
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<MyDirective, "[my-dir]", never, {}, {}, never>;
+    static ɵfac: ɵɵFactoryDeclaration<MyDirective, never>;
+    static ɵdir: ɵɵDirectiveDeclaration<MyDirective, "[my-dir]", never, {}, {}, never>;
 }
 
 /****************************************************************************************************
@@ -472,10 +472,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: chain_attribute_bindings_mixed.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵDirectiveDeclaration } from "@angular/core";
 export declare class MyDirective {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<MyDirective, "[my-dir]", never, {}, {}, never>;
+    static ɵfac: ɵɵFactoryDeclaration<MyDirective, never>;
+    static ɵdir: ɵɵDirectiveDeclaration<MyDirective, "[my-dir]", never, {}, {}, never>;
 }
 
 /****************************************************************************************************
@@ -508,13 +508,13 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: chain_multiple_listeners.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵDirectiveDeclaration } from "@angular/core";
 export declare class MyDirective {
     mousedown(): void;
     mouseup(): void;
     click(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<MyDirective, "[my-dir]", never, {}, {}, never>;
+    static ɵfac: ɵɵFactoryDeclaration<MyDirective, never>;
+    static ɵdir: ɵɵDirectiveDeclaration<MyDirective, "[my-dir]", never, {}, {}, never>;
 }
 
 /****************************************************************************************************
@@ -545,11 +545,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: chain_synthetic_listeners.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration } from "@angular/core";
 export declare class MyComponent {
     start(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<MyComponent, "my-comp", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<MyComponent, never>;
+    static ɵcmp: ɵɵComponentDeclaration<MyComponent, "my-comp", never, {}, {}, never, never>;
 }
 
 /****************************************************************************************************
@@ -587,12 +587,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: chain_synthetic_listeners_mixed.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration } from "@angular/core";
 export declare class MyComponent {
     start(): void;
     click(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<MyComponent, "my-comp", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<MyComponent, never>;
+    static ɵcmp: ɵɵComponentDeclaration<MyComponent, "my-comp", never, {}, {}, never, never>;
 }
 
 /****************************************************************************************************
@@ -636,18 +636,18 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: host_bindings_primitive_names.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵDirectiveDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class HostBindingDir {
     true: any;
     false: any;
     other: any;
-    static ɵfac: i0.ɵɵFactoryDeclaration<HostBindingDir, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<HostBindingDir, "[hostBindingDir]", never, {}, {}, never>;
+    static ɵfac: ɵɵFactoryDeclaration<HostBindingDir, never>;
+    static ɵdir: ɵɵDirectiveDeclaration<HostBindingDir, "[hostBindingDir]", never, {}, {}, never>;
 }
 export declare class MyModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyModule, [typeof HostBindingDir], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyModule>;
+    static ɵfac: ɵɵFactoryDeclaration<MyModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyModule, [typeof HostBindingDir], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyModule>;
 }
 
 /****************************************************************************************************
@@ -685,17 +685,17 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: host_bindings_quoted_names.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵDirectiveDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class HostBindingDir {
     'is-a': any;
     'is-"b"': any;
     '"is-c"': any;
-    static ɵfac: i0.ɵɵFactoryDeclaration<HostBindingDir, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<HostBindingDir, "[hostBindingDir]", never, {}, {}, never>;
+    static ɵfac: ɵɵFactoryDeclaration<HostBindingDir, never>;
+    static ɵdir: ɵɵDirectiveDeclaration<HostBindingDir, "[hostBindingDir]", never, {}, {}, never>;
 }
 export declare class MyModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyModule, [typeof HostBindingDir], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyModule>;
+    static ɵfac: ɵɵFactoryDeclaration<MyModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyModule, [typeof HostBindingDir], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyModule>;
 }
 

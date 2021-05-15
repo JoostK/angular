@@ -13,7 +13,7 @@ import {Reexport} from '../../imports';
 import {SemanticSymbol} from '../../incremental/semantic_graph';
 import {IndexingContext} from '../../indexer';
 import {ClassDeclaration, Decorator} from '../../reflection';
-import {ImportManager} from '../../translator';
+import {DirectImportManager, ImportManager} from '../../translator';
 import {TypeCheckContext} from '../../typecheck/api';
 
 /**
@@ -255,10 +255,10 @@ export interface ResolveResult<R> {
 }
 
 export interface DtsTransform {
-  transformClassElement?(element: ts.ClassElement, imports: ImportManager): ts.ClassElement;
+  transformClassElement?(element: ts.ClassElement, imports: DirectImportManager): ts.ClassElement;
   transformFunctionDeclaration?
-      (element: ts.FunctionDeclaration, imports: ImportManager): ts.FunctionDeclaration;
+      (element: ts.FunctionDeclaration, imports: DirectImportManager): ts.FunctionDeclaration;
   transformClass?
       (clazz: ts.ClassDeclaration, elements: ReadonlyArray<ts.ClassElement>,
-       imports: ImportManager): ts.ClassDeclaration;
+       imports: DirectImportManager): ts.ClassDeclaration;
 }

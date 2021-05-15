@@ -53,20 +53,20 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: component_factory.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵInjectableDeclaration, ɵɵComponentDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class MyService {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<MyService>;
+    static ɵfac: ɵɵFactoryDeclaration<MyService, never>;
+    static ɵprov: ɵɵInjectableDeclaration<MyService>;
 }
 export declare class MyComponent {
     constructor(name: string, other: string, s1: MyService, s2: MyService, s4: MyService, s3: MyService, s5: MyService, s6: MyService);
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyComponent, [{ attribute: "name"; }, { attribute: unknown; }, null, { host: true; }, { self: true; }, { skipSelf: true; }, { optional: true; }, { optional: true; self: true; }]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<MyComponent, "my-component", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<MyComponent, [{ attribute: "name"; }, { attribute: unknown; }, null, { host: true; }, { self: true; }, { skipSelf: true; }, { optional: true; }, { optional: true; self: true; }]>;
+    static ɵcmp: ɵɵComponentDeclaration<MyComponent, "my-component", never, {}, {}, never, never>;
 }
 export declare class MyModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyModule, [typeof MyComponent], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyModule>;
+    static ɵfac: ɵɵFactoryDeclaration<MyModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyModule, [typeof MyComponent], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyModule>;
 }
 
 /****************************************************************************************************
@@ -88,13 +88,13 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: injectable_factory.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵInjectableDeclaration } from "@angular/core";
 declare class MyDependency {
 }
 export declare class MyService {
     constructor(dep: MyDependency);
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<MyService>;
+    static ɵfac: ɵɵFactoryDeclaration<MyService, never>;
+    static ɵprov: ɵɵInjectableDeclaration<MyService>;
 }
 export {};
 
@@ -121,13 +121,13 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: ctor_overload.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵInjectableDeclaration } from "@angular/core";
 declare class MyDependency {
 }
 export declare class MyService {
     constructor(dep: MyDependency);
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyService, [null, { optional: true; }]>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<MyService>;
+    static ɵfac: ɵɵFactoryDeclaration<MyService, [null, { optional: true; }]>;
+    static ɵprov: ɵɵInjectableDeclaration<MyService>;
 }
 export {};
 
@@ -153,10 +153,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: usefactory_without_deps.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵInjectableDeclaration } from "@angular/core";
 export declare class MyService {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<MyService>;
+    static ɵfac: ɵɵFactoryDeclaration<MyService, never>;
+    static ɵprov: ɵɵInjectableDeclaration<MyService>;
 }
 
 /****************************************************************************************************
@@ -180,10 +180,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: usefactory_with_deps.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵInjectableDeclaration } from "@angular/core";
 export declare class MyService {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<MyService>;
+    static ɵfac: ɵɵFactoryDeclaration<MyService, never>;
+    static ɵprov: ɵɵInjectableDeclaration<MyService>;
 }
 
 /****************************************************************************************************
@@ -210,10 +210,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: useclass_without_deps.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵInjectableDeclaration } from "@angular/core";
 export declare class MyService {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<MyService>;
+    static ɵfac: ɵɵFactoryDeclaration<MyService, never>;
+    static ɵprov: ɵɵInjectableDeclaration<MyService>;
 }
 
 /****************************************************************************************************
@@ -242,10 +242,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: useclass_with_deps.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵInjectableDeclaration } from "@angular/core";
 export declare class MyService {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<MyService>;
+    static ɵfac: ɵɵFactoryDeclaration<MyService, never>;
+    static ɵprov: ɵɵInjectableDeclaration<MyService>;
 }
 
 /****************************************************************************************************
@@ -307,20 +307,20 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: providedin_forwardref.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵInjectableDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class Dep {
-    static ɵfac: i0.ɵɵFactoryDeclaration<Dep, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<Dep>;
+    static ɵfac: ɵɵFactoryDeclaration<Dep, never>;
+    static ɵprov: ɵɵInjectableDeclaration<Dep>;
 }
 export declare class Service {
     constructor(dep: Dep);
-    static ɵfac: i0.ɵɵFactoryDeclaration<Service, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<Service>;
+    static ɵfac: ɵɵFactoryDeclaration<Service, never>;
+    static ɵprov: ɵɵInjectableDeclaration<Service>;
 }
 export declare class Mod {
-    static ɵfac: i0.ɵɵFactoryDeclaration<Mod, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<Mod, never, never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<Mod>;
+    static ɵfac: ɵɵFactoryDeclaration<Mod, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<Mod, never, never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<Mod>;
 }
 
 /****************************************************************************************************
@@ -387,33 +387,33 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
  * PARTIAL FILE: pipe_and_injectable.d.ts
  ****************************************************************************************************/
 import { PipeTransform } from '@angular/core';
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵInjectableDeclaration, ɵɵPipeDeclaration, ɵɵComponentDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 declare class Service {
-    static ɵfac: i0.ɵɵFactoryDeclaration<Service, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<Service>;
+    static ɵfac: ɵɵFactoryDeclaration<Service, never>;
+    static ɵprov: ɵɵInjectableDeclaration<Service>;
 }
 export declare class MyPipe implements PipeTransform {
     constructor(service: Service);
     transform(value: any, ...args: any[]): any;
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyPipe, never>;
-    static ɵpipe: i0.ɵɵPipeDeclaration<MyPipe, "myPipe">;
-    static ɵprov: i0.ɵɵInjectableDeclaration<MyPipe>;
+    static ɵfac: ɵɵFactoryDeclaration<MyPipe, never>;
+    static ɵpipe: ɵɵPipeDeclaration<MyPipe, "myPipe">;
+    static ɵprov: ɵɵInjectableDeclaration<MyPipe>;
 }
 export declare class MyOtherPipe implements PipeTransform {
     constructor(service: Service);
     transform(value: any, ...args: any[]): any;
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyOtherPipe, never>;
-    static ɵpipe: i0.ɵɵPipeDeclaration<MyOtherPipe, "myOtherPipe">;
-    static ɵprov: i0.ɵɵInjectableDeclaration<MyOtherPipe>;
+    static ɵfac: ɵɵFactoryDeclaration<MyOtherPipe, never>;
+    static ɵpipe: ɵɵPipeDeclaration<MyOtherPipe, "myOtherPipe">;
+    static ɵprov: ɵɵInjectableDeclaration<MyOtherPipe>;
 }
 export declare class MyApp {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyApp, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<MyApp, "my-app", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<MyApp, never>;
+    static ɵcmp: ɵɵComponentDeclaration<MyApp, "my-app", never, {}, {}, never, never>;
 }
 export declare class MyModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyModule, [typeof MyPipe, typeof MyOtherPipe, typeof MyApp], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyModule>;
+    static ɵfac: ɵɵFactoryDeclaration<MyModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyModule, [typeof MyPipe, typeof MyOtherPipe, typeof MyApp], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyModule>;
 }
 export {};
 

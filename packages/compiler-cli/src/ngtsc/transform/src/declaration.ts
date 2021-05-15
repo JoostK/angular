@@ -11,10 +11,10 @@ import * as ts from 'typescript';
 
 import {ImportRewriter} from '../../imports';
 import {ClassDeclaration} from '../../reflection';
-import {ImportManager, translateType} from '../../translator';
+import {DirectImportManager, ImportManager, translateType} from '../../translator';
 
 import {DtsTransform} from './api';
-import {addImports} from './utils';
+import {addDirectImports, addImports} from './utils';
 
 /**
  * Keeps track of `DtsTransform`s per source file, so that it is known which source files need to
@@ -96,7 +96,7 @@ class DtsTransformer {
    * Transform the declaration file and add any declarations which were recorded.
    */
   transform(sf: ts.SourceFile, transforms: DtsTransform[]): ts.SourceFile {
-    const imports = new ImportManager(this.importRewriter, this.importPrefix);
+    const imports = new DirectImportManager(this.importRewriter, sf, this.ctx);
 
     const visitor: ts.Visitor = (node: ts.Node): ts.VisitResult<ts.Node> => {
       if (ts.isClassDeclaration(node)) {
@@ -113,12 +113,12 @@ class DtsTransformer {
     sf = ts.visitNode(sf, visitor);
 
     // Add new imports for this file.
-    return addImports(imports, sf);
+    return addDirectImports(imports, sf);
   }
 
   private transformClassDeclaration(
       clazz: ts.ClassDeclaration, transforms: DtsTransform[],
-      imports: ImportManager): ts.ClassDeclaration {
+      imports: DirectImportManager): ts.ClassDeclaration {
     let elements: ts.ClassElement[]|ReadonlyArray<ts.ClassElement> = clazz.members;
     let elementsChanged = false;
 
@@ -167,7 +167,7 @@ class DtsTransformer {
 
   private transformFunctionDeclaration(
       declaration: ts.FunctionDeclaration, transforms: DtsTransform[],
-      imports: ImportManager): ts.FunctionDeclaration {
+      imports: DirectImportManager): ts.FunctionDeclaration {
     let newDecl = declaration;
 
     for (const transform of transforms) {
@@ -194,7 +194,7 @@ export class IvyDeclarationDtsTransform implements DtsTransform {
 
   transformClass(
       clazz: ts.ClassDeclaration, members: ReadonlyArray<ts.ClassElement>,
-      imports: ImportManager): ts.ClassDeclaration {
+      imports: DirectImportManager): ts.ClassDeclaration {
     const original = ts.getOriginalNode(clazz) as ClassDeclaration;
 
     if (!this.declarationFields.has(original)) {
@@ -238,7 +238,7 @@ export class ReturnTypeTransform implements DtsTransform {
     this.typeReplacements.set(declaration, type);
   }
 
-  transformClassElement(element: ts.ClassElement, imports: ImportManager): ts.ClassElement {
+  transformClassElement(element: ts.ClassElement, imports: DirectImportManager): ts.ClassElement {
     if (ts.isMethodDeclaration(element)) {
       const original = ts.getOriginalNode(element, ts.isMethodDeclaration);
       if (!this.typeReplacements.has(original)) {
@@ -256,7 +256,7 @@ export class ReturnTypeTransform implements DtsTransform {
     return element;
   }
 
-  transformFunctionDeclaration(element: ts.FunctionDeclaration, imports: ImportManager):
+  transformFunctionDeclaration(element: ts.FunctionDeclaration, imports: DirectImportManager):
       ts.FunctionDeclaration {
     const original = ts.getOriginalNode(element) as ts.FunctionDeclaration;
     if (!this.typeReplacements.has(original)) {

@@ -151,7 +151,7 @@ runInEachFileSystem(() => {
       expect(dtsContents).toContain('static forRoot(): i0.ModuleWithProviders<TestModule>;');
     });
 
-    it('should add a generic type and add an import for external references', () => {
+    fit('should add a generic type and add an import for external references', () => {
       env.write('test.ts', `
         import {ModuleWithProviders} from '@angular/core';
         import {InternalTestModule} from './internal';

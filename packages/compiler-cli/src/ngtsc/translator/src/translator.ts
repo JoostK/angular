@@ -237,9 +237,8 @@ export class ExpressionTranslatorVisitor<TStatement, TExpression> implements o.E
     // Ensure that the `__makeTemplateObject()` helper has been imported.
     const {moduleImport, symbol} =
         this.imports.generateNamedImport('tslib', '__makeTemplateObject');
-    const __makeTemplateObjectHelper = (moduleImport === null) ?
-        this.factory.createIdentifier(symbol) :
-        this.factory.createPropertyAccess(moduleImport, symbol);
+    const __makeTemplateObjectHelper =
+        (moduleImport === null) ? symbol : this.factory.createPropertyAccess(moduleImport, symbol);
 
     // Collect up the cooked and raw strings into two separate arrays.
     const cooked: TExpression[] = [];
@@ -279,7 +278,7 @@ export class ExpressionTranslatorVisitor<TStatement, TExpression> implements o.E
           this.imports.generateNamedImport(ast.value.moduleName, ast.value.name);
       if (moduleImport === null) {
         // The symbol was ambient after all.
-        return this.factory.createIdentifier(symbol);
+        return symbol;
       } else {
         return this.factory.createPropertyAccess(moduleImport, symbol);
       }

@@ -40,7 +40,7 @@ describe('Translator', () => {
     generateNamedImport(moduleName: string, originalSymbol: string): NamedImport<ts.Expression> {
       return {
         moduleImport: factory.createLiteral(moduleName),
-        symbol: originalSymbol,
+        symbol: factory.createIdentifier(originalSymbol),
       };
     }
   }

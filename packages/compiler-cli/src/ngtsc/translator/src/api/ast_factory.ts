@@ -165,7 +165,7 @@ export interface AstFactory<TStatement, TExpression> {
    * @param expression an expression that evaluates to the object to be accessed.
    * @param propertyName the name of the property to access.
    */
-  createPropertyAccess(expression: TExpression, propertyName: string): TExpression;
+  createPropertyAccess(expression: TExpression, propertyName: TExpression|string): TExpression;
 
   /**
    * Create a return statement (e.g `return expr;`).

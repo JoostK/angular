@@ -17,10 +17,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: some.directive.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵDirectiveDeclaration } from "@angular/core";
 export declare class SomeDirective {
-    static ɵfac: i0.ɵɵFactoryDeclaration<SomeDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<SomeDirective, "[someDir]", never, {}, {}, never>;
+    static ɵfac: ɵɵFactoryDeclaration<SomeDirective, never>;
+    static ɵdir: ɵɵDirectiveDeclaration<SomeDirective, "[someDir]", never, {}, {}, never>;
 }
 
 /****************************************************************************************************
@@ -65,18 +65,18 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
  ****************************************************************************************************/
 import { QueryList } from '@angular/core';
 import { SomeDirective } from './some.directive';
-import * as i0 from "@angular/core";
-import * as i1 from "./some.directive";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
+import { SomeDirective as SomeDirective_1 } from "./some.directive";
 export declare class ViewQueryComponent {
     someDir: SomeDirective;
     someDirs: QueryList<SomeDirective>;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ViewQueryComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ViewQueryComponent, "view-query-component", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<ViewQueryComponent, never>;
+    static ɵcmp: ɵɵComponentDeclaration<ViewQueryComponent, "view-query-component", never, {}, {}, never, never>;
 }
 export declare class MyModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyModule, [typeof i1.SomeDirective, typeof ViewQueryComponent], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyModule>;
+    static ɵfac: ɵɵFactoryDeclaration<MyModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyModule, [typeof SomeDirective, typeof ViewQueryComponent], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyModule>;
 }
 
 /****************************************************************************************************
@@ -121,17 +121,17 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
  * PARTIAL FILE: view_query_for_local_ref.d.ts
  ****************************************************************************************************/
 import { QueryList } from '@angular/core';
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class ViewQueryComponent {
     myRef: any;
     myRefs: QueryList<any>;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ViewQueryComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ViewQueryComponent, "view-query-component", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<ViewQueryComponent, never>;
+    static ɵcmp: ɵɵComponentDeclaration<ViewQueryComponent, "view-query-component", never, {}, {}, never, never>;
 }
 export declare class MyModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyModule, [typeof ViewQueryComponent], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyModule>;
+    static ɵfac: ɵɵFactoryDeclaration<MyModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyModule, [typeof ViewQueryComponent], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyModule>;
 }
 
 /****************************************************************************************************
@@ -153,10 +153,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: some.directive.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵDirectiveDeclaration } from "@angular/core";
 export declare class SomeDirective {
-    static ɵfac: i0.ɵɵFactoryDeclaration<SomeDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<SomeDirective, "[someDir]", never, {}, {}, never>;
+    static ɵfac: ɵɵFactoryDeclaration<SomeDirective, never>;
+    static ɵdir: ɵɵDirectiveDeclaration<SomeDirective, "[someDir]", never, {}, {}, never>;
 }
 
 /****************************************************************************************************
@@ -201,18 +201,18 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
  ****************************************************************************************************/
 import { ElementRef } from '@angular/core';
 import { SomeDirective } from './some.directive';
-import * as i0 from "@angular/core";
-import * as i1 from "./some.directive";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
+import { SomeDirective as SomeDirective_1 } from "./some.directive";
 export declare class ViewQueryComponent {
     someDir: SomeDirective;
     foo: ElementRef;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ViewQueryComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ViewQueryComponent, "view-query-component", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<ViewQueryComponent, never>;
+    static ɵcmp: ɵɵComponentDeclaration<ViewQueryComponent, "view-query-component", never, {}, {}, never, never>;
 }
 export declare class MyModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyModule, [typeof i1.SomeDirective, typeof ViewQueryComponent], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyModule>;
+    static ɵfac: ɵɵFactoryDeclaration<MyModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyModule, [typeof SomeDirective, typeof ViewQueryComponent], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyModule>;
 }
 
 /****************************************************************************************************
@@ -234,10 +234,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: some.directive.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵDirectiveDeclaration } from "@angular/core";
 export declare class SomeDirective {
-    static ɵfac: i0.ɵɵFactoryDeclaration<SomeDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<SomeDirective, "[someDir]", never, {}, {}, never>;
+    static ɵfac: ɵɵFactoryDeclaration<SomeDirective, never>;
+    static ɵdir: ɵɵDirectiveDeclaration<SomeDirective, "[someDir]", never, {}, {}, never>;
 }
 
 /****************************************************************************************************
@@ -291,19 +291,19 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
  * PARTIAL FILE: view_query_read_token.d.ts
  ****************************************************************************************************/
 import { ElementRef, QueryList, TemplateRef } from '@angular/core';
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class ViewQueryComponent {
     myRef: TemplateRef<unknown>;
     myRefs: QueryList<ElementRef>;
     someDir: ElementRef;
     someDirs: QueryList<TemplateRef<unknown>>;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ViewQueryComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ViewQueryComponent, "view-query-component", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<ViewQueryComponent, never>;
+    static ɵcmp: ɵɵComponentDeclaration<ViewQueryComponent, "view-query-component", never, {}, {}, never, never>;
 }
 export declare class MyModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyModule, [typeof ViewQueryComponent], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyModule>;
+    static ɵfac: ɵɵFactoryDeclaration<MyModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyModule, [typeof ViewQueryComponent], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyModule>;
 }
 
 /****************************************************************************************************
@@ -325,10 +325,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: some.directive.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵDirectiveDeclaration } from "@angular/core";
 export declare class SomeDirective {
-    static ɵfac: i0.ɵɵFactoryDeclaration<SomeDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<SomeDirective, "[someDir]", never, {}, {}, never>;
+    static ɵfac: ɵɵFactoryDeclaration<SomeDirective, never>;
+    static ɵdir: ɵɵDirectiveDeclaration<SomeDirective, "[someDir]", never, {}, {}, never>;
 }
 
 /****************************************************************************************************
@@ -392,22 +392,22 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
  ****************************************************************************************************/
 import { QueryList } from '@angular/core';
 import { SomeDirective } from './some.directive';
-import * as i0 from "@angular/core";
-import * as i1 from "./some.directive";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
+import { SomeDirective as SomeDirective_1 } from "./some.directive";
 export declare class ContentQueryComponent {
     someDir: SomeDirective;
     someDirList: QueryList<SomeDirective>;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ContentQueryComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ContentQueryComponent, "content-query-component", never, {}, {}, ["someDir", "someDirList"], ["*"]>;
+    static ɵfac: ɵɵFactoryDeclaration<ContentQueryComponent, never>;
+    static ɵcmp: ɵɵComponentDeclaration<ContentQueryComponent, "content-query-component", never, {}, {}, ["someDir", "someDirList"], ["*"]>;
 }
 export declare class MyApp {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyApp, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<MyApp, "my-app", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<MyApp, never>;
+    static ɵcmp: ɵɵComponentDeclaration<MyApp, "my-app", never, {}, {}, never, never>;
 }
 export declare class MyModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyModule, [typeof i1.SomeDirective, typeof ContentQueryComponent, typeof MyApp], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyModule>;
+    static ɵfac: ɵɵFactoryDeclaration<MyModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyModule, [typeof SomeDirective, typeof ContentQueryComponent, typeof MyApp], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyModule>;
 }
 
 /****************************************************************************************************
@@ -452,17 +452,17 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
  * PARTIAL FILE: content_query_for_local_ref.d.ts
  ****************************************************************************************************/
 import { QueryList } from '@angular/core';
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class ContentQueryComponent {
     myRef: any;
     myRefs: QueryList<any>;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ContentQueryComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ContentQueryComponent, "content-query-component", never, {}, {}, ["myRef", "myRefs"], never>;
+    static ɵfac: ɵɵFactoryDeclaration<ContentQueryComponent, never>;
+    static ɵcmp: ɵɵComponentDeclaration<ContentQueryComponent, "content-query-component", never, {}, {}, ["myRef", "myRefs"], never>;
 }
 export declare class MyModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyModule, [typeof ContentQueryComponent], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyModule>;
+    static ɵfac: ɵɵFactoryDeclaration<MyModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyModule, [typeof ContentQueryComponent], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyModule>;
 }
 
 /****************************************************************************************************
@@ -484,10 +484,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: some.directive.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵDirectiveDeclaration } from "@angular/core";
 export declare class SomeDirective {
-    static ɵfac: i0.ɵɵFactoryDeclaration<SomeDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<SomeDirective, "[someDir]", never, {}, {}, never>;
+    static ɵfac: ɵɵFactoryDeclaration<SomeDirective, never>;
+    static ɵdir: ɵɵDirectiveDeclaration<SomeDirective, "[someDir]", never, {}, {}, never>;
 }
 
 /****************************************************************************************************
@@ -551,22 +551,22 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
  ****************************************************************************************************/
 import { ElementRef } from '@angular/core';
 import { SomeDirective } from './some.directive';
-import * as i0 from "@angular/core";
-import * as i1 from "./some.directive";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
+import { SomeDirective as SomeDirective_1 } from "./some.directive";
 export declare class ContentQueryComponent {
     someDir: SomeDirective;
     foo: ElementRef;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ContentQueryComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ContentQueryComponent, "content-query-component", never, {}, {}, ["someDir", "foo"], ["*"]>;
+    static ɵfac: ɵɵFactoryDeclaration<ContentQueryComponent, never>;
+    static ɵcmp: ɵɵComponentDeclaration<ContentQueryComponent, "content-query-component", never, {}, {}, ["someDir", "foo"], ["*"]>;
 }
 export declare class MyApp {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyApp, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<MyApp, "my-app", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<MyApp, never>;
+    static ɵcmp: ɵɵComponentDeclaration<MyApp, "my-app", never, {}, {}, never, never>;
 }
 export declare class MyModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyModule, [typeof i1.SomeDirective, typeof ContentQueryComponent, typeof MyApp], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyModule>;
+    static ɵfac: ɵɵFactoryDeclaration<MyModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyModule, [typeof SomeDirective, typeof ContentQueryComponent, typeof MyApp], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyModule>;
 }
 
 /****************************************************************************************************
@@ -588,10 +588,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: some.directive.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵDirectiveDeclaration } from "@angular/core";
 export declare class SomeDirective {
-    static ɵfac: i0.ɵɵFactoryDeclaration<SomeDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<SomeDirective, "[someDir]", never, {}, {}, never>;
+    static ɵfac: ɵɵFactoryDeclaration<SomeDirective, never>;
+    static ɵdir: ɵɵDirectiveDeclaration<SomeDirective, "[someDir]", never, {}, {}, never>;
 }
 
 /****************************************************************************************************
@@ -645,19 +645,19 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
  * PARTIAL FILE: content_query_read_token.d.ts
  ****************************************************************************************************/
 import { ElementRef, QueryList, TemplateRef } from '@angular/core';
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class ContentQueryComponent {
     myRef: TemplateRef<unknown>;
     myRefs: QueryList<ElementRef>;
     someDir: ElementRef;
     someDirs: QueryList<TemplateRef<unknown>>;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ContentQueryComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ContentQueryComponent, "content-query-component", never, {}, {}, ["myRef", "someDir", "myRefs", "someDirs"], never>;
+    static ɵfac: ɵɵFactoryDeclaration<ContentQueryComponent, never>;
+    static ɵcmp: ɵɵComponentDeclaration<ContentQueryComponent, "content-query-component", never, {}, {}, ["myRef", "someDir", "myRefs", "someDirs"], never>;
 }
 export declare class MyModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyModule, [typeof ContentQueryComponent], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyModule>;
+    static ɵfac: ɵɵFactoryDeclaration<MyModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyModule, [typeof ContentQueryComponent], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyModule>;
 }
 
 /****************************************************************************************************
@@ -679,10 +679,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: some.directive.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵDirectiveDeclaration } from "@angular/core";
 export declare class SomeDirective {
-    static ɵfac: i0.ɵɵFactoryDeclaration<SomeDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<SomeDirective, "[someDir]", never, {}, {}, never>;
+    static ɵfac: ɵɵFactoryDeclaration<SomeDirective, never>;
+    static ɵdir: ɵɵDirectiveDeclaration<SomeDirective, "[someDir]", never, {}, {}, never>;
 }
 
 /****************************************************************************************************
@@ -734,18 +734,18 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
  * PARTIAL FILE: query_with_emit_distinct_changes_only.d.ts
  ****************************************************************************************************/
 import { ElementRef, QueryList } from '@angular/core';
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class ContentQueryComponent {
     myRefs: QueryList<ElementRef>;
     oldMyRefs: QueryList<ElementRef>;
     someDirs: QueryList<any>;
     oldSomeDirs: QueryList<any>;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ContentQueryComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ContentQueryComponent, "content-query-component", never, {}, {}, ["myRefs", "oldMyRefs"], never>;
+    static ɵfac: ɵɵFactoryDeclaration<ContentQueryComponent, never>;
+    static ɵcmp: ɵɵComponentDeclaration<ContentQueryComponent, "content-query-component", never, {}, {}, ["myRefs", "oldMyRefs"], never>;
 }
 export declare class MyModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyModule, [typeof ContentQueryComponent], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyModule>;
+    static ɵfac: ɵɵFactoryDeclaration<MyModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyModule, [typeof ContentQueryComponent], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyModule>;
 }
 

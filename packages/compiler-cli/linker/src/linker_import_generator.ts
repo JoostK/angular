@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {ImportGenerator, NamedImport} from '../../src/ngtsc/translator';
+import {AstFactory, ImportGenerator, NamedImport} from '../../src/ngtsc/translator';
 import {FatalLinkerError} from './fatal_linker_error';
 
 /**
@@ -17,7 +17,7 @@ import {FatalLinkerError} from './fatal_linker_error';
  * constructor.
  */
 export class LinkerImportGenerator<TExpression> implements ImportGenerator<TExpression> {
-  constructor(private ngImport: TExpression) {}
+  constructor(private ngImport: TExpression, private factory: AstFactory<unknown, TExpression>) {}
 
   generateNamespaceImport(moduleName: string): TExpression {
     this.assertModuleName(moduleName);
@@ -26,7 +26,7 @@ export class LinkerImportGenerator<TExpression> implements ImportGenerator<TExpr
 
   generateNamedImport(moduleName: string, originalSymbol: string): NamedImport<TExpression> {
     this.assertModuleName(moduleName);
-    return {moduleImport: this.ngImport, symbol: originalSymbol};
+    return {moduleImport: this.ngImport, symbol: this.factory.createIdentifier(originalSymbol)};
   }
 
   private assertModuleName(moduleName: string): void {

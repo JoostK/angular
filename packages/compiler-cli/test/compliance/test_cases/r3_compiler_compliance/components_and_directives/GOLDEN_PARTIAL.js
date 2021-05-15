@@ -39,15 +39,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: forward_referenced_directive.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class HostBindingComp {
-    static ɵfac: i0.ɵɵFactoryDeclaration<HostBindingComp, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<HostBindingComp, "host-binding-comp", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<HostBindingComp, never>;
+    static ɵcmp: ɵɵComponentDeclaration<HostBindingComp, "host-binding-comp", never, {}, {}, never, never>;
 }
 export declare class MyModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyModule, [typeof HostBindingComp, typeof MyForwardDirective], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyModule>;
+    static ɵfac: ɵɵFactoryDeclaration<MyModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyModule, [typeof HostBindingComp, typeof MyForwardDirective], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyModule>;
 }
 
 /****************************************************************************************************
@@ -92,15 +92,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: forward_referenced_pipe.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class HostBindingComp {
-    static ɵfac: i0.ɵɵFactoryDeclaration<HostBindingComp, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<HostBindingComp, "host-binding-comp", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<HostBindingComp, never>;
+    static ɵcmp: ɵɵComponentDeclaration<HostBindingComp, "host-binding-comp", never, {}, {}, never, never>;
 }
 export declare class MyModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyModule, [typeof HostBindingComp, typeof MyForwardPipe], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyModule>;
+    static ɵfac: ɵɵFactoryDeclaration<MyModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyModule, [typeof HostBindingComp, typeof MyForwardPipe], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyModule>;
 }
 
 /****************************************************************************************************
@@ -129,15 +129,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: export_as.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵDirectiveDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class SomeDirective {
-    static ɵfac: i0.ɵɵFactoryDeclaration<SomeDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<SomeDirective, "[some-directive]", ["someDir", "otherDir"], {}, {}, never>;
+    static ɵfac: ɵɵFactoryDeclaration<SomeDirective, never>;
+    static ɵdir: ɵɵDirectiveDeclaration<SomeDirective, "[some-directive]", ["someDir", "otherDir"], {}, {}, never>;
 }
 export declare class MyModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyModule, [typeof SomeDirective], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyModule>;
+    static ɵfac: ɵɵFactoryDeclaration<MyModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyModule, [typeof SomeDirective], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyModule>;
 }
 
 /****************************************************************************************************
@@ -156,10 +156,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: no_selector.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵDirectiveDeclaration } from "@angular/core";
 export declare class AbstractDirective {
-    static ɵfac: i0.ɵɵFactoryDeclaration<AbstractDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<AbstractDirective, never, never, {}, {}, never>;
+    static ɵfac: ɵɵFactoryDeclaration<AbstractDirective, never>;
+    static ɵdir: ɵɵDirectiveDeclaration<AbstractDirective, never, never, {}, {}, never>;
 }
 
 /****************************************************************************************************
@@ -200,21 +200,21 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: constant_object_literals.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class SomeComp {
     prop: any;
     otherProp: any;
-    static ɵfac: i0.ɵɵFactoryDeclaration<SomeComp, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<SomeComp, "some-comp", never, { "prop": "prop"; "otherProp": "otherProp"; }, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<SomeComp, never>;
+    static ɵcmp: ɵɵComponentDeclaration<SomeComp, "some-comp", never, { "prop": "prop"; "otherProp": "otherProp"; }, {}, never, never>;
 }
 export declare class MyApp {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyApp, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<MyApp, "ng-component", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<MyApp, never>;
+    static ɵcmp: ɵɵComponentDeclaration<MyApp, "ng-component", never, {}, {}, never, never>;
 }
 export declare class MyMod {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyMod, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyMod, [typeof SomeComp, typeof MyApp], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyMod>;
+    static ɵfac: ɵɵFactoryDeclaration<MyMod, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyMod, [typeof SomeComp, typeof MyApp], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyMod>;
 }
 
 /****************************************************************************************************
@@ -255,21 +255,21 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: constant_array_literals.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class SomeComp {
     prop: any;
     otherProp: any;
-    static ɵfac: i0.ɵɵFactoryDeclaration<SomeComp, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<SomeComp, "some-comp", never, { "prop": "prop"; "otherProp": "otherProp"; }, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<SomeComp, never>;
+    static ɵcmp: ɵɵComponentDeclaration<SomeComp, "some-comp", never, { "prop": "prop"; "otherProp": "otherProp"; }, {}, never, never>;
 }
 export declare class MyApp {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyApp, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<MyApp, "ng-component", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<MyApp, never>;
+    static ɵcmp: ɵɵComponentDeclaration<MyApp, "ng-component", never, {}, {}, never, never>;
 }
 export declare class MyMod {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyMod, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyMod, [typeof MyApp, typeof SomeComp], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyMod>;
+    static ɵfac: ɵɵFactoryDeclaration<MyMod, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyMod, [typeof MyApp, typeof SomeComp], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyMod>;
 }
 
 /****************************************************************************************************
@@ -306,15 +306,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: object_literals_null_vs_empty.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class MyApp {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyApp, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<MyApp, "ng-component", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<MyApp, never>;
+    static ɵcmp: ɵɵComponentDeclaration<MyApp, "ng-component", never, {}, {}, never, never>;
 }
 export declare class MyModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyModule, [typeof MyApp], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyModule>;
+    static ɵfac: ɵɵFactoryDeclaration<MyModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyModule, [typeof MyApp], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyModule>;
 }
 
 /****************************************************************************************************
@@ -351,15 +351,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: array_literals_null_vs_empty.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class MyApp {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyApp, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<MyApp, "ng-component", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<MyApp, never>;
+    static ɵcmp: ɵɵComponentDeclaration<MyApp, "ng-component", never, {}, {}, never, never>;
 }
 export declare class MyModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyModule, [typeof MyApp], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyModule>;
+    static ɵfac: ɵɵFactoryDeclaration<MyModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyModule, [typeof MyApp], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyModule>;
 }
 
 /****************************************************************************************************
@@ -399,16 +399,16 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: object_literals_null_vs_function.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class MyApp {
     getFoo(): string;
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyApp, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<MyApp, "ng-component", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<MyApp, never>;
+    static ɵcmp: ɵɵComponentDeclaration<MyApp, "ng-component", never, {}, {}, never, never>;
 }
 export declare class MyModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyModule, [typeof MyApp], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyModule>;
+    static ɵfac: ɵɵFactoryDeclaration<MyModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyModule, [typeof MyApp], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyModule>;
 }
 
 /****************************************************************************************************
@@ -450,11 +450,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: custom_decorator_es5.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration } from "@angular/core";
 export declare function Custom(): (target: any) => void;
 export declare class Comp {
-    static ɵfac: i0.ɵɵFactoryDeclaration<Comp, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<Comp, "ng-component", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<Comp, never>;
+    static ɵcmp: ɵɵComponentDeclaration<Comp, "ng-component", never, {}, {}, never, never>;
 }
 
 /****************************************************************************************************
@@ -483,15 +483,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: ng_template_empty_binding.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class MyComponent {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<MyComponent, "my-app", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<MyComponent, never>;
+    static ɵcmp: ɵɵComponentDeclaration<MyComponent, "my-app", never, {}, {}, never, never>;
 }
 export declare class MyModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MyModule, [typeof MyComponent], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<MyModule>;
+    static ɵfac: ɵɵFactoryDeclaration<MyModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<MyModule, [typeof MyComponent], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<MyModule>;
 }
 
 /****************************************************************************************************
@@ -512,10 +512,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: non_literal_template.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration } from "@angular/core";
 export declare class TestCmp {
-    static ɵfac: i0.ɵɵFactoryDeclaration<TestCmp, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<TestCmp, "test-cmp", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<TestCmp, never>;
+    static ɵcmp: ɵɵComponentDeclaration<TestCmp, "test-cmp", never, {}, {}, never, never>;
 }
 
 /****************************************************************************************************
@@ -537,10 +537,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: non_literal_template_with_substitution.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration } from "@angular/core";
 export declare class TestCmp {
-    static ɵfac: i0.ɵɵFactoryDeclaration<TestCmp, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<TestCmp, "test-cmp", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<TestCmp, never>;
+    static ɵcmp: ɵɵComponentDeclaration<TestCmp, "test-cmp", never, {}, {}, never, never>;
 }
 
 /****************************************************************************************************
@@ -562,10 +562,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: non_literal_template_with_concatenation.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration } from "@angular/core";
 export declare class TestCmp {
-    static ɵfac: i0.ɵɵFactoryDeclaration<TestCmp, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<TestCmp, "test-cmp", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<TestCmp, never>;
+    static ɵcmp: ɵɵComponentDeclaration<TestCmp, "test-cmp", never, {}, {}, never, never>;
 }
 
 /****************************************************************************************************
@@ -608,15 +608,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: library_exports.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
-import * as i1 from "external_library";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
+import { LibModule as LibModule_1 } from "external_library";
 export declare class TestComponent {
-    static ɵfac: i0.ɵɵFactoryDeclaration<TestComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<TestComponent, "ng-component", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<TestComponent, never>;
+    static ɵcmp: ɵɵComponentDeclaration<TestComponent, "ng-component", never, {}, {}, never, never>;
 }
 export declare class TestModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<TestModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<TestModule, [typeof TestComponent], [typeof i1.LibModule], never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<TestModule>;
+    static ɵfac: ɵɵFactoryDeclaration<TestModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<TestModule, [typeof TestComponent], [typeof LibModule], never>;
+    static ɵinj: ɵɵInjectorDeclaration<TestModule>;
 }
 

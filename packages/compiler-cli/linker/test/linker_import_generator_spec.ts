@@ -14,28 +14,32 @@ const ngImport = {
 describe('LinkerImportGenerator<TExpression>', () => {
   describe('generateNamespaceImport()', () => {
     it('should error if the import is not `@angular/core`', () => {
-      const generator = new LinkerImportGenerator(ngImport);
+      const generator = new LinkerImportGenerator(ngImport, null!);
       expect(() => generator.generateNamespaceImport('other/import'))
           .toThrowError(`Unable to import from anything other than '@angular/core'`);
     });
 
     it('should return the ngImport expression for `@angular/core`', () => {
-      const generator = new LinkerImportGenerator(ngImport);
+      const generator = new LinkerImportGenerator(ngImport, null!);
       expect(generator.generateNamespaceImport('@angular/core')).toBe(ngImport);
     });
   });
 
   describe('generateNamedImport()', () => {
     it('should error if the import is not `@angular/core`', () => {
-      const generator = new LinkerImportGenerator(ngImport);
+      const generator = new LinkerImportGenerator(ngImport, null!);
       expect(() => generator.generateNamedImport('other/import', 'someSymbol'))
           .toThrowError(`Unable to import from anything other than '@angular/core'`);
     });
 
     it('should return a `NamedImport` object containing the ngImport expression', () => {
-      const generator = new LinkerImportGenerator(ngImport);
+      const generator = new LinkerImportGenerator(ngImport, {
+        createIdentifier(name: string) {
+          return name;
+        }
+      } as any);
       expect(generator.generateNamedImport('@angular/core', 'someSymbol'))
-          .toEqual({moduleImport: ngImport, symbol: 'someSymbol'});
+          .toEqual({moduleImport: ngImport, symbol: 'someSymbol' as any});
     });
   });
 });

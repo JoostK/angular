@@ -110,8 +110,10 @@ export class BabelAstFactory implements AstFactory<t.Statement, t.Expression> {
 
   createParenthesizedExpression = t.parenthesizedExpression;
 
-  createPropertyAccess(expression: t.Expression, propertyName: string): t.Expression {
-    return t.memberExpression(expression, t.identifier(propertyName), /* computed */ false);
+  createPropertyAccess(expression: t.Expression, propertyName: t.Expression|string): t.Expression {
+    const propIdent = typeof propertyName === 'string' ? t.identifier(propertyName) : propertyName;
+    assert(propIdent, t.isIdentifier, 'identifier');
+    return t.memberExpression(expression, propertyName, /* computed */ false);
   }
 
   createReturnStatement = t.returnStatement;

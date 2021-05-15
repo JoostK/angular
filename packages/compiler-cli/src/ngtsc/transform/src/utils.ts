@@ -7,7 +7,7 @@
  */
 import * as ts from 'typescript';
 
-import {ImportManager} from '../../translator';
+import {DirectImportManager, ImportManager} from '../../translator';
 
 /**
  * Adds extra imports in the import manage for this source file, after the existing imports
@@ -41,6 +41,34 @@ export function addImports(
 
     return decl;
   });
+
+  // Filter out the existing imports and the source file body. All new statements
+  // will be inserted between them.
+  const existingImports = sf.statements.filter(stmt => isImportStatement(stmt));
+  const body = sf.statements.filter(stmt => !isImportStatement(stmt));
+  // Prepend imports if needed.
+  if (addedImports.length > 0) {
+    // If we prepend imports, we also prepend NotEmittedStatement to use it as an anchor
+    // for @fileoverview Closure annotation. If there is no @fileoverview annotations, this
+    // statement would be a noop.
+    const fileoverviewAnchorStmt = ts.createNotEmittedStatement(sf);
+    return ts.updateSourceFileNode(sf, ts.createNodeArray([
+      fileoverviewAnchorStmt, ...existingImports, ...addedImports, ...extraStatements, ...body
+    ]));
+  }
+
+  return sf;
+}
+/**
+ * Adds extra imports in the import manage for this source file, after the existing imports
+ * and before the module body.
+ * Can optionally add extra statements (e.g. new constants) before the body as well.
+ */
+export function addDirectImports(
+    importManager: DirectImportManager, sf: ts.SourceFile,
+    extraStatements: ts.Statement[] = []): ts.SourceFile {
+  // Generate the import statements to prepend.
+  const addedImports = importManager.getAllImports();
 
   // Filter out the existing imports and the source file body. All new statements
   // will be inserted between them.

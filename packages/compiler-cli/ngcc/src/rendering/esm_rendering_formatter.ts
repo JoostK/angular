@@ -291,8 +291,9 @@ function findStatement(node: ts.Node): ts.Statement|undefined {
 function generateImportString(
     importManager: ImportManager, importPath: string|null, importName: string) {
   const importAs = importPath ? importManager.generateNamedImport(importPath, importName) : null;
-  return importAs && importAs.moduleImport ? `${importAs.moduleImport.text}.${importAs.symbol}` :
-                                             `${importName}`;
+  return importAs && importAs.moduleImport ?
+      `${importAs.moduleImport.text}.${importAs.symbol.text}` :
+      `${importName}`;
 }
 
 function getNextSiblingInArray<T extends ts.Node>(node: T, array: ts.NodeArray<T>): T|null {

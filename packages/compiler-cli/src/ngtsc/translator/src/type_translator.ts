@@ -9,16 +9,16 @@
 import * as o from '@angular/compiler';
 import * as ts from 'typescript';
 
+import {ImportGenerator} from './api/import_generator';
 import {Context} from './context';
-import {ImportManager} from './import_manager';
 
 
-export function translateType(type: o.Type, imports: ImportManager): ts.TypeNode {
+export function translateType(type: o.Type, imports: ImportGenerator<ts.Identifier>): ts.TypeNode {
   return type.visitType(new TypeTranslatorVisitor(imports), new Context(false));
 }
 
 export class TypeTranslatorVisitor implements o.ExpressionVisitor, o.TypeVisitor {
-  constructor(private imports: ImportManager) {}
+  constructor(private imports: ImportGenerator<ts.Identifier>) {}
 
   visitBuiltinType(type: o.BuiltinType, context: Context): ts.KeywordTypeNode {
     switch (type.name) {
@@ -130,7 +130,7 @@ export class TypeTranslatorVisitor implements o.ExpressionVisitor, o.TypeVisitor
     }
     const {moduleImport, symbol} =
         this.imports.generateNamedImport(ast.value.moduleName, ast.value.name);
-    const symbolIdentifier = ts.createIdentifier(symbol);
+    const symbolIdentifier = symbol;
 
     const typeName =
         moduleImport ? ts.createQualifiedName(moduleImport, symbolIdentifier) : symbolIdentifier;

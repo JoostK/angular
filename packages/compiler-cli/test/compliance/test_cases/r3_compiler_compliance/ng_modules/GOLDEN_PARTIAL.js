@@ -16,11 +16,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: basic.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class BasicModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<BasicModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<BasicModule, never, never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<BasicModule>;
+    static ɵfac: ɵɵFactoryDeclaration<BasicModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<BasicModule, never, never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<BasicModule>;
 }
 
 /****************************************************************************************************
@@ -70,25 +70,25 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
  * PARTIAL FILE: declarations.d.ts
  ****************************************************************************************************/
 import { PipeTransform } from '@angular/core';
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration, ɵɵDirectiveDeclaration, ɵɵPipeDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class FooComponent {
     name: string;
-    static ɵfac: i0.ɵɵFactoryDeclaration<FooComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<FooComponent, "foo", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<FooComponent, never>;
+    static ɵcmp: ɵɵComponentDeclaration<FooComponent, "foo", never, {}, {}, never, never>;
 }
 export declare class BarDirective {
-    static ɵfac: i0.ɵɵFactoryDeclaration<BarDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<BarDirective, "[bar]", never, {}, {}, never>;
+    static ɵfac: ɵɵFactoryDeclaration<BarDirective, never>;
+    static ɵdir: ɵɵDirectiveDeclaration<BarDirective, "[bar]", never, {}, {}, never>;
 }
 export declare class QuxPipe implements PipeTransform {
     transform(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<QuxPipe, never>;
-    static ɵpipe: i0.ɵɵPipeDeclaration<QuxPipe, "qux">;
+    static ɵfac: ɵɵFactoryDeclaration<QuxPipe, never>;
+    static ɵpipe: ɵɵPipeDeclaration<QuxPipe, "qux">;
 }
 export declare class FooModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<FooModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<FooModule, [typeof FooComponent, typeof BarDirective, typeof QuxPipe], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<FooModule>;
+    static ɵfac: ɵɵFactoryDeclaration<FooModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<FooModule, [typeof FooComponent, typeof BarDirective, typeof QuxPipe], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<FooModule>;
 }
 
 /****************************************************************************************************
@@ -138,25 +138,25 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
  * PARTIAL FILE: declarations_jit_mode.d.ts
  ****************************************************************************************************/
 import { PipeTransform } from '@angular/core';
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration, ɵɵDirectiveDeclaration, ɵɵPipeDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class FooComponent {
     name: string;
-    static ɵfac: i0.ɵɵFactoryDeclaration<FooComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<FooComponent, "foo", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<FooComponent, never>;
+    static ɵcmp: ɵɵComponentDeclaration<FooComponent, "foo", never, {}, {}, never, never>;
 }
 export declare class BarDirective {
-    static ɵfac: i0.ɵɵFactoryDeclaration<BarDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<BarDirective, "[bar]", never, {}, {}, never>;
+    static ɵfac: ɵɵFactoryDeclaration<BarDirective, never>;
+    static ɵdir: ɵɵDirectiveDeclaration<BarDirective, "[bar]", never, {}, {}, never>;
 }
 export declare class QuxPipe implements PipeTransform {
     transform(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<QuxPipe, never>;
-    static ɵpipe: i0.ɵɵPipeDeclaration<QuxPipe, "qux">;
+    static ɵfac: ɵɵFactoryDeclaration<QuxPipe, never>;
+    static ɵpipe: ɵɵPipeDeclaration<QuxPipe, "qux">;
 }
 export declare class FooModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<FooModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<FooModule, [typeof FooComponent, typeof BarDirective, typeof QuxPipe], never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<FooModule>;
+    static ɵfac: ɵɵFactoryDeclaration<FooModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<FooModule, [typeof FooComponent, typeof BarDirective, typeof QuxPipe], never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<FooModule>;
 }
 
 /****************************************************************************************************
@@ -215,25 +215,25 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: providers.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵInjectableDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class Thing {
-    static ɵfac: i0.ɵɵFactoryDeclaration<Thing, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<Thing>;
+    static ɵfac: ɵɵFactoryDeclaration<Thing, never>;
+    static ɵprov: ɵɵInjectableDeclaration<Thing>;
 }
 export declare class BaseService {
     protected thing: Thing;
     constructor(thing: Thing);
-    static ɵfac: i0.ɵɵFactoryDeclaration<BaseService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<BaseService>;
+    static ɵfac: ɵɵFactoryDeclaration<BaseService, never>;
+    static ɵprov: ɵɵInjectableDeclaration<BaseService>;
 }
 export declare class ChildService extends BaseService {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ChildService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<ChildService>;
+    static ɵfac: ɵɵFactoryDeclaration<ChildService, never>;
+    static ɵprov: ɵɵInjectableDeclaration<ChildService>;
 }
 export declare class FooModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<FooModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<FooModule, never, never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<FooModule>;
+    static ɵfac: ɵɵFactoryDeclaration<FooModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<FooModule, never, never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<FooModule>;
 }
 
 /****************************************************************************************************
@@ -304,37 +304,37 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: imports_exports.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class A1Component {
-    static ɵfac: i0.ɵɵFactoryDeclaration<A1Component, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<A1Component, "a1", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<A1Component, never>;
+    static ɵcmp: ɵɵComponentDeclaration<A1Component, "a1", never, {}, {}, never, never>;
 }
 export declare class A2Component {
-    static ɵfac: i0.ɵɵFactoryDeclaration<A2Component, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<A2Component, "a2", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<A2Component, never>;
+    static ɵcmp: ɵɵComponentDeclaration<A2Component, "a2", never, {}, {}, never, never>;
 }
 export declare class AModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<AModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<AModule, [typeof A1Component, typeof A2Component], never, [typeof A1Component, typeof A2Component]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<AModule>;
+    static ɵfac: ɵɵFactoryDeclaration<AModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<AModule, [typeof A1Component, typeof A2Component], never, [typeof A1Component, typeof A2Component]>;
+    static ɵinj: ɵɵInjectorDeclaration<AModule>;
 }
 export declare class B1Component {
-    static ɵfac: i0.ɵɵFactoryDeclaration<B1Component, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<B1Component, "b1", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<B1Component, never>;
+    static ɵcmp: ɵɵComponentDeclaration<B1Component, "b1", never, {}, {}, never, never>;
 }
 export declare class B2Component {
-    static ɵfac: i0.ɵɵFactoryDeclaration<B2Component, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<B2Component, "b2", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<B2Component, never>;
+    static ɵcmp: ɵɵComponentDeclaration<B2Component, "b2", never, {}, {}, never, never>;
 }
 export declare class BModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<BModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<BModule, [typeof B1Component, typeof B2Component], never, [typeof AModule]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<BModule>;
+    static ɵfac: ɵɵFactoryDeclaration<BModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<BModule, [typeof B1Component, typeof B2Component], never, [typeof AModule]>;
+    static ɵinj: ɵɵInjectorDeclaration<BModule>;
 }
 export declare class AppModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<AppModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<AppModule, never, [typeof BModule], never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<AppModule>;
+    static ɵfac: ɵɵFactoryDeclaration<AppModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<AppModule, never, [typeof BModule], never>;
+    static ɵinj: ɵɵInjectorDeclaration<AppModule>;
 }
 
 /****************************************************************************************************
@@ -405,37 +405,37 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: imports_exports_jit_mode.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵComponentDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class A1Component {
-    static ɵfac: i0.ɵɵFactoryDeclaration<A1Component, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<A1Component, "a1", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<A1Component, never>;
+    static ɵcmp: ɵɵComponentDeclaration<A1Component, "a1", never, {}, {}, never, never>;
 }
 export declare class A2Component {
-    static ɵfac: i0.ɵɵFactoryDeclaration<A2Component, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<A2Component, "a2", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<A2Component, never>;
+    static ɵcmp: ɵɵComponentDeclaration<A2Component, "a2", never, {}, {}, never, never>;
 }
 export declare class AModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<AModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<AModule, [typeof A1Component, typeof A2Component], never, [typeof A1Component, typeof A2Component]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<AModule>;
+    static ɵfac: ɵɵFactoryDeclaration<AModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<AModule, [typeof A1Component, typeof A2Component], never, [typeof A1Component, typeof A2Component]>;
+    static ɵinj: ɵɵInjectorDeclaration<AModule>;
 }
 export declare class B1Component {
-    static ɵfac: i0.ɵɵFactoryDeclaration<B1Component, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<B1Component, "b1", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<B1Component, never>;
+    static ɵcmp: ɵɵComponentDeclaration<B1Component, "b1", never, {}, {}, never, never>;
 }
 export declare class B2Component {
-    static ɵfac: i0.ɵɵFactoryDeclaration<B2Component, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<B2Component, "b2", never, {}, {}, never, never>;
+    static ɵfac: ɵɵFactoryDeclaration<B2Component, never>;
+    static ɵcmp: ɵɵComponentDeclaration<B2Component, "b2", never, {}, {}, never, never>;
 }
 export declare class BModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<BModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<BModule, [typeof B1Component, typeof B2Component], never, [typeof AModule]>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<BModule>;
+    static ɵfac: ɵɵFactoryDeclaration<BModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<BModule, [typeof B1Component, typeof B2Component], never, [typeof AModule]>;
+    static ɵinj: ɵɵInjectorDeclaration<BModule>;
 }
 export declare class AppModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<AppModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<AppModule, never, [typeof BModule], never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<AppModule>;
+    static ɵfac: ɵɵFactoryDeclaration<AppModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<AppModule, never, [typeof BModule], never>;
+    static ɵinj: ɵɵInjectorDeclaration<AppModule>;
 }
 
 /****************************************************************************************************
@@ -498,22 +498,22 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: inheritance.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵInjectableDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare class Service {
-    static ɵfac: i0.ɵɵFactoryDeclaration<Service, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<Service>;
+    static ɵfac: ɵɵFactoryDeclaration<Service, never>;
+    static ɵprov: ɵɵInjectableDeclaration<Service>;
 }
 export declare class BaseModule {
     private service;
     constructor(service: Service);
-    static ɵfac: i0.ɵɵFactoryDeclaration<BaseModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<BaseModule, never, never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<BaseModule>;
+    static ɵfac: ɵɵFactoryDeclaration<BaseModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<BaseModule, never, never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<BaseModule>;
 }
 export declare class BasicModule extends BaseModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<BasicModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<BasicModule, never, never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<BasicModule>;
+    static ɵfac: ɵɵFactoryDeclaration<BasicModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<BasicModule, never, never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<BasicModule>;
 }
 
 /****************************************************************************************************
@@ -546,16 +546,16 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
  * PARTIAL FILE: forward_refs.d.ts
  ****************************************************************************************************/
 import { ModuleWithProviders } from '@angular/core';
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵNgModuleDeclaration, ɵɵInjectorDeclaration } from "@angular/core";
 export declare function provideModule(): ModuleWithProviders<ForwardModule>;
 export declare class TestModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<TestModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<TestModule, never, [typeof ForwardModule], never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<TestModule>;
+    static ɵfac: ɵɵFactoryDeclaration<TestModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<TestModule, never, [typeof ForwardModule], never>;
+    static ɵinj: ɵɵInjectorDeclaration<TestModule>;
 }
 export declare class ForwardModule {
-    static ɵfac: i0.ɵɵFactoryDeclaration<ForwardModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ForwardModule, never, never, never>;
-    static ɵinj: i0.ɵɵInjectorDeclaration<ForwardModule>;
+    static ɵfac: ɵɵFactoryDeclaration<ForwardModule, never>;
+    static ɵmod: ɵɵNgModuleDeclaration<ForwardModule, never, never, never>;
+    static ɵinj: ɵɵInjectorDeclaration<ForwardModule>;
 }
 

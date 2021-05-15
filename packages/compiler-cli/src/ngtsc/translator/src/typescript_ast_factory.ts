@@ -153,7 +153,13 @@ export class TypeScriptAstFactory implements AstFactory<ts.Statement, ts.Express
 
   createParenthesizedExpression = ts.createParen;
 
-  createPropertyAccess = ts.createPropertyAccess;
+  createPropertyAccess(expression: ts.Expression, propertyName: string|ts.Expression):
+      ts.Expression {
+    if (typeof propertyName !== 'string' && !ts.isIdentifier(propertyName)) {
+      throw new Error('Invalid syntax, expected property name to be an identifier');
+    }
+    return ts.createPropertyAccess(expression, propertyName);
+  }
 
   createReturnStatement(expression: ts.Expression|null): ts.Statement {
     return ts.createReturn(expression ?? undefined);

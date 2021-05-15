@@ -59,14 +59,14 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: class_decorators.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵInjectableDeclaration } from "@angular/core";
 export declare class BasicInjectable {
-    static ɵfac: i0.ɵɵFactoryDeclaration<BasicInjectable, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<BasicInjectable>;
+    static ɵfac: ɵɵFactoryDeclaration<BasicInjectable, never>;
+    static ɵprov: ɵɵInjectableDeclaration<BasicInjectable>;
 }
 export declare class RootInjectable {
-    static ɵfac: i0.ɵɵFactoryDeclaration<RootInjectable, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<RootInjectable>;
+    static ɵfac: ɵɵFactoryDeclaration<RootInjectable, never>;
+    static ɵprov: ɵɵInjectableDeclaration<RootInjectable>;
 }
 
 /****************************************************************************************************
@@ -132,15 +132,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
 /****************************************************************************************************
  * PARTIAL FILE: property_decorators.d.ts
  ****************************************************************************************************/
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵDirectiveDeclaration } from "@angular/core";
 export declare class MyDir {
     foo: string;
     bar: string;
     custom: string;
     mixed: string;
     none: string;
-    static ɵfac: i0.ɵɵFactoryDeclaration<MyDir, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<MyDir, never, never, { "foo": "foo"; "bar": "baz"; "mixed": "mixed"; }, { "mixed": "mixed"; }, never>;
+    static ɵfac: ɵɵFactoryDeclaration<MyDir, never>;
+    static ɵdir: ɵɵDirectiveDeclaration<MyDir, never, never, { "foo": "foo"; "bar": "baz"; "mixed": "mixed"; }, { "mixed": "mixed"; }, never>;
 }
 
 /****************************************************************************************************
@@ -264,42 +264,42 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "0.0.0-PLACEHOLDE
  * PARTIAL FILE: parameter_decorators.d.ts
  ****************************************************************************************************/
 import { InjectionToken } from '@angular/core';
-import * as i0 from "@angular/core";
+import { ɵɵFactoryDeclaration, ɵɵInjectableDeclaration } from "@angular/core";
 export declare const TOKEN: InjectionToken<string>;
 declare class Service {
 }
 export declare class ParameterizedInjectable {
     constructor(service: Service, token: string, custom: Service, mixed: string);
-    static ɵfac: i0.ɵɵFactoryDeclaration<ParameterizedInjectable, [null, null, null, { skipSelf: true; }]>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<ParameterizedInjectable>;
+    static ɵfac: ɵɵFactoryDeclaration<ParameterizedInjectable, [null, null, null, { skipSelf: true; }]>;
+    static ɵprov: ɵɵInjectableDeclaration<ParameterizedInjectable>;
 }
 export declare class NoCtor {
-    static ɵfac: i0.ɵɵFactoryDeclaration<NoCtor, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<NoCtor>;
+    static ɵfac: ɵɵFactoryDeclaration<NoCtor, never>;
+    static ɵprov: ɵɵInjectableDeclaration<NoCtor>;
 }
 export declare class EmptyCtor {
     constructor();
-    static ɵfac: i0.ɵɵFactoryDeclaration<EmptyCtor, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<EmptyCtor>;
+    static ɵfac: ɵɵFactoryDeclaration<EmptyCtor, never>;
+    static ɵprov: ɵɵInjectableDeclaration<EmptyCtor>;
 }
 export declare class NoDecorators {
     constructor(service: Service);
-    static ɵfac: i0.ɵɵFactoryDeclaration<NoDecorators, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<NoDecorators>;
+    static ɵfac: ɵɵFactoryDeclaration<NoDecorators, never>;
+    static ɵprov: ɵɵInjectableDeclaration<NoDecorators>;
 }
 export declare class CustomInjectable {
     constructor(service: Service);
-    static ɵfac: i0.ɵɵFactoryDeclaration<CustomInjectable, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<CustomInjectable>;
+    static ɵfac: ɵɵFactoryDeclaration<CustomInjectable, never>;
+    static ɵprov: ɵɵInjectableDeclaration<CustomInjectable>;
 }
 export declare class DerivedInjectable extends ParameterizedInjectable {
-    static ɵfac: i0.ɵɵFactoryDeclaration<DerivedInjectable, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<DerivedInjectable>;
+    static ɵfac: ɵɵFactoryDeclaration<DerivedInjectable, never>;
+    static ɵprov: ɵɵInjectableDeclaration<DerivedInjectable>;
 }
 export declare class DerivedInjectableWithCtor extends ParameterizedInjectable {
     constructor();
-    static ɵfac: i0.ɵɵFactoryDeclaration<DerivedInjectableWithCtor, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<DerivedInjectableWithCtor>;
+    static ɵfac: ɵɵFactoryDeclaration<DerivedInjectableWithCtor, never>;
+    static ɵprov: ɵɵInjectableDeclaration<DerivedInjectableWithCtor>;
 }
 export {};
 

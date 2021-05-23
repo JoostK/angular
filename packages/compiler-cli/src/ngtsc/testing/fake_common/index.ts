@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {NgIterable, TemplateRef, TrackByFunction, ɵɵDirectiveDeclaration, ɵɵNgModuleDeclaration, ɵɵPipeDeclaration} from '@angular/core';
+import {NgIterable, TemplateRef, TrackByFunction, ttc, ɵɵDirectiveDeclaration, ɵɵNgModuleDeclaration, ɵɵPipeDeclaration} from '@angular/core';
 
 export interface NgForOfContext<T, U extends NgIterable<T>> {
   $implicit: T;
@@ -53,6 +53,14 @@ export declare class NgIf<T = unknown> {
   }
   , {}, never > ;
   static ngTemplateGuard_ngIf: 'binding';
+  static ngTemplateGuard_ngIfElse:
+      ttc.GuardTemplate<ttc.Binding<NgIf, 'ngIfElse'>, ttc.Not<ttc.Binding<NgIf, 'ngIf'>>>;
+
+  // Maybe alternatively?
+  // static ngTemplateGuards: [
+  //    ttc.Binding<NgIf, 'ngIf'>,
+  //    ttc.GuardTemplate<ttc.Binding<NgIf, 'ngIfElse'>, ttc.Not<ttc.Binding<NgIf, 'ngIf'>>>,
+  // ];
   static ngTemplateContextGuard<T>(dir: NgIf<T>, ctx: any):
       ctx is NgIfContext<Exclude<T, false|0|''|null|undefined>>;
 }
@@ -86,10 +94,44 @@ export declare class IndexPipe {
   static ɵpipe: ɵɵPipeDeclaration<IndexPipe, 'index'>;
 }
 
+export declare class NgSwitch {
+  ngSwitch: any;
+  static ɵdir: ɵɵDirectiveDeclaration < NgSwitch, '[ngSwitch]', never, {
+    'ngSwitch': 'ngSwitch';
+  }
+  , {}, never > ;
+}
+
+export declare class NgSwitchCase {
+  ngSwitchCase: any;
+
+  static ɵdir: ɵɵDirectiveDeclaration < NgSwitchCase, '[ngSwitchCase]', never, {
+    'ngSwitchCase': 'ngSwitchCase';
+  }
+  , {}, never > ;
+
+  // static ngTemplateGuard: ttc.Binary<ttc.Binding<ttc.Parent<NgSwitch>, 'ngSwitch'>, '==',
+  // ttc.Binding<NgSwitchCase, 'ngSwitchCase'>>;
+  static ngTemplateGuard_ngSwitchCase: ttc.Binary<
+      ttc.Binding<ttc.Parent<NgSwitch>, 'ngSwitch'>,
+      '==', ttc.Binding<NgSwitchCase, 'ngSwitchCase'>>;
+}
+
+export class NgSwitchDefault {
+  static ɵdir: ɵɵDirectiveDeclaration<NgSwitchDefault, '[ngSwitchDefault]', never, {}, {}, never>;
+
+  static ngTemplateGuard: ttc.Not<ttc.Or<ttc.Siblings<ttc.Guard<NgSwitchCase, 'ngSwitchCase'>>>>;
+}
+
 export declare class CommonModule {
   static ɵmod: ɵɵNgModuleDeclaration<
       CommonModule,
-      [typeof NgForOf, typeof NgIf, typeof DatePipe, typeof IndexPipe, typeof NgTemplateOutlet],
-      never,
-      [typeof NgForOf, typeof NgIf, typeof DatePipe, typeof IndexPipe, typeof NgTemplateOutlet]>;
+      [
+        typeof NgForOf, typeof NgIf, typeof DatePipe, typeof IndexPipe, typeof NgTemplateOutlet,
+        typeof NgSwitch, typeof NgSwitchCase, typeof NgSwitchDefault
+      ],
+      never, [
+        typeof NgForOf, typeof NgIf, typeof DatePipe, typeof IndexPipe, typeof NgTemplateOutlet,
+        typeof NgSwitch, typeof NgSwitchCase, typeof NgSwitchDefault
+      ]>;
 }

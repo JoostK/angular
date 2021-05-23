@@ -92,6 +92,9 @@ export function extractDirectiveTypeCheckMeta(
   const staticMembers = members.filter(member => member.isStatic);
   const ngTemplateGuards = staticMembers.map(extractTemplateGuard)
                                .filter((guard): guard is TemplateGuardMeta => guard !== null);
+  const ngTemplateGuard = staticMembers.map(extractTemplateGuardType)
+                              .find((guard): guard is ts.TypeNode => guard !== null) ??
+      null;
   const hasNgTemplateContextGuard = staticMembers.some(
       member => member.kind === ClassMemberKind.Method && member.name === 'ngTemplateContextGuard');
 
@@ -122,6 +125,7 @@ export function extractDirectiveTypeCheckMeta(
   return {
     hasNgTemplateContextGuard,
     ngTemplateGuards,
+    ngTemplateGuard,
     coercedInputFields,
     restrictedInputFields,
     stringLiteralInputFields,
@@ -147,19 +151,25 @@ function extractTemplateGuard(member: ClassMember): TemplateGuardMeta|null {
   }
   const inputName = afterUnderscore(member.name);
   if (member.kind === ClassMemberKind.Property) {
-    let type: string|null = null;
-    if (member.type !== null && ts.isLiteralTypeNode(member.type) &&
-        ts.isStringLiteral(member.type.literal)) {
-      type = member.type.literal.text;
-    }
-
-    // Only property members with string literal type 'binding' are considered as template guard.
-    if (type !== 'binding') {
+    const type = member.type;
+    if (type === null) {
       return null;
     }
+
     return {inputName, type};
   } else if (member.kind === ClassMemberKind.Method) {
     return {inputName, type: 'invocation'};
+  } else {
+    return null;
+  }
+}
+
+function extractTemplateGuardType(member: ClassMember): ts.TypeNode|null {
+  if (member.name !== 'ngTemplateGuard') {
+    return null;
+  }
+  if (member.kind === ClassMemberKind.Property) {
+    return member.type;
   } else {
     return null;
   }

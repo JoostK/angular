@@ -824,6 +824,44 @@ export declare class AnimationEvent {
       env.driveMain();
     });
 
+    fit('should check usage of NgSwitch', () => {
+      env.tsconfig({strictTemplates: true});
+      env.write('test.ts', `
+    import {CommonModule} from '@angular/common';
+    import {Component, NgModule} from '@angular/core';
+
+    export interface A {type: 'a'; a: boolean;}
+    export interface B {type: 'b'; b: string;}
+    export interface C {type: 'c'; c: number;}
+
+    @Component({
+      selector: 'test',
+      template: \`
+      <ng-container [ngSwitch]="abc.type">
+        <div *ngSwitchDefault>{{ abc.c }}</div>
+        <div *ngSwitchCase="'a'">{{ abc.a }}</div>
+        <div *ngSwitchCase="'b'">{{ abc.b }}</div>
+      </ng-container>
+
+      <ng-template #other>{{ ab.b }}</ng-template>
+      <div *ngIf="ab.type === 'a'; else other">{{ ab.a }}</div>
+      \`,
+    })
+    class TestCmp {
+      ab!: A|B;
+      abc!: A|B|C;
+    }
+
+    @NgModule({
+      declarations: [TestCmp],
+      imports: [CommonModule],
+    })
+    class Module {}
+    `);
+
+      env.driveMain();
+    });
+
     it('should check usage of NgIf when using "let" to capture $implicit context variable', () => {
       env.tsconfig({strictTemplates: true});
       env.write('test.ts', `

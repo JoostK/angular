@@ -43,6 +43,7 @@ export interface DirectiveTypeCheckMeta {
    * @see `TemplateGuardMeta`
    */
   ngTemplateGuards: TemplateGuardMeta[];
+  ngTemplateGuard: ts.TypeNode|null;
 
   /**
    * Whether the Directive's class has a static ngTemplateContextGuard function.
@@ -144,7 +145,8 @@ export interface TemplateGuardMeta {
    *   type can result in narrowing of the input type.
    * - 'binding' means that the input binding expression itself is used as template guard.
    */
-  type: 'invocation'|'binding';
+  // FIXME: allowing a type node here has consequences on incremental compilation diffing!
+  type: 'invocation'|'binding'|ts.TypeNode;
 }
 
 /**

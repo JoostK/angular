@@ -6,12 +6,12 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {AST, BindingPipe, BindingType, BoundTarget, DYNAMIC_TYPE, ImplicitReceiver, MethodCall, ParsedEventType, ParseSourceSpan, PropertyRead, PropertyWrite, SchemaMetadata, ThisReceiver, TmplAstBoundAttribute, TmplAstBoundEvent, TmplAstBoundText, TmplAstElement, TmplAstIcu, TmplAstNode, TmplAstReference, TmplAstTemplate, TmplAstTextAttribute, TmplAstVariable} from '@angular/compiler';
+import {AST, ASTWithSource, BindingPipe, BindingType, BoundTarget, DYNAMIC_TYPE, ImplicitReceiver, MethodCall, ParsedEventType, ParseSourceSpan, PropertyRead, PropertyWrite, SchemaMetadata, ThisReceiver, TmplAstBoundAttribute, TmplAstBoundEvent, TmplAstBoundText, TmplAstElement, TmplAstIcu, TmplAstNode, TmplAstReference, TmplAstTemplate, TmplAstTextAttribute, TmplAstVariable} from '@angular/compiler';
 import * as ts from 'typescript';
 
 import {Reference} from '../../imports';
 import {ClassPropertyName} from '../../metadata';
-import {ClassDeclaration, ReflectionHost} from '../../reflection';
+import {ClassDeclaration} from '../../reflection';
 import {TemplateId, TypeCheckableDirectiveMeta, TypeCheckBlockMetadata} from '../api';
 
 import {addExpressionIdentifier, ExpressionIdentifier, markIgnoreDiagnostics} from './comments';
@@ -20,6 +20,7 @@ import {DomSchemaChecker} from './dom';
 import {Environment} from './environment';
 import {astToTypescript, NULL_AS_ANY} from './expression';
 import {OutOfBandDiagnosticRecorder} from './oob';
+import {BindingGuardInstruction, evaluateInstruction, GuardContext, GuardGuardInstruction, GuardInstructionKind, reflectGuardType, TargetInstruction} from './template_guards';
 import {ExpressionSemanticVisitor} from './template_semantics';
 import {tsCallMethod, tsCastToAny, tsCreateElement, tsCreateTypeQueryForCoercedInput, tsCreateVariable, tsDeclareVariable} from './ts_util';
 import {requiresInlineTypeCtor} from './type_constructor';
@@ -275,6 +276,23 @@ class TcbTemplateContextOp extends TcbOp {
   }
 }
 
+function findBinding(elementOrTemplate: TmplAstElement|TmplAstTemplate, bindingName: string):
+    TmplAstBoundAttribute|null {
+  const inputBinding = elementOrTemplate.inputs.find(i => i.name === bindingName);
+  if (inputBinding !== undefined) {
+    return inputBinding;
+  }
+
+  if (!(elementOrTemplate instanceof TmplAstTemplate)) {
+    return null;
+  }
+
+  return elementOrTemplate.templateAttrs.find(
+             (i: TmplAstTextAttribute|TmplAstBoundAttribute): i is TmplAstBoundAttribute =>
+                 i instanceof TmplAstBoundAttribute && i.name === bindingName) ??
+      null;
+}
+
 /**
  * A `TcbOp` which descends into a `TmplAstTemplate`'s children and generates type-checking code for
  * them.
@@ -283,7 +301,9 @@ class TcbTemplateContextOp extends TcbOp {
  * or more type guard conditions that narrow types within the template body.
  */
 class TcbTemplateBodyOp extends TcbOp {
-  constructor(private tcb: Context, private scope: Scope, private template: TmplAstTemplate) {
+  constructor(
+      private tcb: Context, private scope: Scope, private template: TmplAstTemplate,
+      private guards: ts.Expression[]|null) {
     super();
   }
 
@@ -301,7 +321,8 @@ class TcbTemplateBodyOp extends TcbOp {
     // on the template can trigger extra guard expressions that serve to narrow types within the
     // `if`. `guard` is calculated by starting with `true` and adding other conditions as needed.
     // Collect these into `guards` by processing the directives.
-    const directiveGuards: ts.Expression[] = [];
+    const imposedGuards = this.scope.getTemplateGuards(this.template);
+    const directiveGuards: ts.Expression[] = (this.guards ?? []).concat(imposedGuards ?? []);
 
     const directives = this.tcb.boundTarget.getDirectivesOfNode(this.template);
     if (directives !== null) {
@@ -315,19 +336,25 @@ class TcbTemplateBodyOp extends TcbOp {
         // any template guards, and generate them if needed.
         dir.ngTemplateGuards.forEach(guard => {
           // For each template guard function on the directive, look for a binding to that input.
-          const boundInput = this.template.inputs.find(i => i.name === guard.inputName) ||
-              this.template.templateAttrs.find(
-                  (i: TmplAstTextAttribute|TmplAstBoundAttribute): i is TmplAstBoundAttribute =>
-                      i instanceof TmplAstBoundAttribute && i.name === guard.inputName);
-          if (boundInput !== undefined) {
+          const boundInput = findBinding(this.template, guard.inputName);
+          if (boundInput !== null) {
             // If there is such a binding, generate an expression for it.
             const expr = tcbExpression(boundInput.value, this.tcb, this.scope);
 
             // The expression has already been checked in the type constructor invocation, so
             // it should be ignored when used within a template guard.
-            markIgnoreDiagnostics(expr);
+            // markIgnoreDiagnostics(expr);
 
-            if (guard.type === 'binding') {
+            if (typeof guard.type !== 'string') {
+              if (ts.isLiteralTypeNode(guard.type) && ts.isStringLiteralLike(guard.type.literal) &&
+                  guard.type.literal.text === 'binding') {
+                directiveGuards.push(expr);
+              }
+              // const guardExpr = this.scope.evaluateGuard(guard.type);
+              // if (guardExpr !== null) {
+              //   directiveGuards.push(guardExpr);
+              // }
+            } else if (guard.type === 'binding') {
               // Use the binding expression itself as guard.
               directiveGuards.push(expr);
             } else {
@@ -374,6 +401,8 @@ class TcbTemplateBodyOp extends TcbOp {
           (expr, dirGuard) =>
               ts.createBinary(expr, ts.SyntaxKind.AmpersandAmpersandToken, dirGuard),
           directiveGuards.pop()!);
+
+      markIgnoreDiagnostics(guard);
     }
 
     // Create a new Scope for the template. This constructs the list of operations for the template
@@ -1159,6 +1188,223 @@ export class Context {
   }
 }
 
+class ScopedGuardContext implements GuardContext {
+  private storedArrays = new Map<TmplAstElement|TmplAstTemplate, Map<string, ts.Expression[]>>();
+
+  // FIXME: the stack gets lots between template boundaries, because the stack is only maintained
+  //  in the op scheduling phase but not during op execution, whereas nested templates are only
+  //  processed during op execution.
+  private stack: Array<TmplAstElement|TmplAstTemplate> = [];
+  private templateGuards = new Map<TmplAstTemplate, ts.Expression[]>();
+
+  constructor(private parent: ScopedGuardContext|null, private tcb: Context, private scope: Scope) {
+  }
+
+  push(elementOrTemplate: TmplAstElement|TmplAstTemplate): void {
+    this.stack.push(elementOrTemplate);
+  }
+
+  pop(): void {
+    this.stack.pop();
+  }
+
+  getTemplateGuards(template: TmplAstTemplate): ts.Expression[]|null {
+    if (!this.templateGuards.has(template)) {
+      return null;
+    }
+    return this.templateGuards.get(template)!;
+  }
+
+  getBinding(target: TargetInstruction, fieldName: string): ts.Expression|null {
+    const element = this.getElementWithDirective(target);
+    if (element === null) {
+      if (this.parent !== null) {
+        return this.parent.getBinding(target, fieldName);
+      }
+      return null;
+    }
+
+    const binding = findBinding(element.element, fieldName);
+    if (binding === null) {
+      return null;
+    }
+    return tcbExpression(binding.value, this.tcb, this.scope);
+  }
+
+  getGuard(target: TargetInstruction, fieldName: string): ts.Expression|null {
+    const element = this.getElementWithDirective(target);
+    if (element === null) {
+      if (this.parent !== null) {
+        return this.parent.getGuard(target, fieldName);
+      }
+      return null;
+    }
+
+    return this.createGuard(element.directive, fieldName);
+  }
+
+  private createGuard(directive: TypeCheckableDirectiveMeta, fieldName: string): ts.Expression
+      |null {
+    const guard = directive.ngTemplateGuards.find(guard => guard.inputName === fieldName);
+    if (guard === undefined) {
+      return null;
+    }
+
+    if (typeof guard.type === 'string') {
+      // Non ts.TypeNode guards are not supported right now.
+      return null;
+    }
+
+    const inst = reflectGuardType(guard.type, this.tcb.env.reflector);
+    if (inst === null) {
+      return null;
+    }
+
+    return evaluateInstruction(inst, this);
+  }
+
+  getSiblings(match: BindingGuardInstruction|GuardGuardInstruction): ts.Expression[]|null {
+    debugger;
+    if (this.stack.length < 2) {
+      // FIXME: siblings should maybe not be queried from their parent? We don't have another way of
+      //  navigating the AST at the moment.
+      return null;
+    }
+    const parent = this.stack[this.stack.length - 2];
+    const currentElement = this.stack[this.stack.length - 1];
+
+    const siblings: ts.Expression[] = [];
+    for (const child of parent.children) {
+      if (!(child instanceof TmplAstElement || child instanceof TmplAstTemplate)) {
+        continue;
+      }
+      const dirMatch =
+          this.matchDirective(child, (match.directive as Reference<ClassDeclaration>).node);
+      if (dirMatch === null) {
+        continue;
+      }
+
+      // Evaluate the instruction in the context of the child.
+      // Note: would be a nicer if the instructions were just evaluated in a different context.
+      this.stack[this.stack.length - 1] = child;
+
+      let expr: ts.Expression|null;
+      if (match.kind === GuardInstructionKind.Binding) {
+        // FIXME: this should be create*
+        expr = this.getBinding(match.directive, match.field);
+      } else {
+        expr = this.createGuard(dirMatch.directive, match.field);
+      }
+      if (expr !== null) {
+        siblings.push(expr);
+      }
+    }
+    this.stack[this.stack.length - 1] = currentElement;
+    return siblings;
+  }
+
+  getArray(scope: TargetInstruction, variableName: string): ts.Expression[]|null {
+    const element = this.getElementWithDirective(scope);
+    if (element === null) {
+      if (this.parent !== null) {
+        return this.parent.getArray(scope, variableName);
+      }
+      return null;
+    }
+
+    if (!this.storedArrays.has(element.element)) {
+      return null;
+    }
+    const vars = this.storedArrays.get(element.element)!;
+    if (!vars.has(variableName)) {
+      return null;
+    }
+    return vars.get(variableName)!;
+  }
+
+  pushArray(scope: TargetInstruction, variableName: string, expr: ts.Expression): void {
+    const element = this.getElementWithDirective(scope);
+    if (element === null) {
+      if (this.parent !== null) {
+        this.parent.pushArray(scope, variableName, expr);
+      }
+      return;
+    }
+
+    if (!this.storedArrays.has(element.element)) {
+      this.storedArrays.set(element.element, new Map<string, ts.Expression[]>());
+    }
+    const vars = this.storedArrays.get(element.element)!;
+    if (!vars.has(variableName)) {
+      vars.set(variableName, []);
+    }
+    vars.get(variableName)!.push(expr);
+  }
+
+  guardTemplate(target: TargetInstruction, fieldName: string, expr: ts.Expression): void {
+    const element = this.getElementWithDirective(target);
+    if (element === null) {
+      return;
+    }
+
+    const binding = findBinding(element.element, fieldName);
+    if (binding === null) {
+      return;
+    }
+
+    // FIXME: the element may exist in a scope for which the template has already been rendered :(
+
+    let value = binding.value;
+    if (value instanceof ASTWithSource) {
+      value = value.ast;
+    }
+
+    const expressionTarget = this.tcb.boundTarget.getExpressionTarget(value);
+    if (!(expressionTarget instanceof TmplAstReference)) {
+      return;
+    }
+
+    const referredTemplate = this.tcb.boundTarget.getReferenceTarget(expressionTarget);
+    if (!(referredTemplate instanceof TmplAstTemplate)) {
+      return;
+    }
+
+    if (!this.templateGuards.has(referredTemplate)) {
+      this.templateGuards.set(referredTemplate, []);
+    }
+    this.templateGuards.get(referredTemplate)!.push(expr);
+  }
+
+  private getElementWithDirective(target: TargetInstruction):
+      {element: TmplAstElement|TmplAstTemplate; directive: TypeCheckableDirectiveMeta}|null {
+    const skip = target instanceof Reference ? 0 : 1;
+    const dirNode = target instanceof Reference ? target.node : target.type.node;
+    for (let i = this.stack.length - skip - 1; i >= 0; i--) {
+      const match = this.matchDirective(this.stack[i], dirNode);
+      if (match !== null) {
+        return match;
+      }
+    }
+
+    return null;
+  }
+
+  private matchDirective(element: TmplAstElement|TmplAstTemplate, directive: ClassDeclaration):
+      {element: TmplAstElement|TmplAstTemplate; directive: TypeCheckableDirectiveMeta}|null {
+    const directives = this.tcb.boundTarget.getDirectivesOfNode(element);
+    if (directives === null) {
+      return null;
+    }
+
+    const dir = directives.find(dir => dir.ref.node === directive);
+    if (dir === undefined) {
+      return null;
+    }
+
+    return {element, directive: dir};
+  }
+}
+
 /**
  * Local scope within the type check block for a particular template.
  *
@@ -1223,9 +1469,13 @@ class Scope {
    */
   private statements: ts.Statement[] = [];
 
+  private guardCtx: ScopedGuardContext;
+
   private constructor(
       private tcb: Context, private parent: Scope|null = null,
-      private guard: ts.Expression|null = null) {}
+      private guard: ts.Expression|null = null) {
+    this.guardCtx = new ScopedGuardContext(parent !== null ? parent.guardCtx : null, tcb, this);
+  }
 
   /**
    * Constructs a `Scope` given either a `TmplAstTemplate` or a list of `TmplAstNode`s.
@@ -1440,6 +1690,7 @@ class Scope {
 
   private appendNode(node: TmplAstNode): void {
     if (node instanceof TmplAstElement) {
+      this.guardCtx.push(node);
       const opIndex = this.opQueue.push(new TcbElementOp(this.tcb, this, node)) - 1;
       this.elementOpMap.set(node, opIndex);
       this.appendDirectivesAndInputsOfNode(node);
@@ -1448,18 +1699,53 @@ class Scope {
         this.appendNode(child);
       }
       this.checkAndAppendReferencesOfNode(node);
+      this.guardCtx.pop();
     } else if (node instanceof TmplAstTemplate) {
+      this.guardCtx.push(node);
       // Template children are rendered in a child scope.
       this.appendDirectivesAndInputsOfNode(node);
       this.appendOutputsOfNode(node);
       const ctxIndex = this.opQueue.push(new TcbTemplateContextOp(this.tcb, this)) - 1;
       this.templateCtxOpMap.set(node, ctxIndex);
       if (this.tcb.env.config.checkTemplateBodies) {
-        this.opQueue.push(new TcbTemplateBodyOp(this.tcb, this, node));
+        const directives = this.tcb.boundTarget.getDirectivesOfNode(node);
+        let guards: ts.Expression[]|null = null;
+        if (directives !== null) {
+          for (const directive of directives) {
+            if (directive.ngTemplateGuard !== null) {
+              const expr = this.evaluateGuard(directive.ngTemplateGuard);
+              if (expr !== null) {
+                // clang-format off
+                (guards ??= []).push(expr);
+                // clang-format on
+              }
+            }
+
+            for (const guard of directive.ngTemplateGuards) {
+              if (typeof guard.type === 'string') {
+                continue;
+              }
+
+              // const boundInput = findBinding(node, guard.inputName);
+              // if (boundInput !== null) {
+              //   // If there is such a binding, generate an expression for it.
+              //   const expr = tcbExpression(boundInput.value, this.tcb, this);
+              // }
+              const expr = this.evaluateGuard(guard.type);
+              if (expr !== null) {
+                // clang-format off
+                (guards ??= []).push(expr);
+                // clang-format on
+              }
+            }
+          }
+        }
+        this.opQueue.push(new TcbTemplateBodyOp(this.tcb, this, node, guards));
       } else if (this.tcb.env.config.alwaysCheckSchemaInTemplateBodies) {
         this.appendDeepSchemaChecks(node.children);
       }
       this.checkAndAppendReferencesOfNode(node);
+      this.guardCtx.pop();
     } else if (node instanceof TmplAstBoundText) {
       this.opQueue.push(new TcbTextInterpolationOp(this.tcb, this, node));
     } else if (node instanceof TmplAstIcu) {
@@ -1621,6 +1907,18 @@ class Scope {
         this.opQueue.push(new TcbTextInterpolationOp(this.tcb, this, placeholder));
       }
     }
+  }
+
+  evaluateGuard(guardType: ts.TypeNode): ts.Expression|null {
+    const guard = reflectGuardType(guardType, this.tcb.env.reflector);
+    if (guard === null) {
+      return null;
+    }
+    return evaluateInstruction(guard, this.guardCtx);
+  }
+
+  getTemplateGuards(template: TmplAstTemplate): ts.Expression[]|null {
+    return this.guardCtx.getTemplateGuards(template);
   }
 }
 

@@ -368,6 +368,10 @@ export class TypeCheckContextImpl implements TypeCheckContext {
       code += '\n\n' + text + textParts[idx + 1];
     });
 
+    const prettyPrinter = ts.createPrinter({omitTrailingSemicolon: true, removeComments: true});
+    console.log(
+        ops.map(op => op.execute(importManager, sf, this.refEmitter, prettyPrinter)).join('\n'));
+
     // Write out the imports that need to be added to the beginning of the file.
     let imports = importManager.getAllImports(sf.fileName)
                       .map(i => `import * as ${i.qualifier.text} from '${i.specifier}';`)

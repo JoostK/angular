@@ -12,9 +12,6 @@ import {Reference} from '../../imports';
 import {ClassDeclaration, isNamedClassDeclaration, ReflectionHost} from '../../reflection';
 
 export interface GuardContext {
-  pushArray(scope: TargetInstruction, variableName: string, expr: ts.Expression): void;
-  getArray(scope: TargetInstruction, variableName: string): ts.Expression[]|null;
-
   getBinding(target: TargetInstruction, fieldName: string): ts.Expression|null;
   getGuard(target: TargetInstruction, fieldName: string): ts.Expression|null;
 
@@ -38,10 +35,6 @@ export function evaluateInstruction(
       return evaluateOr(instruction, ctx);
     case GuardInstructionKind.GuardTemplate:
       return evaluateGuardTemplate(instruction, ctx);
-    case GuardInstructionKind.Array:
-      return unexpected();
-    case GuardInstructionKind.Push:
-      return evaluatePush(instruction, ctx);
     case GuardInstructionKind.Siblings:
       return unexpected();
     case GuardInstructionKind.Guard:
@@ -73,9 +66,7 @@ function evaluateSiblings(
 }
 
 function evaluateOr(instruction: OrGuardInstruction, ctx: GuardContext): ts.Expression|null {
-  const conditions = instruction.instruction.kind === GuardInstructionKind.Array ?
-      evaluateArray(instruction.instruction, ctx) :
-      evaluateSiblings(instruction.instruction, ctx);
+  const conditions = evaluateSiblings(instruction.instruction, ctx);
   if (conditions === null || conditions.length === 0) {
     return unexpected();
   }
@@ -95,22 +86,6 @@ function evaluateGuardTemplate(
 
   ctx.guardTemplate(instruction.ref.directive, instruction.ref.field, expr);
   return unexpected();
-}
-
-function evaluateArray(instruction: ArrayGuardInstruction, ctx: GuardContext): ts.Expression[]|
-    null {
-  return ctx.getArray(instruction.scope, instruction.name);
-}
-
-function evaluatePush(instruction: PushGuardInstruction, ctx: GuardContext): ts.Expression|null {
-  const expr = evaluateInstruction(instruction.instruction, ctx);
-  if (expr === null) {
-    return unexpected();
-  }
-
-  ctx.pushArray(instruction.scope, instruction.name, expr);
-
-  return expr;
 }
 
 function evaluateBinary(instruction: BinaryGuardInstruction, ctx: GuardContext): ts.Expression|
@@ -189,8 +164,6 @@ export function reflectGuardType(
   switch (kind) {
     case GuardInstructionKind.Binding:
       return reflectBinding(guardType.typeArguments, reflector);
-    case GuardInstructionKind.Array:
-      return reflectArray(guardType.typeArguments, reflector);
     case GuardInstructionKind.Not:
       return reflectNot(guardType.typeArguments, reflector);
     case GuardInstructionKind.Or:
@@ -201,8 +174,6 @@ export function reflectGuardType(
       return reflectBinary(guardType.typeArguments, reflector);
     case GuardInstructionKind.GuardTemplate:
       return reflectGuardTemplate(guardType.typeArguments, reflector);
-    case GuardInstructionKind.Push:
-      return reflectPush(guardType.typeArguments, reflector);
     case GuardInstructionKind.Guard:
       return reflectGuard(guardType.typeArguments, reflector);
     case GuardInstructionKind.Siblings:
@@ -324,8 +295,7 @@ export function reflectOr(
   if (instruction === null) {
     return unexpected();
   }
-  if (instruction.kind !== GuardInstructionKind.Array &&
-      instruction.kind !== GuardInstructionKind.Siblings) {
+  if (instruction.kind !== GuardInstructionKind.Siblings) {
     return unexpected();
   }
   return {
@@ -406,55 +376,6 @@ export function reflectBinary(
   };
 }
 
-export function reflectArray(
-    typeArguments: ts.NodeArray<ts.TypeNode>|undefined,
-    reflector: ReflectionHost): ArrayGuardInstruction|null {
-  if (typeArguments === undefined || typeArguments.length !== 2) {
-    return unexpected();
-  }
-
-  const scope = reflectTargetInstruction(typeArguments[0], reflector);
-  if (scope === null) {
-    return unexpected();
-  }
-  const name = reflectString(typeArguments[1]);
-  if (name === null) {
-    return unexpected();
-  }
-  return {
-    kind: GuardInstructionKind.Array,
-    scope,
-    name,
-  };
-}
-
-export function reflectPush(
-    typeArguments: ts.NodeArray<ts.TypeNode>|undefined,
-    reflector: ReflectionHost): PushGuardInstruction|null {
-  if (typeArguments === undefined || typeArguments.length !== 3) {
-    return unexpected();
-  }
-
-  const scope = reflectTargetInstruction(typeArguments[0], reflector);
-  if (scope === null) {
-    return unexpected();
-  }
-  const name = reflectString(typeArguments[1]);
-  if (name === null) {
-    return unexpected();
-  }
-  const instruction = reflectGuardType(typeArguments[2], reflector);
-  if (instruction === null) {
-    return unexpected();
-  }
-  return {
-    kind: GuardInstructionKind.Push,
-    scope,
-    name,
-    instruction,
-  };
-}
-
 export function reflectString(guardType: ts.TypeNode|undefined): string|null {
   if (guardType === undefined) {
     return unexpected();
@@ -500,8 +421,6 @@ export enum GuardInstructionKind {
   Not,
   Or,
   GuardTemplate,
-  Array,
-  Push,
   Siblings,
   Guard,
 }
@@ -531,25 +450,12 @@ export interface NotGuardInstruction {
 
 export interface OrGuardInstruction {
   kind: GuardInstructionKind.Or;
-  instruction: ArrayGuardInstruction|SiblingsGuardInstruction;
+  instruction: SiblingsGuardInstruction;
 }
 
 export interface GuardTemplateGuardInstruction {
   kind: GuardInstructionKind.GuardTemplate;
   ref: BindingGuardInstruction;
-  instruction: GuardInstruction;
-}
-
-export interface ArrayGuardInstruction {
-  kind: GuardInstructionKind.Array;
-  scope: TargetInstruction;
-  name: string;
-}
-
-export interface PushGuardInstruction {
-  kind: GuardInstructionKind.Push;
-  scope: TargetInstruction;
-  name: string;
   instruction: GuardInstruction;
 }
 
@@ -564,9 +470,9 @@ export interface GuardGuardInstruction {
   field: string;
 }
 
-export type GuardInstruction = ParentGuardInstruction|BindingGuardInstruction|
-    BinaryGuardInstruction|NotGuardInstruction|OrGuardInstruction|GuardTemplateGuardInstruction|
-    ArrayGuardInstruction|PushGuardInstruction|SiblingsGuardInstruction|GuardGuardInstruction;
+export type GuardInstruction =
+    ParentGuardInstruction|BindingGuardInstruction|BinaryGuardInstruction|NotGuardInstruction|
+    OrGuardInstruction|GuardTemplateGuardInstruction|SiblingsGuardInstruction|GuardGuardInstruction;
 
 // TODO: refactor into single instruction type
 export type TargetInstruction = ParentGuardInstruction|Reference<ClassDeclaration>;

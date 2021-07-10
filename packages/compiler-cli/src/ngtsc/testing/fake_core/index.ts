@@ -131,7 +131,4 @@ export namespace ttc {
   export type Not<T> = unknown;
   export type Or<T> = unknown;
   export type GuardTemplate<TemplateRef, GuardExpression> = unknown;
-
-  export type Array<Name, Scope> = unknown;
-  export type Push<Expression, Name, Scope> = unknown;
 }

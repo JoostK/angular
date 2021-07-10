@@ -1189,8 +1189,6 @@ export class Context {
 }
 
 class ScopedGuardContext implements GuardContext {
-  private storedArrays = new Map<TmplAstElement|TmplAstTemplate, Map<string, ts.Expression[]>>();
-
   // FIXME: the stack gets lots between template boundaries, because the stack is only maintained
   //  in the op scheduling phase but not during op execution, whereas nested templates are only
   //  processed during op execution.
@@ -1301,44 +1299,6 @@ class ScopedGuardContext implements GuardContext {
     }
     this.stack[this.stack.length - 1] = currentElement;
     return siblings;
-  }
-
-  getArray(scope: TargetInstruction, variableName: string): ts.Expression[]|null {
-    const element = this.getElementWithDirective(scope);
-    if (element === null) {
-      if (this.parent !== null) {
-        return this.parent.getArray(scope, variableName);
-      }
-      return null;
-    }
-
-    if (!this.storedArrays.has(element.element)) {
-      return null;
-    }
-    const vars = this.storedArrays.get(element.element)!;
-    if (!vars.has(variableName)) {
-      return null;
-    }
-    return vars.get(variableName)!;
-  }
-
-  pushArray(scope: TargetInstruction, variableName: string, expr: ts.Expression): void {
-    const element = this.getElementWithDirective(scope);
-    if (element === null) {
-      if (this.parent !== null) {
-        this.parent.pushArray(scope, variableName, expr);
-      }
-      return;
-    }
-
-    if (!this.storedArrays.has(element.element)) {
-      this.storedArrays.set(element.element, new Map<string, ts.Expression[]>());
-    }
-    const vars = this.storedArrays.get(element.element)!;
-    if (!vars.has(variableName)) {
-      vars.set(variableName, []);
-    }
-    vars.get(variableName)!.push(expr);
   }
 
   guardTemplate(target: TargetInstruction, fieldName: string, expr: ts.Expression): void {

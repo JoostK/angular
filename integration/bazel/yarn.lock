@@ -3,14 +3,14 @@
 
 
 "@angular/animations@file:../../dist/packages-dist/animations":
-  version "13.0.0-next.1"
+  version "13.0.0-next.4"
   dependencies:
     tslib "^2.2.0"
 
 "@angular/bazel@file:../../dist/packages-dist/bazel":
-  version "13.0.0-next.1"
+  version "13.0.0-next.4"
   dependencies:
-    "@microsoft/api-extractor" "7.18.5"
+    "@microsoft/api-extractor" "7.18.6"
     shelljs "0.8.4"
     tsickle "^0.38.0"
     tslib "^2.2.0"
@@ -25,12 +25,12 @@
     parse5 "^5.0.0"
 
 "@angular/common@file:../../dist/packages-dist/common":
-  version "13.0.0-next.1"
+  version "13.0.0-next.4"
   dependencies:
     tslib "^2.2.0"
 
 "@angular/compiler-cli@file:../../dist/packages-dist/compiler-cli":
-  version "13.0.0-next.1"
+  version "13.0.0-next.4"
   dependencies:
     "@babel/core" "^7.8.6"
     "@babel/types" "^7.8.6"
@@ -48,17 +48,17 @@
     yargs "^17.0.0"
 
 "@angular/compiler@file:../../dist/packages-dist/compiler":
-  version "13.0.0-next.1"
+  version "13.0.0-next.4"
   dependencies:
     tslib "^2.2.0"
 
 "@angular/core@file:../../dist/packages-dist/core":
-  version "13.0.0-next.1"
+  version "13.0.0-next.4"
   dependencies:
     tslib "^2.2.0"
 
 "@angular/forms@file:../../dist/packages-dist/forms":
-  version "13.0.0-next.1"
+  version "13.0.0-next.4"
   dependencies:
     tslib "^2.2.0"
 
@@ -70,17 +70,17 @@
     tslib "^1.7.1"
 
 "@angular/platform-browser-dynamic@file:../../dist/packages-dist/platform-browser-dynamic":
-  version "13.0.0-next.1"
+  version "13.0.0-next.4"
   dependencies:
     tslib "^2.2.0"
 
 "@angular/platform-browser@file:../../dist/packages-dist/platform-browser":
-  version "13.0.0-next.1"
+  version "13.0.0-next.4"
   dependencies:
     tslib "^2.2.0"
 
 "@angular/router@file:../../dist/packages-dist/router":
-  version "13.0.0-next.1"
+  version "13.0.0-next.4"
   dependencies:
     tslib "^2.2.0"
 
@@ -295,30 +295,40 @@
     source-map-support "0.5.9"
     tsutils "2.27.2"
 
-"@bazel/protractor@4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@bazel/protractor/-/protractor-4.0.0.tgz#f29ae81c22790596bfd8212952a8e370406d094f"
-  integrity sha512-YiSU2IYdiW7HoVC3gAZJs9M0CiH9qluAvA9YLfvM3pM7rI1OmXYCm3hojgOLIRslbThcpfAcmQKjeUfdQPX5bA==
+"@bazel/protractor@4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@bazel/protractor/-/protractor-4.1.0.tgz#db2602654d584d2e458cd90e8df2ddc213365ad7"
+  integrity sha512-p5rLdHzZFyc1byMwzzbyKcCWZVFgbcHcdWNc0R0MUQ+iX2dc72nkBci+ob/YxWMnSILVtyYO0vAnu1rP19/9zw==
 
-"@bazel/rollup@4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@bazel/rollup/-/rollup-4.0.0.tgz#909cfa9bd0243fd78657711b3aa644b8432ba636"
-  integrity sha512-OcL7QtNk2nyN/v7fnih0VQ0pIDwSxdGkyZvt/m1SwODx/eJpBceam0yboLoer/sYEZPhv7YFyCTk9n2X64TZ5g==
-
-"@bazel/terser@4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@bazel/terser/-/terser-4.0.0.tgz#9ef0c4635ba0191965f0b6c26eb0cc348c8c1f5e"
-  integrity sha512-sktDTfEBFD6LIv+g7W0l9nt5pih7N7aQVA09lv09rbTWD/JGX1LSSjG2p16af297XMxCP6GoHyVaxOVXS3IPYA==
-
-"@bazel/typescript@4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-4.0.0.tgz#71a6f0f5e340c6b8516b21fbc0f0853e74055d0c"
-  integrity sha512-+Le9q+5IR9gEnSH8sXyxDB5dD6NJx2kbm6AL+cijYVat2MczpGV4sI1mu0mdLzYsEX5Tjt5iHkaNb7sFESjnYA==
+"@bazel/rollup@4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@bazel/rollup/-/rollup-4.1.0.tgz#63c1ae1043a0245e8f21cf9d59030093db3e9721"
+  integrity sha512-EYCbhH8gxGnGT0b/sgjcL5/9MQ2rVkUA6mg9sRJsJPuyyQ9mP0Cbvm0Xy9pqoeu5bFb8aTudQR973Xpcr4LaqQ==
   dependencies:
+    "@bazel/worker" "4.1.0"
+
+"@bazel/terser@4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@bazel/terser/-/terser-4.1.0.tgz#071fff105db8eef61e7e9d39c5b17700e5977d15"
+  integrity sha512-4u0xnAhgOtbQV0o09hDjCWvdeIFnxZ40BYm4sYz8uo/YSPIHKggc6GyL8RmGqbuiB6Y8ZfbwUHcIv66FbVojFg==
+
+"@bazel/typescript@4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@bazel/typescript/-/typescript-4.1.0.tgz#883e793c37df70c4ebc44bc4139f6008b3eb92fa"
+  integrity sha512-EfjGIa70IGwkBqOeirrbCRgvC/jue91L5r13c6NErb6JiSAzbKuxyKvZp4isGNPqv5W/LqpLGim5/yUQAmKXww==
+  dependencies:
+    "@bazel/worker" "4.1.0"
     protobufjs "6.8.8"
     semver "5.6.0"
     source-map-support "0.5.9"
-    tsutils "2.27.2"
+    tsutils "3.21.0"
+
+"@bazel/worker@4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@bazel/worker/-/worker-4.1.0.tgz#f63a5c821ce01731a4bc1b38f7dff16332fe331c"
+  integrity sha512-xO8dMC2GR+MwZrRa+FTG9yr5yzUCFvs7MiVYEJ25L708XhOqs34at6BFH1Xa3/ZYQt7iDBFpwY6QzbhhIIQrXA==
+  dependencies:
+    google-protobuf "^3.6.1"
 
 "@microsoft/api-extractor-model@7.13.5":
   version "7.13.5"
@@ -329,17 +339,17 @@
     "@microsoft/tsdoc-config" "~0.15.2"
     "@rushstack/node-core-library" "3.40.0"
 
-"@microsoft/api-extractor@7.18.5":
-  version "7.18.5"
-  resolved "https://registry.yarnpkg.com/@microsoft/api-extractor/-/api-extractor-7.18.5.tgz#cc2804d7c8b9d0f1e63fd85d0448569b767db102"
-  integrity sha512-NUGS6WxexziEnroHUOI3KKVmMX02god7SLA8Y4a5GKCL5k7AHuHFqP2bpd5Otx2odfbdj15ObO7FU/XA3Oxh8w==
+"@microsoft/api-extractor@7.18.6":
+  version "7.18.6"
+  resolved "https://registry.yarnpkg.com/@microsoft/api-extractor/-/api-extractor-7.18.6.tgz#4a0a05df51f91ed18a9cea23c7cca4063dce65e9"
+  integrity sha512-632kwS+YEozh7Xl4dz/VxHmqD31ugGTEXUr2if1+8klWiUt8qw6RmsIux5oGAEuu2L+Dzl9Y+/P02ZG3GyzjTA==
   dependencies:
     "@microsoft/api-extractor-model" "7.13.5"
     "@microsoft/tsdoc" "0.13.2"
     "@microsoft/tsdoc-config" "~0.15.2"
     "@rushstack/node-core-library" "3.40.0"
     "@rushstack/rig-package" "0.2.13"
-    "@rushstack/ts-command-line" "4.8.1"
+    "@rushstack/ts-command-line" "4.9.0"
     colors "~1.2.1"
     lodash "~4.17.15"
     resolve "~1.17.0"
@@ -438,10 +448,10 @@
     resolve "~1.17.0"
     strip-json-comments "~3.1.1"
 
-"@rushstack/ts-command-line@4.8.1":
-  version "4.8.1"
-  resolved "https://registry.yarnpkg.com/@rushstack/ts-command-line/-/ts-command-line-4.8.1.tgz#c233a0226112338e58e7e4fd219247b4e7cec883"
-  integrity sha512-rmxvYdCNRbyRs+DYAPye3g6lkCkWHleqO40K8UPvUAzFqEuj6+YCVssBiOmrUDCoM5gaegSNT0wFDYhz24DWtw==
+"@rushstack/ts-command-line@4.9.0":
+  version "4.9.0"
+  resolved "https://registry.yarnpkg.com/@rushstack/ts-command-line/-/ts-command-line-4.9.0.tgz#781ba42cff73cae097b6d5241b6441e7cc2fe6e0"
+  integrity sha512-kmT8t+JfnvphISF1C5WwY56RefjwgajhSjs9J4ckvAFXZDXR6F5cvF5/RTh7fGCzIomg8esy2PHO/b52zFoZvA==
   dependencies:
     "@types/argparse" "1.0.38"
     argparse "~1.0.9"
@@ -1377,6 +1387,11 @@ globby@^5.0.0:
     object-assign "^4.0.1"
     pify "^2.0.0"
     pinkie-promise "^2.0.0"
+
+google-protobuf@^3.6.1:
+  version "3.17.3"
+  resolved "https://registry.yarnpkg.com/google-protobuf/-/google-protobuf-3.17.3.tgz#f87595073545a77946c8f0b67c302c5f7646d700"
+  integrity sha512-OVPzcSWIAJ+d5yiHyeaLrdufQtrvaBrF4JQg+z8ynTkbO3uFcujqXszTumqg1cGsAsjkWnI+M5B1xZ19yR4Wyg==
 
 graceful-fs@^4.1.2, graceful-fs@^4.1.6:
   version "4.2.8"
@@ -2759,12 +2774,19 @@ tslib@^2.2.0:
   integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
 
 "tslib@file:../../node_modules/tslib":
-  version "2.3.0"
+  version "2.3.1"
 
 tsutils@2.27.2:
   version "2.27.2"
   resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-2.27.2.tgz#60ba88a23d6f785ec4b89c6e8179cac9b431f1c7"
   integrity sha512-qf6rmT84TFMuxAKez2pIfR8UCai49iQsfB7YWVjV1bKpy/d0PWT5rEOSM6La9PiHZ0k1RRZQiwVdVJfQ3BPHgg==
+  dependencies:
+    tslib "^1.8.1"
+
+tsutils@3.21.0:
+  version "3.21.0"
+  resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-3.21.0.tgz#b48717d394cea6c1e096983eed58e9d61715b623"
+  integrity sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==
   dependencies:
     tslib "^1.8.1"
 

@@ -13,12 +13,11 @@ import 'reflect-metadata';
 import * as ts from 'typescript';
 import * as tsickle from 'tsickle';
 
-import {replaceTsWithNgInErrors} from './ngtsc/diagnostics';
 import * as api from './transformers/api';
 import {GENERATED_FILES} from './transformers/util';
 
 import {exitCodeFromResult, performCompilation, readConfiguration, formatDiagnostics, Diagnostics, ParsedConfiguration, filterErrorsAndWarnings} from './perform_compile';
-import {performWatchCompilation, createPerformWatchHost} from './perform_watch';
+import {performWatchCompilation, createPerformWatchHost} from './perform_watch';
 import {NodeJSFileSystem, setFileSystem} from './ngtsc/file_system';
 
 export function main(

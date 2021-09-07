@@ -26,7 +26,7 @@ const rootDir = 'TMPL_root_dir';
 const bannerFile = TMPL_banner_file;
 const stampData = TMPL_stamp_data;
 const moduleMappings = TMPL_module_mappings;
-const downlevelToEs5 = TMPL_downlevel_to_es5;
+const downlevelToES2015 = TMPL_downlevel_to_es2015;
 const nodeModulesRoot = 'TMPL_node_modules_root';
 
 log_verbose(`running with
@@ -147,13 +147,13 @@ if (bannerFile) {
   }
 }
 
-// Transform that is enabled for UMD bundle processing. It transforms existing ES2015
-// prodmode output to ESM5 so that the resulting UMD bundles are using ES5 format.
-const downlevelToEs5Plugin = {
-  name: 'downlevel-to-es5',
+// Transform that is enabled for ES2015 FESM generation. It transforms existing ES2020
+// prodmode output to ES2015 so that we can generate the ES2015 flat ESM bundle.
+const downlevelToES2015Plugin = {
+  name: 'downlevel-to-es2015',
   transform: (code, filePath) => {
     const compilerOptions = {
-      target: ts.ScriptTarget.ES5,
+      target: ts.ScriptTarget.ES2015,
       module: ts.ModuleKind.ES2015,
       allowJs: true,
       sourceMap: true,
@@ -183,16 +183,15 @@ const plugins = [
   sourcemaps(),
 ];
 
-// If downleveling to ES5 is enabled, set up the downlevel rollup plugin.
-if (downlevelToEs5) {
-  plugins.push(downlevelToEs5Plugin);
+// If downleveling to ES2015 is enabled, set up the downlevel rollup plugin.
+if (downlevelToES2015) {
+  plugins.push(downlevelToES2015Plugin);
 }
 
 const config = {
   plugins,
   external: [TMPL_external],
   output: {
-    globals: {TMPL_globals},
     banner,
   }
 };

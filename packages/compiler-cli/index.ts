@@ -24,4 +24,7 @@ export {ngToTsDiagnostic} from './src/transformers/util';
 export {NgTscPlugin} from './src/ngtsc/tsc_plugin';
 export {NgtscProgram} from './src/ngtsc/program';
 
+export * from './src/ngtsc/file_system';
+export * from './src/ngtsc/logging';
+
 setFileSystem(new NodeJSFileSystem());

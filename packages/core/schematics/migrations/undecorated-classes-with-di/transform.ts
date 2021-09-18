@@ -7,7 +7,7 @@
  */
 
 import {AotCompiler, AotCompilerHost, CompileMetadataResolver, StaticSymbol, StaticSymbolResolver, SummaryResolver} from '@angular/compiler';
-import {PartialEvaluator} from '@angular/compiler-cli/src/ngtsc/partial_evaluator';
+import {PartialEvaluator} from '@angular/compiler-cli';
 import {ChangeDetectionStrategy, ViewEncapsulation} from '@angular/core';
 import * as ts from 'typescript';
 

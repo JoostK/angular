@@ -7,7 +7,6 @@
  */
 
 import * as ng from '@angular/compiler-cli';
-import {PerfPhase} from '@angular/compiler-cli/src/ngtsc/perf';
 import {BazelOptions, CachedFileLoader, CompilerHost, constructManifest, debug, FileCache, FileLoader, parseTsconfig, resolveNormalizedPath, runAsWorker, runWorkerLoop, UncachedFileLoader} from '@bazel/typescript';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -428,9 +427,9 @@ function gatherDiagnosticsForInputsOnly(
   const tsProgram = ngProgram.getTsProgram();
 
   // For the Ivy compiler, track the amount of time spent fetching TypeScript diagnostics.
-  let previousPhase = PerfPhase.Unaccounted;
+  let previousPhase = ng.PerfPhase.Unaccounted;
   if (ngProgram instanceof ng.NgtscProgram) {
-    previousPhase = ngProgram.compiler.perfRecorder.phase(PerfPhase.TypeScriptDiagnostics);
+    previousPhase = ngProgram.compiler.perfRecorder.phase(ng.PerfPhase.TypeScriptDiagnostics);
   }
   const diagnostics: (ng.Diagnostic|ts.Diagnostic)[] = [];
   // These checks mirror ts.getPreEmitDiagnostics, with the important

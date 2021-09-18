@@ -16,7 +16,6 @@ ts_library(
     ],
     deps = [
         "//packages/compiler-cli",
-        "//packages/compiler-cli/src/ngtsc/perf",
         "@npm//@bazel/typescript",
         "@npm//@types/node",
         "@npm//tsickle",

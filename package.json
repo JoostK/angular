@@ -41,6 +41,7 @@
   },
   "// 1": "dependencies are used locally and by bazel",
   "dependencies": {
+    "@angular/animations-12": "npm:@angular/animations@12.2.2",
     "@angular-devkit/build-angular": "12.0.4",
     "@angular-devkit/build-optimizer": "0.1200.4",
     "@angular-devkit/core": "12.0.4",

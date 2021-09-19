@@ -14,7 +14,7 @@ import {EventEmitter} from 'events';
 import {AbsoluteFsPath} from '../../../../src/ngtsc/file_system';
 import {MockLogger} from '../../../../src/ngtsc/logging/testing';
 import {CreateCompileFn} from '../../../src/execution/api';
-import {startWorker} from '../../../src/execution/cluster/worker';
+import {startWorker} from '../../../src/execution/cluster/ngcc_cluster_worker';
 import {DtsProcessing, Task, TaskCompletedCallback, TaskProcessingOutcome} from '../../../src/execution/tasks/api';
 import {FileToWrite} from '../../../src/rendering/utils';
 import {mockProperty, spyProperty} from '../../helpers/spy_utils';

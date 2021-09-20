@@ -143,9 +143,10 @@ def ts_library(name, tsconfig = None, testonly = False, deps = [], module_name =
         output_group = "es5_sources",
     )
 
-def ng_module(name, tsconfig = None, entry_point = None, testonly = False, deps = [], module_name = None, package_name = None, bundle_dts = True, **kwargs):
+def ng_module(name, tsconfig = None, entry_point = None, testonly = False, deps = [], tags = [], module_name = None, package_name = None, bundle_dts = True, **kwargs):
     """Default values for ng_module"""
     deps = deps + ["@npm//tslib"]
+    tags = tags + ["ivy-only"]
     if testonly:
         # Match the types[] in //packages:tsconfig-test.json
         deps.append("@npm//@types/jasmine")
@@ -181,11 +182,12 @@ def ng_module(name, tsconfig = None, entry_point = None, testonly = False, deps 
         # `package_name` can be set to allow for the Bazel NodeJS linker to run. This
         # allows for resolution of the given target within the `node_modules/`.
         package_name = package_name,
+        tags = tags,
         perf_flag = "//packages/compiler-cli:ng_perf",
         **kwargs
     )
 
-def ng_package(name, readme_md = None, license_banner = None, deps = [], **kwargs):
+def ng_package(name, readme_md = None, license_banner = None, deps = [], tags = [], **kwargs):
     """Default values for ng_package"""
     if not readme_md:
         readme_md = "//packages:README.md"
@@ -200,6 +202,8 @@ def ng_package(name, readme_md = None, license_banner = None, deps = [], **kwarg
     stamped_substitutions = dict(common_substitutions, **{
         "0.0.0-PLACEHOLDER": "{BUILD_SCM_VERSION}",
     })
+
+    tags = tags + ["ivy-only"]
 
     _ng_package(
         name = name,
@@ -228,6 +232,7 @@ def ng_package(name, readme_md = None, license_banner = None, deps = [], **kwarg
         ng_packager = _INTERNAL_NG_PACKAGE_PACKAGER,
         rollup_config_tmpl = _INTERNAL_NG_PACKAGE_DEFAULT_ROLLUP_CONFIG_TMPL,
         rollup = _INTERNAL_NG_PACKAGE_DEFAULT_ROLLUP,
+        tags = tags,
         visibility = visibility,
         **kwargs
     )
@@ -571,7 +576,7 @@ def rollup_bundle(name, testonly = False, sourcemap = "true", **kwargs):
 def api_golden_test(**kwargs):
     _api_golden_test(
         tags = [
-            "fixme-ivy-aot",
+            "ivy-only",
         ],
         **kwargs
     )
@@ -579,7 +584,7 @@ def api_golden_test(**kwargs):
 def api_golden_test_npm_package(**kwargs):
     _api_golden_test_npm_package(
         tags = [
-            "fixme-ivy-aot",
+            "ivy-only",
         ],
         **kwargs
     )

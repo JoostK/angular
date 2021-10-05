@@ -1,27 +1,6 @@
 load("@npm//@angular/dev-infra-private/bazel/benchmark/ng_rollup_bundle:ng_rollup_bundle.bzl", "ng_rollup_bundle")
 
 ng_rollup_bundle(
-    name = "language-service",
-    build_optimizer = False,
-    entry_point = "//packages/language-service:src/ts_plugin.ts",
-    format = "amd",
-    globals = {
-        "os": "os",
-        "fs": "fs",
-        "path": "path",
-        "typescript": "ts",
-        "typescript/lib/tsserverlibrary": "tss",
-    },
-    license_banner = ":banner",
-    visibility = ["//packages/language-service:__pkg__"],
-    deps = [
-        "//packages/language-service",
-        "@npm//rxjs",
-        "@npm//tslib",
-    ],
-)
-
-ng_rollup_bundle(
     name = "ivy",
     build_optimizer = False,
     entry_point = "//packages/language-service/ivy:ts_plugin.ts",
@@ -38,6 +17,14 @@ ng_rollup_bundle(
     deps = [
         "//packages/language-service/ivy",
     ],
+)
+
+genrule(
+    name = "language-service",
+    srcs = ["@npm//:node_modules/@angular/language-service-12/bundles/language-service.js"],
+    outs = ["language-service.js"],
+    cmd = "cp $< $@",
+    visibility = ["//packages/language-service:__pkg__"],
 )
 
 genrule(

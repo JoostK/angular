@@ -15,6 +15,7 @@ pkg_npm(
     deps = [
         "//packages/core/schematics/migrations/abstract-control-parent",
         "//packages/core/schematics/migrations/activated-route-snapshot-fragment",
+        "//packages/core/schematics/migrations/async-fake-async",
         "//packages/core/schematics/migrations/can-activate-with-redirect-to",
         "//packages/core/schematics/migrations/deep-shadow-piercing-selector",
         "//packages/core/schematics/migrations/dynamic-queries",

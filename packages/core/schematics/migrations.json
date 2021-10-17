@@ -109,6 +109,11 @@
       "version": "13.0.0-beta",
       "description": "In Angular version 13, the `teardown` flag in `TestBed` will be enabled by default. This migration automatically opts out existing apps from the new teardown behavior.",
       "factory": "./migrations/testbed-teardown/index"
+    },
+    "migration-v13-async-fake-async": {
+      "version": "13.0.0-beta",
+      "description": "foobar",
+      "factory": "./migrations/async-fake-async/index"
     }
   }
 }

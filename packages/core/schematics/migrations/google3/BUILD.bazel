@@ -12,6 +12,7 @@ ts_library(
         "//packages/compiler-cli/src/ngtsc/partial_evaluator",
         "//packages/compiler-cli/src/ngtsc/reflection",
         "//packages/core/schematics/migrations/activated-route-snapshot-fragment",
+        "//packages/core/schematics/migrations/async-fake-async",
         "//packages/core/schematics/migrations/can-activate-with-redirect-to",
         "//packages/core/schematics/migrations/dynamic-queries",
         "//packages/core/schematics/migrations/initial-navigation",

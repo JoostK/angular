@@ -136,8 +136,13 @@ export class UmdReflectionHost extends Esm5ReflectionHost {
     }
 
     const innerDeclaration = getInnerClassDeclaration(initializer);
-    if (innerDeclaration !== null && hasNameIdentifier(declaration)) {
-      return this.createClassSymbol(declaration.name, innerDeclaration);
+    if (innerDeclaration !== null) {
+      if (hasNameIdentifier(declaration)) {
+        return this.createClassSymbol(declaration.name, innerDeclaration);
+      } else {
+        debugger;
+        return this.createClassSymbol(declaration, innerDeclaration);
+      }
     }
 
     return undefined;

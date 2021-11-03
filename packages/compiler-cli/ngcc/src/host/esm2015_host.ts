@@ -442,6 +442,26 @@ export class Esm2015ReflectionHost extends TypeScriptReflectionHost implements N
     return null;
   }
 
+  private getDeclarationOfExportDeclaration(declaration: DeclarationNode): Declaration {
+    let decl: Declaration|null = null;
+    if (isNamedDeclaration(declaration)) {
+      decl = this.getDeclarationOfIdentifier(declaration.name);
+    } else {
+      const symbol = this.checker.getSymbolOfExpando(declaration, true);
+      if (symbol === undefined) {
+        throw new Error('Oops');
+      }
+      decl = this.getDeclarationOfSymbol(symbol, null);
+    }
+
+    if (decl === null) {
+      throw new Error(
+          `Cannot get the dts file for a node that cannot be associated with a declaration ${
+              declaration.getText()} in ${declaration.getSourceFile().fileName}`);
+    }
+    return decl;
+  }
+
   /**
    * Take an exported declaration of a class (maybe down-leveled to a variable) and look up the
    * declaration of its type in a separate .d.ts tree.
@@ -458,17 +478,8 @@ export class Esm2015ReflectionHost extends TypeScriptReflectionHost implements N
     if (this.dts === null) {
       return null;
     }
-    if (!isNamedDeclaration(declaration)) {
-      throw new Error(`Cannot get the dts file for a declaration that has no name: ${
-          declaration.getText()} in ${declaration.getSourceFile().fileName}`);
-    }
 
-    const decl = this.getDeclarationOfIdentifier(declaration.name);
-    if (decl === null) {
-      throw new Error(
-          `Cannot get the dts file for a node that cannot be associated with a declaration ${
-              declaration.getText()} in ${declaration.getSourceFile().fileName}`);
-    }
+    const decl = this.getDeclarationOfExportDeclaration(declaration);
 
     // Try to retrieve the dts declaration from the public map
     if (this.publicDtsDeclarationMap === null) {
@@ -714,12 +725,25 @@ export class Esm2015ReflectionHost extends TypeScriptReflectionHost implements N
    * @returns the `NgccClassSymbol` representing the class, or undefined if a `ts.Symbol` for any of
    * the declarations could not be resolved.
    */
-  protected createClassSymbol(outerDeclaration: ts.Identifier, innerDeclaration: ts.Node|null):
-      NgccClassSymbol|undefined {
-    const declarationSymbol =
+  protected createClassSymbol(
+      outerDeclaration: ts.Identifier|ts.ElementAccessExpression,
+      innerDeclaration: ts.Node|null): NgccClassSymbol|undefined {
+    let declarationSymbol =
         this.checker.getSymbolAtLocation(outerDeclaration) as ClassSymbol | undefined;
     if (declarationSymbol === undefined) {
-      return undefined;
+      declarationSymbol =
+          this.checker.getSymbolOfExpando(outerDeclaration, true) as ClassSymbol | undefined;
+      if (declarationSymbol === undefined) {
+        return undefined;
+      }
+
+      const decl = declarationSymbol.valueDeclaration;
+      if (decl !== undefined && ts.isElementAccessExpression(decl) &&
+          ts.isStringLiteral(decl.argumentExpression)) {
+        const name = (decl as ClassDeclaration).name =
+            ts.factory.createIdentifier(decl.argumentExpression.text);
+        ts.setOriginalNode(name, decl);
+      }
     }
 
     let implementationSymbol: ts.Symbol|undefined = declarationSymbol;

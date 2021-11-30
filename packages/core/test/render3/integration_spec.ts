@@ -58,7 +58,7 @@ describe('component styles', () => {
         template:
             (rf: RenderFlags, ctx: StyledComp) => {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'div');
+                ɵɵelement(~0, 'div');
               }
             }
       });
@@ -134,7 +134,7 @@ describe('component animations', () => {
         template:
             (rf: RenderFlags, ctx: AnimComp) => {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'div', 0);
+                ɵɵelement(~0, 'div', 0);
               }
               if (rf & RenderFlags.Update) {
                 ɵɵattribute('@fooAnimation', ctx.animationValue);
@@ -172,7 +172,7 @@ describe('component animations', () => {
            template:
                (rf: RenderFlags, ctx: AnimComp) => {
                  if (rf & RenderFlags.Create) {
-                   ɵɵelement(0, 'div', 0);
+                   ɵɵelement(~0, 'div', 0);
                  }
                }
          });
@@ -220,7 +220,7 @@ describe('component animations', () => {
   //         selectors: [['foo']],
   //         template: (rf: RenderFlags, ctx: ParentComp) => {
   //           if (rf & RenderFlags.Create) {
-  //             ɵɵelement(0, 'child-comp-with-anim');
+  //             ɵɵelement(~0, 'child-comp-with-anim');
   //           }
   //         },
   //         directives: [ChildCompWithAnim]
@@ -251,7 +251,7 @@ describe('element discovery', () => {
         template:
             (rf: RenderFlags, ctx: StructuredComp) => {
               if (rf & RenderFlags.Create) {
-                ɵɵelementStart(0, 'div');
+                ɵɵelementStart(~0, 'div');
                 ɵɵelementStart(1, 'p');
                 ɵɵelementEnd();
                 ɵɵelementEnd();
@@ -284,9 +284,9 @@ describe('element discovery', () => {
         template:
             (rf: RenderFlags, ctx: ChildComp) => {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'div');
-                ɵɵelement(1, 'div');
-                ɵɵelement(2, 'div');
+                ɵɵelement(~0, 'div');
+                ɵɵelement(~1, 'div');
+                ɵɵelement(~2, 'div');
               }
             }
       });
@@ -303,7 +303,7 @@ describe('element discovery', () => {
         template:
             (rf: RenderFlags, ctx: ParentComp) => {
               if (rf & RenderFlags.Create) {
-                ɵɵelementStart(0, 'section');
+                ɵɵelementStart(~0, 'section');
                 ɵɵelementStart(1, 'child-comp');
                 ɵɵelementEnd();
                 ɵɵelementEnd();
@@ -338,13 +338,13 @@ describe('element discovery', () => {
         template:
             (rf: RenderFlags, ctx: StructuredComp) => {
               if (rf & RenderFlags.Create) {
-                ɵɵelementStart(0, 'section');
+                ɵɵelementStart(~0, 'section');
                 ɵɵtemplate(1, (rf, ctx) => {
                   if (rf & RenderFlags.Create) {
-                    ɵɵelementStart(0, 'div');
+                    ɵɵelementStart(~0, 'div');
                     ɵɵelement(1, 'p');
                     ɵɵelementEnd();
-                    ɵɵelement(2, 'div');
+                    ɵɵelement(~2, 'div');
                   }
                 }, 3, 0, 'ng-template', 0);
                 ɵɵelementEnd();
@@ -388,8 +388,8 @@ describe('element discovery', () => {
         template:
             (rf: RenderFlags, ctx: StructuredComp) => {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'section');
-                ɵɵelement(1, 'div');
+                ɵɵelement(~0, 'section');
+                ɵɵelement(~1, 'div');
               }
             }
       });
@@ -426,7 +426,7 @@ describe('element discovery', () => {
         template:
             (rf: RenderFlags, ctx: StructuredComp) => {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'section');
+                ɵɵelement(~0, 'section');
               }
             }
       });
@@ -459,7 +459,7 @@ describe('element discovery', () => {
            template:
                (rf: RenderFlags, ctx: StructuredComp) => {
                  if (rf & RenderFlags.Create) {
-                   ɵɵelementStart(0, 'section');
+                   ɵɵelementStart(~0, 'section');
                    ɵɵelement(1, 'p');
                    ɵɵelementEnd();
                  }
@@ -493,7 +493,7 @@ describe('element discovery', () => {
            template:
                (rf: RenderFlags, ctx: StructuredComp) => {
                  if (rf & RenderFlags.Create) {
-                   ɵɵelement(0, 'section');
+                   ɵɵelement(~0, 'section');
                  }
                }
          });
@@ -544,8 +544,8 @@ describe('element discovery', () => {
                  if (rf & RenderFlags.Create) {
                    ɵɵprojectionDef();
                    ɵɵtext(0, 'welcome');
-                   ɵɵelementStart(1, 'header');
-                   ɵɵelementStart(2, 'h1');
+                   ɵɵelementStart(~1, 'header');
+                   ɵɵelementStart(~2, 'h1');
                    ɵɵprojection(3);
                    ɵɵelementEnd();
                    ɵɵelementEnd();
@@ -567,7 +567,7 @@ describe('element discovery', () => {
            template:
                (rf: RenderFlags, ctx: ParentComp) => {
                  if (rf & RenderFlags.Create) {
-                   ɵɵelementStart(0, 'section');
+                   ɵɵelementStart(~0, 'section');
                    ɵɵelementStart(1, 'projector-comp');
                    ɵɵelementStart(2, 'p');
                    ɵɵtext(3, 'this content is projected');
@@ -641,7 +641,7 @@ describe('element discovery', () => {
            template:
                (rf: RenderFlags, ctx: StructuredComp) => {
                  if (rf & RenderFlags.Create) {
-                   ɵɵelement(0, 'section');
+                   ɵɵelement(~0, 'section');
                  }
                }
          });
@@ -725,8 +725,8 @@ describe('element discovery', () => {
            template:
                (rf: RenderFlags, ctx: StructuredComp) => {
                  if (rf & RenderFlags.Create) {
-                   ɵɵelement(0, 'div', 0);
-                   ɵɵelement(1, 'div', 1);
+                   ɵɵelement(~0, 'div', 0);
+                   ɵɵelement(~1, 'div', 1);
                  }
                }
          });
@@ -800,7 +800,7 @@ describe('element discovery', () => {
            template:
                (rf: RenderFlags, ctx: ChildComp) => {
                  if (rf & RenderFlags.Create) {
-                   ɵɵelement(0, 'div');
+                   ɵɵelement(~0, 'div');
                  }
                }
          });
@@ -818,7 +818,7 @@ describe('element discovery', () => {
            template:
                (rf: RenderFlags, ctx: ParentComp) => {
                  if (rf & RenderFlags.Create) {
-                   ɵɵelement(0, 'child-comp', 0);
+                   ɵɵelement(~0, 'child-comp', 0);
                  }
                }
          });
@@ -880,9 +880,9 @@ describe('element discovery', () => {
            template:
                (rf: RenderFlags, ctx: ChildComp) => {
                  if (rf & RenderFlags.Create) {
-                   ɵɵelement(0, 'div');
-                   ɵɵelement(1, 'div');
-                   ɵɵelement(2, 'div');
+                   ɵɵelement(~0, 'div');
+                   ɵɵelement(~1, 'div');
+                   ɵɵelement(~2, 'div');
                  }
                }
          });
@@ -899,7 +899,7 @@ describe('element discovery', () => {
            template:
                (rf: RenderFlags, ctx: ParentComp) => {
                  if (rf & RenderFlags.Create) {
-                   ɵɵelementStart(0, 'section');
+                   ɵɵelementStart(~0, 'section');
                    ɵɵelementStart(1, 'child-comp');
                    ɵɵelementEnd();
                    ɵɵelementEnd();
@@ -943,7 +943,7 @@ describe('sanitization', () => {
         template:
             (rf: RenderFlags, ctx: SanitizationComp) => {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'a');
+                ɵɵelement(~0, 'a');
               }
               if (rf & RenderFlags.Update) {
                 ɵɵproperty('href', ctx.href, ɵɵsanitizeUrl);
@@ -1006,7 +1006,7 @@ describe('sanitization', () => {
         template:
             (rf: RenderFlags, ctx: SimpleComp) => {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'blockquote', 0);
+                ɵɵelement(~0, 'blockquote', 0);
               }
             },
         directives: [UnsafeUrlHostBindingDir]

@@ -309,7 +309,7 @@ describe('NgModule', () => {
          */
         const MyComp = createComponent((rf: any) => {
           if (rf & 1) {
-            element(0, 'custom-el');
+            element(~0, 'custom-el');
           }
         }, 0);
 
@@ -343,7 +343,7 @@ describe('NgModule', () => {
          */
         const MyComp = createComponent((rf: any) => {
           if (rf & 1) {
-            element(0, 'div', 0);
+            element(~0, 'div', 0);
           }
           if (rf & 2) {
             property('foo', true);

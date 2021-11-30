@@ -31,7 +31,7 @@ import {setupRootViewWithEmbeddedViews} from '../setup';
 </ng-template>`;
 function testTemplate(rf: RenderFlags, ctx: any) {
   if (rf & 1) {
-    ɵɵelementStart(0, 'div', 0);
+    ɵɵelementStart(~0, 'div', 0);
     ɵɵelement(1, 'div', 1);
     ɵɵelement(2, 'div', 1);
     ɵɵelement(3, 'div', 1);

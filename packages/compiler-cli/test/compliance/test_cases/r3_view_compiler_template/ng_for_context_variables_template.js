@@ -1,6 +1,6 @@
 function MyComponent_span_0_Template(rf, ctx) {
   if (rf & 1) {
-    $i0$.ɵɵelementStart(0, "span");
+    $i0$.ɵɵelementStart(-1, "span");
     $i0$.ɵɵtext(1);
     $i0$.ɵɵelementEnd();
   }

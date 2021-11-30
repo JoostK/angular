@@ -1,6 +1,6 @@
 template: function MyComponent_Template(rf, $ctx$) {
   if (rf & 1) {
-    $r3$.ɵɵelementStart(0, "div");
+    $r3$.ɵɵelementStart(-1, "div");
     $r3$.ɵɵpipe(1, "pipe");
     $r3$.ɵɵpipe(2, "pipe");
     $r3$.ɵɵpipe(3, "pipe");

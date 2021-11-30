@@ -46,7 +46,7 @@ runInEachFileSystem((os) => {
           const mappings = compileAndMap('<hr>');
           expectMapping(
               mappings,
-              {source: '<hr>', generated: 'i0.ɵɵelement(0, "hr")', sourceUrl: '../test.ts'});
+              {source: '<hr>', generated: 'i0.ɵɵelement(~0, "hr")', sourceUrl: '../test.ts'});
         });
       });
 
@@ -83,7 +83,7 @@ runInEachFileSystem((os) => {
           const mappings = compileAndMap('<div id="{{name}}"></div>');
           expectMapping(mappings, {
             source: '<div id="{{name}}"></div>',
-            generated: 'i0.ɵɵelement(0, "div", 0)',
+            generated: 'i0.ɵɵelement(~0, "div", 0)',
             sourceUrl: '../test.ts'
           });
           expectMapping(mappings, {
@@ -114,7 +114,7 @@ runInEachFileSystem((os) => {
           const mappings = compileAndMap('<div [attr]="name"></div>');
           expectMapping(mappings, {
             source: '<div [attr]="name"></div>',
-            generated: 'i0.ɵɵelement(0, "div", 0)',
+            generated: 'i0.ɵɵelement(~0, "div", 0)',
             sourceUrl: '../test.ts'
           });
           expectMapping(mappings, {
@@ -129,7 +129,7 @@ runInEachFileSystem((os) => {
 
           expectMapping(mappings, {
             source: '<div [attr]="greeting + name"></div>',
-            generated: 'i0.ɵɵelement(0, "div", 0)',
+            generated: 'i0.ɵɵelement(~0, "div", 0)',
             sourceUrl: '../test.ts'
           });
           expectMapping(mappings, {
@@ -143,7 +143,7 @@ runInEachFileSystem((os) => {
           const mappings = compileAndMap('<div bind-attr="name"></div>');
           expectMapping(mappings, {
             source: '<div bind-attr="name"></div>',
-            generated: 'i0.ɵɵelement(0, "div", 0)',
+            generated: 'i0.ɵɵelement(~0, "div", 0)',
             sourceUrl: '../test.ts'
           });
           expectMapping(mappings, {

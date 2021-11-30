@@ -76,7 +76,7 @@ consts: function() {
 },
 template: function MyComponent_Template(rf, ctx) {
   if (rf & 1) {
-    $r3$.ɵɵelementStart(0, "div");
+    $r3$.ɵɵelementStart(-1, "div");
     $r3$.ɵɵi18nStart(1, 0);
     $r3$.ɵɵelement(2, "div");
     $r3$.ɵɵtemplate(3, MyComponent_div_3_Template, 2, 1, "div", 1);

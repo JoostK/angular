@@ -17,10 +17,11 @@ import {isContentQueryHost, isDirectiveHost} from '../interfaces/type_checks';
 import {HEADER_OFFSET, LView, RENDERER, TView} from '../interfaces/view';
 import {assertTNodeType} from '../node_assert';
 import {appendChild, createElementNode, writeDirectClass, writeDirectStyle} from '../node_manipulation';
-import {decreaseElementDepthCount, getBindingIndex, getCurrentTNode, getElementDepthCount, getLView, getNamespace, getTView, increaseElementDepthCount, isCurrentTNodeParent, setCurrentTNode, setCurrentTNodeAsNotParent} from '../state';
+import {getBindingIndex, getCurrentTNode, getLView, getNamespace, getTView, isCurrentTNodeParent, setCurrentTNode, setCurrentTNodeAsNotParent} from '../state';
 import {computeStaticStyling} from '../styling/static_styling';
 import {setUpAttributes} from '../util/attrs_utils';
 import {getConstant} from '../util/view_utils';
+
 import {setDirectiveInputsWhichShadowsStyling} from './property';
 import {createDirectivesInstances, executeContentQueries, getOrCreateTNode, matchingSchemas, resolveDirectives, saveResolvedLocalsInData} from './shared';
 
@@ -73,6 +74,10 @@ export function ɵɵelementStart(
     index: number, name: string, attrsIndex?: number|null, localRefsIndex?: number): void {
   const lView = getLView();
   const tView = getTView();
+  const toplevel = index < 0;
+  if (toplevel) {
+    index = ~index;
+  }
   const adjustedIndex = HEADER_OFFSET + index;
 
   ngDevMode &&
@@ -111,11 +116,9 @@ export function ɵɵelementStart(
   // any immediate children of a component or template container must be pre-emptively
   // monkey-patched with the component view data so that the element can be inspected
   // later on using any element discovery utility methods (see `element_discovery.ts`)
-  if (getElementDepthCount() === 0) {
+  if (toplevel) {
     attachPatchData(native, lView);
   }
-  increaseElementDepthCount();
-
 
   if (isDirectiveHost(tNode)) {
     createDirectivesInstances(tView, lView, tNode);
@@ -144,9 +147,6 @@ export function ɵɵelementEnd(): void {
 
   const tNode = currentTNode;
   ngDevMode && assertTNodeType(tNode, TNodeType.AnyRNode);
-
-
-  decreaseElementDepthCount();
 
   const tView = getTView();
   if (tView.firstCreatePass) {

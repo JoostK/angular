@@ -8,6 +8,7 @@
 
 import {QueryFlags} from '@angular/core/src/render3/interfaces/query';
 import {HEADER_OFFSET} from '@angular/core/src/render3/interfaces/view';
+
 import {ChangeDetectorRef, Component as _Component, ComponentFactoryResolver, ElementRef, QueryList, TemplateRef, ViewContainerRef, ViewRef} from '../../src/core';
 import {ViewEncapsulation} from '../../src/metadata';
 import {injectComponentFactoryResolver, ɵɵdefineComponent, ɵɵdefineDirective, ɵɵlistener, ɵɵloadQuery, ɵɵqueryRefresh, ɵɵviewQuery} from '../../src/render3/index';
@@ -16,6 +17,7 @@ import {RenderFlags} from '../../src/render3/interfaces/definition';
 import {RElement} from '../../src/render3/interfaces/renderer_dom';
 import {getLView} from '../../src/render3/state';
 import {getNativeByIndex} from '../../src/render3/util/view_utils';
+
 import {ComponentFixture, createComponent, TemplateFixture} from './render_util';
 
 
@@ -230,8 +232,8 @@ describe('ViewContainerRef', () => {
     describe('getters', () => {
       it('should work on elements', () => {
         function createTemplate() {
-          ɵɵelement(0, 'header', 0);
-          ɵɵelement(1, 'footer');
+          ɵɵelement(~0, 'header', 0);
+          ɵɵelement(~1, 'footer');
         }
 
         new TemplateFixture({
@@ -254,8 +256,8 @@ describe('ViewContainerRef', () => {
             createComponent('header-cmp', function(rf: RenderFlags, ctx: any) {});
 
         function createTemplate() {
-          ɵɵelement(0, 'header-cmp', 0);
-          ɵɵelement(1, 'footer');
+          ɵɵelement(~0, 'header-cmp', 0);
+          ɵɵelement(~1, 'footer');
         }
 
         new TemplateFixture({
@@ -361,7 +363,7 @@ describe('ViewContainerRef', () => {
           template:
               (rf: RenderFlags, ctx: DynamicCompWithViewQueries) => {
                 if (rf & RenderFlags.Create) {
-                  ɵɵelement(0, 'div', 1, 0);
+                  ɵɵelement(~0, 'div', 1, 0);
                 }
                 // testing only
                 fooEl = getNativeByIndex(HEADER_OFFSET, getLView()) as RElement;
@@ -413,7 +415,7 @@ describe('ViewContainerRef', () => {
                 template:
                     function CompTemplate(rf: RenderFlags, ctx: any) {
                       if (rf & RenderFlags.Create) {
-                        ɵɵelementStart(0, 'button');
+                        ɵɵelementStart(~0, 'button');
                         {
                           ɵɵlistener('click', function() {
                             return ctx.onClick();
@@ -430,7 +432,7 @@ describe('ViewContainerRef', () => {
     it('should not error when destroying a view with listeners twice', () => {
       const CompWithChildListener = createComponent('test-app', (rf: RenderFlags, ctx: any) => {
         if (rf & RenderFlags.Create) {
-          ɵɵelement(0, 'comp-with-listener-and-on-destroy');
+          ɵɵelement(~0, 'comp-with-listener-and-on-destroy');
         }
       }, 1, 0, [CompWithListenerThatDestroysItself]);
 

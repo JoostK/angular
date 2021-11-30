@@ -1,7 +1,7 @@
 consts: [["id", "my-id"], ["myRef", ""]],
 template:function MyComponent_Template(rf, $ctx$){
   if (rf & 1) {
-    $i0$.ɵɵelementStart(0, "b", 0, 1);
+    $i0$.ɵɵelementStart(-1, "b", 0, 1);
     $i0$.ɵɵdisableBindings();
     $i0$.ɵɵelementStart(2, "i");
     $i0$.ɵɵtext(3, "Hello {{ name }}!");

@@ -1,6 +1,6 @@
 function MyComponent_div_0_span_3_Template(rf, ctx) {
   if (rf & 1) {
-    $i0$.ɵɵelementStart(0, "span");
+    $i0$.ɵɵelementStart(-1, "span");
     $i0$.ɵɵtext(1);
     $i0$.ɵɵelementEnd();
   }
@@ -14,7 +14,7 @@ function MyComponent_div_0_span_3_Template(rf, ctx) {
 
 function MyComponent_div_0_Template(rf, ctx) {
   if (rf & 1) {
-    $i0$.ɵɵelementStart(0, "div");
+    $i0$.ɵɵelementStart(-1, "div");
     $i0$.ɵɵelement(1, "div", null, 1);
     $i0$.ɵɵtemplate(3, MyComponent_div_0_span_3_Template, 2, 2, "span", 2);
     $i0$.ɵɵelementEnd();

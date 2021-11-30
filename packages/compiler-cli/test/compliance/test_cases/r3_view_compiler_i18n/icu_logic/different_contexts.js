@@ -25,7 +25,7 @@ consts: function() {
 },
 template: function MyComponent_Template(rf, ctx) {
   if (rf & 1) {
-    $r3$.ɵɵelementStart(0, "div");
+    $r3$.ɵɵelementStart(-1, "div");
     $r3$.ɵɵi18nStart(1, 0);
     $r3$.ɵɵtemplate(2, MyComponent_span_2_Template, 2, 1, "span", 1);
     $r3$.ɵɵi18nEnd();

@@ -96,12 +96,12 @@ benchmark(
     `<div class="A B">`,
     function(rf: RenderFlags, ctx: any) {
       if (rf & 1) {
-        ɵɵelement(0, 'div', 0);
+        ɵɵelement(~0, 'div', 0);
       }
     },
     function(rf: RenderFlags, ctx: any) {
       if (rf & 1) {
-        ɵɵelement(0, 'div', 0);
+        ɵɵelement(~0, 'div', 0);
       }
     });
 
@@ -110,7 +110,7 @@ benchmark(
     `<div [class]="toggle ? A_1 : B_1">`,
     function(rf: RenderFlags, ctx: any) {
       if (rf & 1) {
-        ɵɵelement(0, 'div');
+        ɵɵelement(~0, 'div');
       }
       if (rf & 2) {
         ɵɵclassMap(toggle ? A_1 : B_1);
@@ -118,7 +118,7 @@ benchmark(
     },
     function(rf: RenderFlags, ctx: any) {
       if (rf & 1) {
-        ɵɵelement(0, 'div');
+        ɵɵelement(~0, 'div');
       }
       if (rf & 2) {
         ɵɵproperty('className', toggle ? A_1 : B_1);
@@ -129,7 +129,7 @@ benchmark(
     `<div [class]="toggle ? A_10 : B_10">`,
     function(rf: RenderFlags, ctx: any) {
       if (rf & 1) {
-        ɵɵelement(0, 'div');
+        ɵɵelement(~0, 'div');
       }
       if (rf & 2) {
         ɵɵclassMap(toggle ? A_10 : B_10);
@@ -137,7 +137,7 @@ benchmark(
     },
     function(rf: RenderFlags, ctx: any) {
       if (rf & 1) {
-        ɵɵelement(0, 'div');
+        ɵɵelement(~0, 'div');
       }
       if (rf & 2) {
         ɵɵproperty('className', toggle ? A_10 : B_10);
@@ -148,7 +148,7 @@ benchmark(
     `<div [class]="toggle ? A_1 : B_1">`,
     function(rf: RenderFlags, ctx: any) {
       if (rf & 1) {
-        ɵɵelement(0, 'div');
+        ɵɵelement(~0, 'div');
       }
       if (rf & 2) {
         ɵɵclassMap(toggle ? A_1 : B_1);
@@ -156,7 +156,7 @@ benchmark(
     },
     function(rf: RenderFlags, ctx: any) {
       if (rf & 1) {
-        ɵɵelement(0, 'div');
+        ɵɵelement(~0, 'div');
       }
       if (rf & 2) {
         ɵɵproperty('className', toggle ? A_1 : B_1);
@@ -167,7 +167,7 @@ benchmark(
     `<div class="A B" [class]="toggle ? A_1 : B_1">`,
     function(rf: RenderFlags, ctx: any) {
       if (rf & 1) {
-        ɵɵelement(0, 'div', 0);
+        ɵɵelement(~0, 'div', 0);
       }
       if (rf & 2) {
         ɵɵclassMap(toggle ? A_1 : B_1);
@@ -175,7 +175,7 @@ benchmark(
     },
     function(rf: RenderFlags, ctx: any) {
       if (rf & 1) {
-        ɵɵelement(0, 'div', 0);
+        ɵɵelement(~0, 'div', 0);
       }
       if (rf & 2) {
         ɵɵproperty('className', toggle ? A_1 : B_1);
@@ -186,7 +186,7 @@ benchmark(
     `<div class="A B" [class]="toggle ? A_10 : B_10">`,
     function(rf: RenderFlags, ctx: any) {
       if (rf & 1) {
-        ɵɵelement(0, 'div', 0);
+        ɵɵelement(~0, 'div', 0);
       }
       if (rf & 2) {
         ɵɵclassMap(toggle ? A_10 : B_10);
@@ -194,7 +194,7 @@ benchmark(
     },
     function(rf: RenderFlags, ctx: any) {
       if (rf & 1) {
-        ɵɵelement(0, 'div', 0);
+        ɵɵelement(~0, 'div', 0);
       }
       if (rf & 2) {
         ɵɵproperty('className', toggle ? A_10 : B_10);
@@ -205,7 +205,7 @@ benchmark(
     `<div class="A B" [class]="toggle ? A_1 : B_1" [class.foo]="toggle">`,
     function(rf: RenderFlags, ctx: any) {
       if (rf & 1) {
-        ɵɵelement(0, 'div', 0);
+        ɵɵelement(~0, 'div', 0);
       }
       if (rf & 2) {
         ɵɵclassMap(toggle ? A_1 : B_1);
@@ -214,7 +214,7 @@ benchmark(
     },
     function(rf: RenderFlags, ctx: any) {
       if (rf & 1) {
-        ɵɵelement(0, 'div', 0);
+        ɵɵelement(~0, 'div', 0);
       }
       if (rf & 2) {
         ɵɵproperty('className', toggle ? A_1 + 'foo' : B_1);

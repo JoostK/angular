@@ -1,6 +1,6 @@
 function $MyComponent_div_2_Template$(rf, ctx) {
   if (rf & 1) {
-    $r3$.ɵɵelementStart(0, "div", 3);
+    $r3$.ɵɵelementStart(-1, "div", 3);
     $r3$.ɵɵtext(1, " ");
     $r3$.ɵɵi18n(2, 4);
     $r3$.ɵɵtext(3, " ");
@@ -16,7 +16,7 @@ function $MyComponent_div_2_Template$(rf, ctx) {
 …
 function $MyComponent_div_3_Template$(rf, ctx) {
   if (rf & 1) {
-    $r3$.ɵɵelementStart(0, "div", 5);
+    $r3$.ɵɵelementStart(-1, "div", 5);
     $r3$.ɵɵtext(1, " You have ");
     $r3$.ɵɵi18n(2, 6);
     $r3$.ɵɵtext(3, ". ");
@@ -47,7 +47,7 @@ consts: function() {
 },
 template: function MyComponent_Template(rf, ctx) {
   if (rf & 1) {
-    $r3$.ɵɵelementStart(0, "div");
+    $r3$.ɵɵelementStart(-1, "div");
     $r3$.ɵɵi18n(1, 0);
     $r3$.ɵɵelementEnd();
     $r3$.ɵɵtemplate(2, $MyComponent_div_2_Template$, 4, 1, "div", 1);

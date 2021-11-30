@@ -1,6 +1,6 @@
 function MyComponent_div_3_span_2_Template(rf, ctx) {
   if (rf & 1) {
-    $r3$.ɵɵelementStart(0, "span");
+    $r3$.ɵɵelementStart(-1, "span");
     $r3$.ɵɵtext(1);
     $r3$.ɵɵelementEnd();
   }
@@ -16,7 +16,7 @@ function MyComponent_div_3_span_2_Template(rf, ctx) {
 }
 function MyComponent_div_3_Template(rf, ctx) {
   if (rf & 1) {
-    $r3$.ɵɵelementStart(0, "div");
+    $r3$.ɵɵelementStart(-1, "div");
     $r3$.ɵɵtext(1);
     $r3$.ɵɵtemplate(2, MyComponent_div_3_span_2_Template, 2, 3, "span", 1);
     $r3$.ɵɵelement(3, "span", null, 3);
@@ -39,7 +39,7 @@ MyComponent.ɵcmp = /*@__PURE__*/ $r3$.ɵɵdefineComponent({
   consts: [["foo", ""], [__AttributeMarker.Template__, "if"], ["baz", ""], ["bar", ""]],
   template:  function MyComponent_Template(rf, ctx) {
     if (rf & 1) {
-      $r3$.ɵɵelement(0, "div", null, 0);
+      $r3$.ɵɵelement(~0, "div", null, 0);
       $r3$.ɵɵtext(2);
       $r3$.ɵɵtemplate(3, MyComponent_div_3_Template, 5, 2, "div", 1);
       $r3$.ɵɵelement(4, "div", null, 2);

@@ -12,6 +12,7 @@ import {getTranslationForTemplate, i18nStartFirstCreatePass} from '@angular/core
 import {getTIcu} from '@angular/core/src/render3/i18n/i18n_util';
 import {TElementNode, TNodeType} from '@angular/core/src/render3/interfaces/node';
 import {getCurrentTNode} from '@angular/core/src/render3/state';
+
 import {ɵɵelementEnd, ɵɵelementStart} from '../../../src/render3/instructions/all';
 import {I18nCreateOpCode, I18nUpdateOpCodes, TI18n, TIcu} from '../../../src/render3/interfaces/i18n';
 import {HEADER_OFFSET, LView, TVIEW, TView} from '../../../src/render3/interfaces/view';
@@ -76,7 +77,7 @@ describe('Runtime i18n', () => {
       const nbConsts = 1;
       const index = 1;
       const opCodes = getOpCodes(message, () => {
-                        ɵɵelementStart(0, 'div');
+                        ɵɵelementStart(~0, 'div');
                         ɵɵi18nStart(index, 0);
                         ɵɵelementEnd();
                       }, undefined, nbConsts, HEADER_OFFSET + index) as TI18n;
@@ -97,7 +98,7 @@ describe('Runtime i18n', () => {
       const nbConsts = 4;
       const index = 1;
       const opCodes = getOpCodes(message, () => {
-        ɵɵelementStart(0, 'div');
+        ɵɵelementStart(~0, 'div');
         ɵɵi18nStart(index, 0);
         ɵɵelementEnd();
       }, undefined, nbConsts, HEADER_OFFSET + index);
@@ -122,7 +123,7 @@ describe('Runtime i18n', () => {
       const nbConsts = 2;
       const index = 1;
       const opCodes = getOpCodes(message, () => {
-        ɵɵelementStart(0, 'div');
+        ɵɵelementStart(~0, 'div');
         ɵɵi18nStart(index, 0);
         ɵɵelementEnd();
       }, undefined, nbConsts, HEADER_OFFSET + index);
@@ -147,7 +148,7 @@ describe('Runtime i18n', () => {
       const nbConsts = 2;
       const index = 1;
       const opCodes = getOpCodes(message, () => {
-        ɵɵelementStart(0, 'div');
+        ɵɵelementStart(~0, 'div');
         ɵɵi18nStart(index, 0);
         ɵɵelementEnd();
       }, undefined, nbConsts, HEADER_OFFSET + index);
@@ -182,7 +183,7 @@ describe('Runtime i18n', () => {
       let nbConsts = 3;
       let index = 1;
       let opCodes = getOpCodes(message, () => {
-        ɵɵelementStart(0, 'div');
+        ɵɵelementStart(~0, 'div');
         ɵɵi18nStart(index, 0);
         ɵɵelementEnd();
       }, undefined, nbConsts, HEADER_OFFSET + index);
@@ -206,7 +207,7 @@ describe('Runtime i18n', () => {
       nbConsts = 3;
       index = 1;
       opCodes = getOpCodes(message, () => {
-        ɵɵelementStart(0, 'div');
+        ɵɵelementStart(~0, 'div');
         ɵɵi18nStart(index, 0, 1);
       }, undefined, nbConsts, index + HEADER_OFFSET);
 
@@ -224,7 +225,7 @@ describe('Runtime i18n', () => {
       nbConsts = 2;
       index = 1;
       opCodes = getOpCodes(message, () => {
-        ɵɵelementStart(0, 'div');
+        ɵɵelementStart(~0, 'div');
         ɵɵi18nStart(index, 0, 2);
       }, undefined, nbConsts, index + HEADER_OFFSET);
 
@@ -245,7 +246,7 @@ describe('Runtime i18n', () => {
       const nbConsts = 2;
       const index = 1;
       const opCodes = getOpCodes(message, () => {
-                        ɵɵelementStart(0, 'div');
+                        ɵɵelementStart(~0, 'div');
                         ɵɵi18nStart(index, 0);
                         ɵɵelementEnd();
                       }, undefined, nbConsts, HEADER_OFFSET + index) as TI18n;
@@ -334,7 +335,7 @@ describe('Runtime i18n', () => {
       const nbConsts = 2;
       const index = 1;
       const opCodes = getOpCodes(message, () => {
-        ɵɵelementStart(0, 'div');
+        ɵɵelementStart(~0, 'div');
         ɵɵi18n(index, 0);
         ɵɵelementEnd();
       }, undefined, nbConsts, HEADER_OFFSET + index);
@@ -428,7 +429,7 @@ describe('Runtime i18n', () => {
       const nbConsts = 2;
       const index = 1;
       const opCodes = getOpCodes(attrs, () => {
-        ɵɵelementStart(0, 'div');
+        ɵɵelementStart(~0, 'div');
         ɵɵi18nAttributes(index, 0);
         ɵɵelementEnd();
       }, undefined, nbConsts, HEADER_OFFSET + index);
@@ -445,7 +446,7 @@ describe('Runtime i18n', () => {
       const nbConsts = 2;
       const index = 1;
       const opCodes = getOpCodes(attrs, () => {
-        ɵɵelementStart(0, 'div');
+        ɵɵelementStart(~0, 'div');
         ɵɵi18nAttributes(index, 0);
         ɵɵelementEnd();
       }, undefined, nbConsts, HEADER_OFFSET + index);
@@ -464,7 +465,7 @@ describe('Runtime i18n', () => {
       const nbConsts = 4;
       const index = 1;
       const opCodes = getOpCodes(attrs, () => {
-        ɵɵelementStart(0, 'div');
+        ɵɵelementStart(~0, 'div');
         ɵɵi18nAttributes(index, 0);
         ɵɵelementEnd();
       }, undefined, nbConsts, HEADER_OFFSET + index);
@@ -624,7 +625,7 @@ describe('Runtime i18n', () => {
     beforeEach(() => {
       fixture = new ViewFixture({decls: DECLS, vars: VARS});
       fixture.enterView();
-      ɵɵelementStart(0, 'div');
+      ɵɵelementStart(~0, 'div');
     });
 
     afterEach(ViewFixture.cleanUp);

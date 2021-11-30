@@ -5,7 +5,7 @@ MyComponent.ɵcmp = /*@__PURE__*/ $r3$.ɵɵdefineComponent({
   vars: 0,
   template: function MyComponent_Template(rf, ctx) {
       if (rf & 1) {
-          $r3$.ɵɵelement(0, "div");
+          $r3$.ɵɵelement(~0, "div");
       }
   },
   encapsulation: 2

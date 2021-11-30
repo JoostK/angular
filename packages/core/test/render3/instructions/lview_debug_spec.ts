@@ -19,6 +19,7 @@ import {insertTStylingBinding} from '@angular/core/src/render3/styling/style_bin
 import {getComponentLView} from '@angular/core/src/render3/util/discovery_utils';
 import {KeyValueArray} from '@angular/core/src/util/array_utils';
 import {TestBed} from '@angular/core/testing';
+
 import {TemplateFixture} from '../render_util';
 
 describe('lView_debug', () => {
@@ -211,7 +212,7 @@ describe('lView_debug', () => {
 
       const fixture = new TemplateFixture({
         create: () => {
-          ɵɵelementStart(0, 'my-comp', 0);
+          ɵɵelementStart(~0, 'my-comp', 0);
           ɵɵelement(1, 'my-child');
           ɵɵelementEnd();
         },

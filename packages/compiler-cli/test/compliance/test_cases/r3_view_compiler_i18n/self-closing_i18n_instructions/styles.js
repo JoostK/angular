@@ -12,10 +12,10 @@ consts: function() {
 },
 template: function MyComponent_Template(rf, ctx) {
   if (rf & 1) {
-    $r3$.ɵɵelementStart(0, "span", 0);
+    $r3$.ɵɵelementStart(-1, "span", 0);
     $r3$.ɵɵi18n(1, 1);
     $r3$.ɵɵelementEnd();
-    $r3$.ɵɵelementStart(2, "span", 2);
+    $r3$.ɵɵelementStart(-3, "span", 2);
     $r3$.ɵɵi18n(3, 3);
     $r3$.ɵɵelementEnd();
   }

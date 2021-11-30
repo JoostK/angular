@@ -62,7 +62,7 @@ function generateHostBindingDirDef() {
 `;
 function componentTemplateFn(rf: RenderFlags, ctx: any) {
   if (rf & 1) {
-    ɵɵelement(0, 'div', 0);
+    ɵɵelement(~0, 'div', 0);
   }
 }
 

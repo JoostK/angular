@@ -38,7 +38,7 @@ describe('change detection', () => {
         template:
             (rf: RenderFlags, ctx: MyComponent) => {
               if (rf & RenderFlags.Create) {
-                ɵɵelementStart(0, 'span');
+                ɵɵelementStart(~0, 'span');
                 ɵɵtext(1);
                 ɵɵelementEnd();
               }
@@ -76,7 +76,7 @@ describe('change detection', () => {
         template:
             (rf: RenderFlags, ctx: MyComponentWithOnInit) => {
               if (rf & RenderFlags.Create) {
-                ɵɵelementStart(0, 'span');
+                ɵɵelementStart(~0, 'span');
                 ɵɵtext(1);
                 ɵɵelementEnd();
               }
@@ -114,7 +114,7 @@ describe('change detection', () => {
                 ɵɵtext(0, ' -->\n');
                 ɵɵtemplate(1, (rf, ctx) => {
                   if (rf & RenderFlags.Create) {
-                    ɵɵelementStart(0, 'div');
+                    ɵɵelementStart(~0, 'div');
                     ɵɵelement(1, 'my-comp-oninit');
                     ɵɵelementEnd();
                   }
@@ -218,7 +218,7 @@ describe('change detection', () => {
             (rf: RenderFlags, ctx: MyComponent) => {
               if (rf & RenderFlags.Create) {
                 ɵɵtext(0);
-                ɵɵelementStart(1, 'button');
+                ɵɵelementStart(~1, 'button');
                 {
                   ɵɵlistener('click', () => {
                     ctx.onClick();
@@ -266,7 +266,7 @@ describe('change detection', () => {
                   view[FLAGS] |= LViewFlags.ManualOnPush;
 
                   ɵɵtext(0);
-                  ɵɵelementStart(1, 'button');
+                  ɵɵelementStart(~1, 'button');
                   {
                     ɵɵlistener('click', () => {
                       ctx.onClick();
@@ -296,7 +296,7 @@ describe('change detection', () => {
           template:
               (rf: RenderFlags, ctx: ManualApp) => {
                 if (rf & RenderFlags.Create) {
-                  ɵɵelement(0, 'manual-comp');
+                  ɵɵelement(~0, 'manual-comp');
                 }
                 if (rf & RenderFlags.Update) {
                   ɵɵproperty('name', ctx.name);
@@ -354,7 +354,7 @@ describe('change detection', () => {
                    (rf: RenderFlags, ctx: ButtonParent) => {
                      if (rf & RenderFlags.Create) {
                        ɵɵtext(0);
-                       ɵɵelement(1, 'manual-comp');
+                       ɵɵelement(~1, 'manual-comp');
                      }
                      if (rf & RenderFlags.Update) {
                        ɵɵtextInterpolate1('', ctx.doCheckCount, ' - ');
@@ -367,7 +367,7 @@ describe('change detection', () => {
 
            const MyButtonApp = createComponent('my-button-app', function(rf: RenderFlags) {
              if (rf & RenderFlags.Create) {
-               ɵɵelement(0, 'button-parent');
+               ɵɵelement(~0, 'button-parent');
              }
            }, 1, 0, [ButtonParent]);
 

@@ -8,6 +8,7 @@
 
 import {InjectFlags} from '../di/interface/injector';
 import {assertDefined, assertEqual, assertGreaterThanOrEqual, assertLessThan, assertNotEqual} from '../util/assert';
+
 import {assertLViewOrUndefined, assertTNodeForLView, assertTNodeForTView} from './assert';
 import {DirectiveDef} from './interfaces/definition';
 import {TNode, TNodeType} from './interfaces/node';
@@ -83,14 +84,6 @@ interface LFrame {
    * e.g. const inner = x().$implicit; const outer = x().$implicit;
    */
   contextLView: LView;
-
-  /**
-   * Store the element depth count. This is used to identify the root elements of the template
-   * so that we can then attach patch data `LView` to only those elements. We know that those
-   * are the only places where the patch data could change, this way we will save on number
-   * of places where tha patching occurs.
-   */
-  elementDepthCount: number;
 
   /**
    * Current namespace to be used when creating elements
@@ -196,19 +189,6 @@ const instructionState: InstructionState = {
  */
 export function specOnlyIsInstructionStateEmpty(): boolean {
   return instructionState.lFrame.parent === null;
-}
-
-
-export function getElementDepthCount() {
-  return instructionState.lFrame.elementDepthCount;
-}
-
-export function increaseElementDepthCount() {
-  instructionState.lFrame.elementDepthCount++;
-}
-
-export function decreaseElementDepthCount() {
-  instructionState.lFrame.elementDepthCount--;
 }
 
 export function getBindingsEnabled(): boolean {

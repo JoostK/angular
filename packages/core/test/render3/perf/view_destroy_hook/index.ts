@@ -36,7 +36,7 @@ class ToDestroy implements OnDestroy {
   </div>`;
 function testTemplate(rf: RenderFlags, ctx: any) {
   if (rf & 1) {
-    ɵɵelementStart(0, 'div');
+    ɵɵelementStart(~0, 'div');
     ɵɵelement(1, 'span', 0);
     ɵɵelement(3, 'span', 0);
     ɵɵelement(5, 'span', 0);

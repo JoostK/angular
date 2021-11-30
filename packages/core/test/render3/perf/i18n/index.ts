@@ -156,7 +156,7 @@ benchmark(
       consts: [[AttributeMarker.I18n, 'title'], ['title', 'Test Title']],
       template: function(rf: RenderFlags, ctx: any) {
         if (rf & 1) {
-          ɵɵelementStart(0, 'div', 0);
+          ɵɵelementStart(~0, 'div', 0);
           ɵɵi18nAttributes(1, 1);
           ɵɵelementEnd();
         }
@@ -170,7 +170,7 @@ benchmark(
       consts: [['title', 'Test Title']],
       template: function(rf: RenderFlags, ctx: any) {
         if (rf & 1) {
-          ɵɵelement(0, 'div', 0);
+          ɵɵelement(~0, 'div', 0);
         }
       }
     });
@@ -185,7 +185,7 @@ benchmark(
       consts: [[AttributeMarker.I18n, 'title'], ['title', 'Test �0�']],
       template: function(rf: RenderFlags, ctx: any) {
         if (rf & 1) {
-          ɵɵelementStart(0, 'div', 0);
+          ɵɵelementStart(~0, 'div', 0);
           ɵɵi18nAttributes(1, 1);
           ɵɵelementEnd();
         }
@@ -203,7 +203,7 @@ benchmark(
       consts: [[AttributeMarker.Bindings, 'title']],
       template: function(rf: RenderFlags, ctx: any) {
         if (rf & 1) {
-          ɵɵelement(0, 'div', 0);
+          ɵɵelement(~0, 'div', 0);
         }
         if (rf & 2) {
           ɵɵpropertyInterpolate1('title', 'Test ', ctx.title, '');
@@ -221,7 +221,7 @@ benchmark(
       consts: ['Some text content'],
       template: function(rf: RenderFlags, ctx: any) {
         if (rf & 1) {
-          ɵɵelementStart(0, 'div');
+          ɵɵelementStart(~0, 'div');
           ɵɵi18n(1, 0);
           ɵɵelementEnd();
         }
@@ -235,7 +235,7 @@ benchmark(
       consts: [],
       template: function(rf: RenderFlags, ctx: any) {
         if (rf & 1) {
-          ɵɵelementStart(0, 'div');
+          ɵɵelementStart(~0, 'div');
           ɵɵtext(1, 'Some text content');
           ɵɵelementEnd();
         }
@@ -252,7 +252,7 @@ benchmark(
       consts: ['Some text content with �0�'],
       template: function(rf: RenderFlags, ctx: any) {
         if (rf & 1) {
-          ɵɵelementStart(0, 'div');
+          ɵɵelementStart(~0, 'div');
           ɵɵi18n(1, 0);
           ɵɵelementEnd();
         }
@@ -271,7 +271,7 @@ benchmark(
       consts: [],
       template: function(rf: RenderFlags, ctx: any) {
         if (rf & 1) {
-          ɵɵelementStart(0, 'div');
+          ɵɵelementStart(~0, 'div');
           ɵɵtext(1);
           ɵɵelementEnd();
         }

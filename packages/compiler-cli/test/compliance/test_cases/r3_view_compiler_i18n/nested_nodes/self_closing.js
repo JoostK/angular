@@ -1,12 +1,12 @@
 function MyComponent_img_1_Template(rf, ctx) {
   if (rf & 1) {
-    $r3$.ɵɵelement(0, "img", 0);
+    $r3$.ɵɵelement(~0, "img", 0);
   }
 }
 …
 function MyComponent_img_2_Template(rf, ctx) {
   if (rf & 1) {
-    $r3$.ɵɵelementStart(0, "img", 3);
+    $r3$.ɵɵelementStart(-1, "img", 3);
     $r3$.ɵɵi18nAttributes(1, 4);
     $r3$.ɵɵelementEnd();
   }
@@ -32,7 +32,7 @@ consts: function() {
 },
 template: function MyComponent_Template(rf, ctx) {
   if (rf & 1) {
-    $r3$.ɵɵelement(0, "img", 0);
+    $r3$.ɵɵelement(~0, "img", 0);
     $r3$.ɵɵtemplate(1, MyComponent_img_1_Template, 1, 0, "img", 1);
     $r3$.ɵɵtemplate(2, MyComponent_img_2_Template, 2, 1, "img", 2);
   }

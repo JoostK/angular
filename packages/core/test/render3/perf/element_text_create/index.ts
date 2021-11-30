@@ -28,7 +28,7 @@ import {createAndRenderLView} from '../setup';
   </div>`;
 function testTemplate(rf: RenderFlags, ctx: any) {
   if (rf & 1) {
-    ɵɵelementStart(0, 'div');
+    ɵɵelementStart(~0, 'div');
     ɵɵelementStart(1, 'button', 0);
     ɵɵtext(2, '0');
     ɵɵelementEnd();

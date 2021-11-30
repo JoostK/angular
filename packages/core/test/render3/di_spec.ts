@@ -63,7 +63,7 @@ describe('di', () => {
           /** <div dirA></div> */
           const App = createComponent('app', function(rf: RenderFlags, ctx: any) {
             if (rf & RenderFlags.Create) {
-              ɵɵelement(0, 'div', 0);
+              ɵɵelement(~0, 'div', 0);
             }
           }, 1, 0, [DirA, DirB], [], undefined, [], [], undefined, [['dirA', '']]);
 
@@ -95,7 +95,7 @@ describe('di', () => {
             'app',
             function(rf: RenderFlags, ctx: any) {
               if (rf & RenderFlags.Create) {
-                ɵɵelementStart(0, 'div', 0);
+                ɵɵelementStart(~0, 'div', 0);
                 ɵɵelement(1, 'div', 1);
                 ɵɵelementEnd();
               }

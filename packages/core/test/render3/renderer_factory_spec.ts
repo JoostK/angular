@@ -77,7 +77,7 @@ describe('renderer factory lifecycle', () => {
     if (rf & RenderFlags.Create) {
       logs.push('function_with_component create');
       ɵɵtext(0, 'bar');
-      ɵɵelement(1, 'some-component');
+      ɵɵelement(~1, 'some-component');
     }
     if (rf & RenderFlags.Update) {
       logs.push('function_with_component update');

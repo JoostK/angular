@@ -116,7 +116,7 @@ export function expectProvidersScenario(defs: {
       template:
           function(fs: RenderFlags, ctx: ParentComponent) {
             if (fs & RenderFlags.Create) {
-              ɵɵelement(0, 'view-child');
+              ɵɵelement(~0, 'view-child');
             }
           },
       features: defs.parent &&
@@ -154,7 +154,7 @@ export function expectProvidersScenario(defs: {
       template:
           function(fs: RenderFlags, ctx: App) {
             if (fs & RenderFlags.Create) {
-              ɵɵelementStart(0, 'parent');
+              ɵɵelementStart(~0, 'parent');
               ɵɵelement(1, 'content-child');
               ɵɵelementEnd();
             }

@@ -8,7 +8,7 @@ MyComponent.ɵcmp = /*@__PURE__*/ $r3$.ɵɵdefineComponent({
   template:  function MyComponent_Template(rf, ctx) {
     if (rf & 1) {
       const $s$ = $r3$.ɵɵgetCurrentView();
-      $r3$.ɵɵelementStart(0, "button", 0);
+      $r3$.ɵɵelementStart(-1, "button", 0);
         $r3$.ɵɵlistener("click", function MyComponent_Template_button_click_0_listener() {
            $r3$.ɵɵrestoreView($s$);
            const $user$ = $r3$.ɵɵreference(3);

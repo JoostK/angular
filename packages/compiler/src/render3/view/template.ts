@@ -157,6 +157,8 @@ export class TemplateDefinitionBuilder implements t.Visitor<void>, LocalResolver
   /** Index of the currently-selected node. */
   private _currentIndex: number = 0;
 
+  private _elementDepth: number = 0;
+
   /** Temporary variable declarations generated from visiting pipes, literals, etc. */
   private _tempVariables: o.Statement[] = [];
   /**
@@ -644,7 +646,8 @@ export class TemplateDefinitionBuilder implements t.Visitor<void>, LocalResolver
     this.matchDirectives(element.name, element);
 
     // Regular element or ng-container creation mode
-    const parameters: o.Expression[] = [o.literal(elementIndex)];
+    const encodedElementIndex = this._elementDepth === 0 ? ~elementIndex : elementIndex;
+    const parameters: o.Expression[] = [o.literal(encodedElementIndex)];
     if (!isNgContainer) {
       parameters.push(o.literal(elementName));
     }
@@ -851,8 +854,12 @@ export class TemplateDefinitionBuilder implements t.Visitor<void>, LocalResolver
       this.updateInstructionChainWithAdvance(elementIndex, R3.attribute, attributeBindings);
     }
 
+    this._elementDepth++;
+
     // Traverse element child nodes
     t.visitAll(this, element.children);
+
+    this._elementDepth--;
 
     if (!isI18nRootElement && this.i18n) {
       this.i18n.appendElement(element.i18n!, elementIndex, true);

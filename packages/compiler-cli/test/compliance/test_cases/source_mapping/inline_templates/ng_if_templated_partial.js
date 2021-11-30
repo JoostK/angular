@@ -1,4 +1,4 @@
-.ɵɵelementStart(0, "div");\n // SOURCE: "/ng_if_templated.ts" "<div>"
+.ɵɵelementStart(-1, "div");\n // SOURCE: "/ng_if_templated.ts" "<div>"
 …
 // TODO - map the bindings better
 // TODO: Work out how to fix the broken segment for the last item in a template

@@ -30,7 +30,7 @@ import {setupRootViewWithEmbeddedViews} from '../setup';
 </ng-template>`;
 function TestInterpolationComponent_ng_template_0_Template(rf: RenderFlags, ctx: any) {
   if (rf & 1) {
-    ɵɵelementStart(0, 'div');
+    ɵɵelementStart(~0, 'div');
     ɵɵelementStart(1, 'button');
     ɵɵtext(2);
     ɵɵelementEnd();

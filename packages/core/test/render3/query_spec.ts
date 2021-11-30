@@ -69,7 +69,7 @@ describe('query', () => {
            * }
            */
           if (rf & RenderFlags.Create) {
-            ɵɵelementStart(0, 'child');
+            ɵɵelementStart(~0, 'child');
             { ɵɵelement(1, 'child'); }
             ɵɵelementEnd();
           }
@@ -113,7 +113,7 @@ describe('query', () => {
             'cmpt',
             function(rf: RenderFlags, ctx: any) {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'div', 0);
+                ɵɵelement(~0, 'div', 0);
                 elToQuery = getNativeByIndex(HEADER_OFFSET, getLView());
               }
             },
@@ -151,7 +151,7 @@ describe('query', () => {
             'cmpt',
             function(rf: RenderFlags, ctx: any) {
               if (rf & RenderFlags.Create) {
-                ɵɵelementStart(0, 'div', 0);
+                ɵɵelementStart(~0, 'div', 0);
                 { otherChildInstance = getDirectiveOnNode(HEADER_OFFSET, 1); }
                 ɵɵelementEnd();
               }
@@ -188,7 +188,7 @@ describe('query', () => {
             'cmpt',
             function(rf: RenderFlags, ctx: any) {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'div', 0);
+                ɵɵelement(~0, 'div', 0);
               }
             },
             1, 0, [Child, OtherChild], [],
@@ -258,7 +258,7 @@ describe('query', () => {
             template:
                 function App_Template(rf: RenderFlags, ctx: App) {
                   if (rf & RenderFlags.Create) {
-                    ɵɵelement(0, 'div', 0);
+                    ɵɵelement(~0, 'div', 0);
                   }
                 },
             viewQuery:
@@ -309,7 +309,7 @@ describe('query', () => {
             template:
                 function App_Template(rf: RenderFlags, ctx: App) {
                   if (rf & RenderFlags.Create) {
-                    ɵɵelement(0, 'div', 0);
+                    ɵɵelement(~0, 'div', 0);
                   }
                 },
             viewQuery:
@@ -346,9 +346,9 @@ describe('query', () => {
             'cmpt',
             function(rf: RenderFlags, ctx: any) {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'div', null, 0);
+                ɵɵelement(~0, 'div', null, 0);
                 elToQuery = getNativeByIndex(HEADER_OFFSET, getLView());
-                ɵɵelement(2, 'div');
+                ɵɵelement(~2, 'div');
               }
             },
             3, 0, [], [],
@@ -385,9 +385,9 @@ describe('query', () => {
             'cmpt',
             function(rf: RenderFlags, ctx: any) {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'div', null, 0);
+                ɵɵelement(~0, 'div', null, 0);
                 elToQuery = getNativeByIndex(HEADER_OFFSET, getLView());
-                ɵɵelement(3, 'div');
+                ɵɵelement(~3, 'div');
               }
             },
             4, 0, [], [],
@@ -432,10 +432,10 @@ describe('query', () => {
             'cmpt',
             function(rf: RenderFlags, ctx: any) {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'div', null, 0);
+                ɵɵelement(~0, 'div', null, 0);
                 el1ToQuery = getNativeByIndex(HEADER_OFFSET, getLView());
-                ɵɵelement(2, 'div');
-                ɵɵelement(3, 'div', null, 1);
+                ɵɵelement(~2, 'div');
+                ɵɵelement(~3, 'div', null, 1);
                 el2ToQuery = getNativeByIndex(HEADER_OFFSET + 3, getLView());
               }
             },
@@ -472,9 +472,9 @@ describe('query', () => {
             'cmpt',
             function(rf: RenderFlags, ctx: any) {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'div', null, 0);
+                ɵɵelement(~0, 'div', null, 0);
                 elToQuery = getNativeByIndex(HEADER_OFFSET, getLView());
-                ɵɵelement(2, 'div');
+                ɵɵelement(~2, 'div');
               }
             },
             3, 0, [], [],
@@ -583,7 +583,7 @@ describe('query', () => {
             'cmpt',
             function(rf: RenderFlags, ctx: any) {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'div', null, 0);
+                ɵɵelement(~0, 'div', null, 0);
               }
             },
             2, 0, [], [],
@@ -755,7 +755,7 @@ describe('query', () => {
             'cmpt',
             function(rf: RenderFlags, ctx: any) {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'child', null, 0);
+                ɵɵelement(~0, 'child', null, 0);
               }
               if (rf & RenderFlags.Update) {
                 childInstance = getDirectiveOnNode(HEADER_OFFSET);
@@ -805,7 +805,7 @@ describe('query', () => {
             'cmpt',
             function(rf: RenderFlags, ctx: any) {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'child', null, 0);
+                ɵɵelement(~0, 'child', null, 0);
               }
             },
             2, 0, [Child], [],
@@ -842,7 +842,7 @@ describe('query', () => {
                'cmpt',
                function(rf: RenderFlags, ctx: any) {
                  if (rf & RenderFlags.Create) {
-                   ɵɵelement(0, 'div', 0, 1);
+                   ɵɵelement(~0, 'div', 0, 1);
                  }
                  if (rf & RenderFlags.Update) {
                    childInstance = getDirectiveOnNode(HEADER_OFFSET);
@@ -882,7 +882,7 @@ describe('query', () => {
             'cmpt',
             function(rf: RenderFlags, ctx: any) {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'div', 0, 1);
+                ɵɵelement(~0, 'div', 0, 1);
               }
               if (rf & RenderFlags.Update) {
                 child1Instance = getDirectiveOnNode(HEADER_OFFSET, 0);
@@ -924,7 +924,7 @@ describe('query', () => {
             'cmpt',
             function(rf: RenderFlags, ctx: any) {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'div', 0, 1);
+                ɵɵelement(~0, 'div', 0, 1);
               }
               if (rf & RenderFlags.Update) {
                 childInstance = getDirectiveOnNode(HEADER_OFFSET);
@@ -971,7 +971,7 @@ describe('query', () => {
             'cmpt',
             function(rf: RenderFlags, ctx: any) {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'div', 0, 1);
+                ɵɵelement(~0, 'div', 0, 1);
                 div = getNativeByIndex(HEADER_OFFSET, getLView());
               }
             },
@@ -1008,7 +1008,7 @@ describe('query', () => {
             'cmpt',
             function(rf: RenderFlags, ctx: any) {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'div', 0, 1);
+                ɵɵelement(~0, 'div', 0, 1);
                 div = getNativeByIndex(HEADER_OFFSET, getLView());
               }
               if (rf & RenderFlags.Update) {
@@ -1048,7 +1048,7 @@ describe('query', () => {
             'cmpt',
             function(rf: RenderFlags, ctx: any) {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'div', 0);
+                ɵɵelement(~0, 'div', 0);
               }
             },
             2, 0, [Child], [],
@@ -1083,7 +1083,7 @@ describe('query', () => {
             'cmpt',
             function(rf: RenderFlags, ctx: any) {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'div', 0);
+                ɵɵelement(~0, 'div', 0);
               }
             },
             1, 0, [Child, OtherChild], [],
@@ -1118,7 +1118,7 @@ describe('query', () => {
             'cmpt',
             function(rf: RenderFlags, ctx: any) {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'div', 0);
+                ɵɵelement(~0, 'div', 0);
               }
             },
             1, 0, [Child, OtherChild], [],
@@ -1150,7 +1150,7 @@ describe('query', () => {
             'cmpt',
             function(rf: RenderFlags, ctx: any) {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'div');
+                ɵɵelement(~0, 'div');
               }
             },
             1, 0, [], [],
@@ -1183,7 +1183,7 @@ describe('query', () => {
             'cmpt',
             function(rf: RenderFlags, ctx: any) {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'div', 0, 1);
+                ɵɵelement(~0, 'div', 0, 1);
               }
             },
             2, 0, [Child], [],
@@ -1218,7 +1218,7 @@ describe('query', () => {
             'cmpt',
             function(rf: RenderFlags, ctx: any) {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'div', 0);
+                ɵɵelement(~0, 'div', 0);
               }
             },
             1, 0, [Child], [],
@@ -1242,7 +1242,7 @@ describe('query', () => {
       it('should query templates if the type is TemplateRef (and respect "read" option)', () => {
         function Cmpt_Template_1(rf: RenderFlags, ctx1: any) {
           if (rf & RenderFlags.Create) {
-            ɵɵelementStart(0, 'div');
+            ɵɵelementStart(~0, 'div');
             ɵɵtext(1, 'Test');
             ɵɵelementEnd();
           }
@@ -1316,7 +1316,7 @@ describe('query', () => {
 
     function AppComponent_Template_1(rf: RenderFlags, ctx: any) {
       if (rf & RenderFlags.Create) {
-        ɵɵelement(0, 'div');
+        ɵɵelement(~0, 'div');
       }
     }
 
@@ -1329,7 +1329,7 @@ describe('query', () => {
         function(rf: RenderFlags, ctx: any) {
           if (rf & RenderFlags.Create) {
             ɵɵtemplate(0, AppComponent_Template_1, 1, 0, 'div', 0);
-            ɵɵelement(1, 'div', null, 1);
+            ɵɵelement(~1, 'div', null, 1);
           }
         },
         3, 0, [SomeDir], [],
@@ -1397,7 +1397,7 @@ describe('query', () => {
           'app-component',
           function(rf: RenderFlags, ctx: any) {
             if (rf & RenderFlags.Create) {
-              ɵɵelementStart(0, 'div', 0);
+              ɵɵelementStart(~0, 'div', 0);
               { ɵɵelement(1, 'span', null, 1); }
               ɵɵelementEnd();
             }
@@ -1429,7 +1429,7 @@ describe('query', () => {
           'app-component',
           function(rf: RenderFlags, ctx: any) {
             if (rf & RenderFlags.Create) {
-              ɵɵelement(0, 'div', 0, 1);
+              ɵɵelement(~0, 'div', 0, 1);
             }
           },
           2, 0, [WithContentDirective], [], null, [], [], undefined,
@@ -1455,10 +1455,10 @@ describe('query', () => {
           'app-component',
           function(rf: RenderFlags, ctx: any) {
             if (rf & RenderFlags.Create) {
-              ɵɵelementStart(0, 'div', 0);
+              ɵɵelementStart(~0, 'div', 0);
               { ɵɵelement(1, 'div', null, 2); }
               ɵɵelementEnd();
-              ɵɵelement(3, 'div', 1, 3);
+              ɵɵelement(~3, 'div', 1, 3);
             }
           },
           5, 0, [WithContentDirective], [],
@@ -1497,10 +1497,10 @@ describe('query', () => {
           'app-component',
           function(rf: RenderFlags, ctx: any) {
             if (rf & RenderFlags.Create) {
-              ɵɵelementStart(0, 'div', 0);
+              ɵɵelementStart(~0, 'div', 0);
               { ɵɵelement(1, 'div', 1, 2); }
               ɵɵelementEnd();
-              ɵɵelement(3, 'div', null, 2);
+              ɵɵelement(~3, 'div', null, 2);
             }
           },
           5, 0, [WithContentDirective], [],
@@ -1560,7 +1560,7 @@ describe('query', () => {
            */
           function(rf: RenderFlags, ctx: any) {
             if (rf & RenderFlags.Create) {
-              ɵɵelementStart(0, 'div', 0, 4);
+              ɵɵelementStart(~0, 'div', 0, 4);
               {
                 ɵɵelement(2, 'span', 1, 5);
                 ɵɵelementStart(4, 'div', 0, 6);
@@ -1624,7 +1624,7 @@ describe('query', () => {
            */
           function(rf: RenderFlags, ctx: any) {
             if (rf & RenderFlags.Create) {
-              ɵɵelementStart(0, 'div', 0, 2);
+              ɵɵelementStart(~0, 'div', 0, 2);
               {
                 ɵɵelementStart(2, 'div', 0, 3);
                 { ɵɵelement(5, 'span', 1, 4); }
@@ -1684,7 +1684,7 @@ describe('query', () => {
            */
           function(rf: RenderFlags, ctx: any) {
             if (rf & RenderFlags.Create) {
-              ɵɵelementStart(0, 'div', 0, 2);
+              ɵɵelementStart(~0, 'div', 0, 2);
               {
                 ɵɵelementStart(2, 'div', 0, 3);
                 { ɵɵelement(5, 'span', 1, 4); }
@@ -1774,7 +1774,7 @@ describe('query', () => {
               */
              function(rf: RenderFlags, ctx: any) {
                if (rf & RenderFlags.Create) {
-                 ɵɵelementStart(0, 'div', 0, 1);
+                 ɵɵelementStart(~0, 'div', 0, 1);
                  {
                    ɵɵelement(3, 'span', null, 2);
                    ɵɵelementStart(5, 'div');
@@ -1850,7 +1850,7 @@ describe('query', () => {
            */
           function(rf: RenderFlags, ctx: any) {
             if (rf & RenderFlags.Create) {
-              ɵɵelementStart(0, 'div', 0);
+              ɵɵelementStart(~0, 'div', 0);
               {
                 ɵɵelement(1, 'span', 1);
                 ɵɵelementStart(2, 'div', 2);
@@ -1896,13 +1896,13 @@ describe('query', () => {
           template:
               function(rf: RenderFlags, ctx: ViewQueryComponent) {
                 if (rf & RenderFlags.Create) {
-                  ɵɵelement(0, 'span', 0);
-                  ɵɵelementStart(1, 'div', 1);
+                  ɵɵelement(~0, 'span', 0);
+                  ɵɵelementStart(~1, 'div', 1);
                   ɵɵelementStart(2, 'span', 2);
                   { ɵɵelement(3, 'span', 3); }
                   ɵɵelementEnd();
                   ɵɵelementEnd();
-                  ɵɵelement(4, 'span', 4);
+                  ɵɵelement(~4, 'span', 4);
                 }
               },
           decls: 5,

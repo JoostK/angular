@@ -19,7 +19,7 @@ ContentQueryComponent.ɵcmp = /*@__PURE__*/ $r3$.ɵɵdefineComponent({
   template:  function ContentQueryComponent_Template(rf, ctx) {
     if (rf & 1) {
       $r3$.ɵɵprojectionDef();
-      $r3$.ɵɵelementStart(0, "div");
+      $r3$.ɵɵelementStart(-1, "div");
       $r3$.ɵɵprojection(1);
       $r3$.ɵɵelementEnd();
     }

@@ -1,7 +1,7 @@
 function MyComponent_div_0_Template(rf, ctx) {
   if (rf & 1) {
     const $s$ = $r3$.ɵɵgetCurrentView();
-    $r3$.ɵɵelementStart(0, "div");
+    $r3$.ɵɵelementStart(-1, "div");
     $r3$.ɵɵelementStart(1, "div", 1);
     $r3$.ɵɵlistener("click", function MyComponent_div_0_Template_div_click_1_listener() {
       $r3$.ɵɵrestoreView($s$);

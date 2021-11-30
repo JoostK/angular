@@ -1,6 +1,6 @@
 function MyComponent_li_2_Template(rf, ctx) {
   if (rf & 1) {
-    $r3$.ɵɵelementStart(0, "li");
+    $r3$.ɵɵelementStart(-1, "li");
     $r3$.ɵɵtext(1);
     $r3$.ɵɵelementEnd();
   }
@@ -20,7 +20,7 @@ MyComponent.ɵcmp = /*@__PURE__*/ $r3$.ɵɵdefineComponent({
   consts: [["foo", ""], [__AttributeMarker.Template__, "if"]],
   template:  function MyComponent_Template(rf, ctx) {
     if (rf & 1) {
-      $r3$.ɵɵelementStart(0, "ul", null, 0);
+      $r3$.ɵɵelementStart(-1, "ul", null, 0);
       $r3$.ɵɵtemplate(2, MyComponent_li_2_Template, 2, 2, "li", 1);
       $r3$.ɵɵelementEnd();
     }

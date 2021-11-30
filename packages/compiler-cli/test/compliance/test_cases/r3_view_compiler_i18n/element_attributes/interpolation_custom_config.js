@@ -7,7 +7,7 @@ consts: function() {
 },
 template: function MyComponent_Template(rf, ctx) {
   if (rf & 1) {
-    $r3$.ɵɵelementStart(0, "div", 0);
+    $r3$.ɵɵelementStart(-1, "div", 0);
     $r3$.ɵɵpipe(1, "uppercase");
     $r3$.ɵɵi18nAttributes(2, 1);
     $r3$.ɵɵelementEnd();

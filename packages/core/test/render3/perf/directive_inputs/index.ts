@@ -32,9 +32,9 @@ class TestDirective {
 </ng-template>`;
 function testTemplate(rf: RenderFlags, ctx: any) {
   if (rf & 1) {
-    ɵɵelement(0, 'div', 0);
-    ɵɵelement(1, 'div', 0);
-    ɵɵelement(2, 'div', 0);
+    ɵɵelement(~0, 'div', 0);
+    ɵɵelement(~1, 'div', 0);
+    ɵɵelement(~2, 'div', 0);
   }
   if (rf & 2) {
     ɵɵproperty('foo', ctx.counter)('bar', ctx.counter);

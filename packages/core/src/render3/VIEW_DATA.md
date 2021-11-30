@@ -145,7 +145,7 @@ class MyApp {
     decls: 1,
     template: function(rf: RenderFlags, ctx: MyApp) {
       if (rf & RenderFlags.Create) {
-        ɵɵelement(0, 'child', ['tooltip', null]);
+        ɵɵelement(~0, 'child', ['tooltip', null]);
       }
       ...
     },
@@ -228,7 +228,7 @@ class MyApp {
     decls: 1,
     template: function(rf: RenderFlags, ctx: MyApp) {
       if (rf & RenderFlags.Create) {
-        ɵɵelement(0, 'child');
+        ɵɵelement(~0, 'child');
       }
       ...
     },

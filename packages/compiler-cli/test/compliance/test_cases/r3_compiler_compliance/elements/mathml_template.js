@@ -2,7 +2,7 @@
 consts: [["title", "Hello", 1, "my-app"]],
 template: function MyComponent_Template(rf, ctx) {
   if (rf & 1) {
-    $r3$.ɵɵelementStart(0, "div", 0);
+    $r3$.ɵɵelementStart(-1, "div", 0);
     $r3$.ɵɵnamespaceMathML();
     $r3$.ɵɵelementStart(1, "math");
     $r3$.ɵɵelement(2, "infinity");

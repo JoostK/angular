@@ -1,6 +1,6 @@
 function MyComponent_div_0_Template(rf, ctx) {
   if (rf & 1) {
-    $r3$.ɵɵelementStart(0, "div");
+    $r3$.ɵɵelementStart(-1, "div");
     $r3$.ɵɵelementStart(1, "div", 1);
     $r3$.ɵɵpipe(2, "uppercase");
     $r3$.ɵɵi18nAttributes(3, 2);

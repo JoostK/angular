@@ -1,4 +1,4 @@
-i0.ɵɵelementStart(0, "div") // SOURCE: "/ng_if_templated.ts" "<div>"
+i0.ɵɵelementStart(-1, "div") // SOURCE: "/ng_if_templated.ts" "<div>"
 …
 // TODO - map the bindings better
 i0.ɵɵelementEnd() // SOURCE: "/ng_if_templated.ts" "</div>"

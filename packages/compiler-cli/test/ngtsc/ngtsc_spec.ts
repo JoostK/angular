@@ -4445,7 +4445,7 @@ function allTests(os: string) {
           vars: 0,
           template: function MyComp_Template(rf, ctx) {
             if (rf & 1) {
-              i0.ɵɵelement(0, "custom-el");
+              i0.ɵɵelement(~0, "custom-el");
             }
           },
           encapsulation: 2

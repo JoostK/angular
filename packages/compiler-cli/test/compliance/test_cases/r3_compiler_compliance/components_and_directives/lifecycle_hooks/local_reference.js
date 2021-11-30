@@ -7,7 +7,7 @@ MyComponent.ɵcmp = /*@__PURE__*/ $r3$.ɵɵdefineComponent({
   consts: [["user", ""]],
   template:  function MyComponent_Template(rf, ctx) {
     if (rf & 1) {
-      $r3$.ɵɵelement(0, "input", null, 0);
+      $r3$.ɵɵelement(~0, "input", null, 0);
       $r3$.ɵɵtext(2);
     }
     if (rf & 2) {

@@ -1,4 +1,4 @@
-.ɵɵelementStart(0, "h3") // SOURCE: "/interpolation_basic.ts" "<h3>"
+.ɵɵelementStart(-1, "h3") // SOURCE: "/interpolation_basic.ts" "<h3>"
 …
 // TODO: Work out how to fix the broken segment for the last item in a template
 .ɵɵele // SOURCE: "/interpolation_basic.ts" "</h3>'"

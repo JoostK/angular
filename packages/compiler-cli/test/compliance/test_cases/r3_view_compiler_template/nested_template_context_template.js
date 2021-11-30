@@ -1,7 +1,7 @@
 function MyComponent_ul_0_li_1_div_1_Template(rf, ctx) {
   if (rf & 1) {
     const $s$ = $i0$.ɵɵgetCurrentView();
-    $i0$.ɵɵelementStart(0, "div", 2);
+    $i0$.ɵɵelementStart(-1, "div", 2);
     $i0$.ɵɵlistener("click", function MyComponent_ul_0_li_1_div_1_Template_div_click_0_listener(){
       const $sr$ = $i0$.ɵɵrestoreView($s$);
       const $inner$ = $sr$.$implicit;
@@ -27,7 +27,7 @@ function MyComponent_ul_0_li_1_div_1_Template(rf, ctx) {
 
 function MyComponent_ul_0_li_1_Template(rf, ctx) {
   if (rf & 1) {
-    $i0$.ɵɵelementStart(0, "li");
+    $i0$.ɵɵelementStart(-1, "li");
     $i0$.ɵɵtemplate(1, MyComponent_ul_0_li_1_div_1_Template, 2, 2, "div", 1);
     $i0$.ɵɵelementEnd();
   }
@@ -40,7 +40,7 @@ function MyComponent_ul_0_li_1_Template(rf, ctx) {
 
 function MyComponent_ul_0_Template(rf, ctx) {
   if (rf & 1) {
-    $i0$.ɵɵelementStart(0, "ul");
+    $i0$.ɵɵelementStart(-1, "ul");
     $i0$.ɵɵtemplate(1, MyComponent_ul_0_li_1_Template, 2, 1, "li", 0);
     $i0$.ɵɵelementEnd();
   }

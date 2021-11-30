@@ -19,7 +19,7 @@ consts: function() {
 template: function MyComponent_Template(rf, ctx) {
   if (rf & 1) {
     $r3$.ɵɵnamespaceSVG();
-    $r3$.ɵɵelementStart(0, "svg", 0);
+    $r3$.ɵɵelementStart(-1, "svg", 0);
     $r3$.ɵɵelementStart(1, "foreignObject");
     $r3$.ɵɵnamespaceHTML();
     $r3$.ɵɵelementStart(2, "div", 1);

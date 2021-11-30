@@ -1,4 +1,4 @@
-.ɵɵelementStart(0, "div") // SOURCE: "/interpolation_with_pipe.ts" "<div>"
+.ɵɵelementStart(-1, "div") // SOURCE: "/interpolation_with_pipe.ts" "<div>"
 …
 // TODO: Work out how to fix the broken segment for the last item in a template
 .ɵɵelem // SOURCE: "/interpolation_with_pipe.ts" "</div>'"

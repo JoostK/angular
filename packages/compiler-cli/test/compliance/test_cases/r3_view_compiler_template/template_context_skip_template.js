@@ -1,6 +1,6 @@
 function MyComponent_div_0_div_1_div_1_Template(rf, ctx) {
   if (rf & 1) {
-    $i0$.ɵɵelementStart(0, "div");
+    $i0$.ɵɵelementStart(-1, "div");
     $i0$.ɵɵtext(1);
     $i0$.ɵɵelementEnd();
   }
@@ -14,7 +14,7 @@ function MyComponent_div_0_div_1_div_1_Template(rf, ctx) {
 
 function MyComponent_div_0_div_1_Template(rf, ctx) {
   if (rf & 1) {
-    $i0$.ɵɵelementStart(0, "div");
+    $i0$.ɵɵelementStart(-1, "div");
     $i0$.ɵɵtemplate(1, MyComponent_div_0_div_1_div_1_Template, 2, 2, "div", 0);
     $i0$.ɵɵelementEnd();
   }
@@ -27,7 +27,7 @@ function MyComponent_div_0_div_1_Template(rf, ctx) {
 
 function MyComponent_div_0_Template(rf, ctx) {
   if (rf & 1) {
-    $i0$.ɵɵelementStart(0, "div");
+    $i0$.ɵɵelementStart(-1, "div");
     $i0$.ɵɵtemplate(1, MyComponent_div_0_div_1_Template, 2, 1, "div", 0);
     $i0$.ɵɵelementEnd();
   }

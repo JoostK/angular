@@ -139,7 +139,7 @@ describe('component', () => {
     // with a very large view
     const App = createComponent('app', (rf: RenderFlags, ctx: any) => {
       if (rf & RenderFlags.Create) {
-        ɵɵelement(4097, 'comp');
+        ɵɵelement(~4097, 'comp');
       }
       if (rf & RenderFlags.Update) {
         ɵɵadvance(4097);
@@ -161,7 +161,7 @@ it('should not invoke renderer destroy method for embedded views', () => {
 
   function MyComponent_div_Template_2(rf: any, ctx: any) {
     if (rf & RenderFlags.Create) {
-      ɵɵelementStart(0, 'div');
+      ɵɵelementStart(~0, 'div');
       ɵɵtext(1, 'Child view');
       ɵɵelementEnd();
     }
@@ -190,7 +190,7 @@ it('should not invoke renderer destroy method for embedded views', () => {
       template:
           function(rf: RenderFlags, ctx: Comp) {
             if (rf & RenderFlags.Create) {
-              ɵɵelementStart(0, 'div');
+              ɵɵelementStart(~0, 'div');
               ɵɵtext(1, 'Root view');
               ɵɵelementEnd();
               ɵɵtemplate(2, MyComponent_div_Template_2, 2, 0, 'div', 0);

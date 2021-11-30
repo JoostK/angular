@@ -1,11 +1,11 @@
 function Cmp_div_0_Template(rf, ctx) { if (rf & 1) {
-  $r3$.ɵɵelementStart(0, "div", 2);
+  $r3$.ɵɵelementStart(-1, "div", 2);
   $r3$.ɵɵprojection(1);
   $r3$.ɵɵelementEnd();
 } }
 function Cmp_div_1_Template(rf, ctx) {
   if (rf & 1) {
-    $r3$.ɵɵelementStart(0, "div", 3);
+    $r3$.ɵɵelementStart(-1, "div", 3);
     $r3$.ɵɵtext(1, " No ng-content, no instructions generated. ");
     $r3$.ɵɵelementEnd();
   }

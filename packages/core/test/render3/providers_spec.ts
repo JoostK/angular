@@ -1056,7 +1056,7 @@ describe('providers', () => {
         template:
             (rf: RenderFlags, cmp: AppComponent) => {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'host-cmp');
+                ɵɵelement(~0, 'host-cmp');
               }
             },
         features:
@@ -1221,7 +1221,7 @@ describe('providers', () => {
         template:
             (rf: RenderFlags, cmp: MyComponent) => {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'p');
+                ɵɵelement(~0, 'p');
               }
             },
         features:
@@ -1250,7 +1250,7 @@ describe('providers', () => {
         template:
             (rf: RenderFlags, cmp: AppComponent) => {
               if (rf & RenderFlags.Create) {
-                ɵɵelement(0, 'my-cmp');
+                ɵɵelement(~0, 'my-cmp');
               }
             },
         features:

@@ -8,11 +8,13 @@
 
 import {HEADER_OFFSET} from '@angular/core/src/render3/interfaces/view';
 import {dispatchEvent} from '@angular/platform-browser/testing/src/browser_util';
+
 import {ɵɵdefineComponent, ɵɵdefineDirective, ɵɵreference, ɵɵresolveBody, ɵɵresolveDocument} from '../../src/render3/index';
 import {ɵɵelement, ɵɵelementEnd, ɵɵelementStart, ɵɵgetCurrentView, ɵɵlistener, ɵɵtext} from '../../src/render3/instructions/all';
 import {RenderFlags} from '../../src/render3/interfaces/definition';
 import {GlobalTargetResolver} from '../../src/render3/interfaces/renderer';
 import {ɵɵrestoreView} from '../../src/render3/state';
+
 import {getRendererFactory2} from './imported_renderer2';
 import {ComponentFixture, containerEl, createComponent, getDirectiveOnNode, renderToHtml, TemplateFixture} from './render_util';
 
@@ -45,7 +47,7 @@ describe('event listeners', () => {
       template:
           function CompTemplate(rf: RenderFlags, ctx: any) {
             if (rf & RenderFlags.Create) {
-              ɵɵelementStart(0, 'button');
+              ɵɵelementStart(~0, 'button');
               {
                 ɵɵlistener('click', function() {
                   return ctx.onClick();
@@ -157,7 +159,7 @@ describe('event listeners', () => {
       template:
           (rf: RenderFlags, ctx: PreventDefaultComp) => {
             if (rf & RenderFlags.Create) {
-              ɵɵelementStart(0, 'button');
+              ɵɵelementStart(~0, 'button');
               {
                 ɵɵlistener('click', function($event: any) {
                   return ctx.onClick($event);
@@ -226,7 +228,7 @@ describe('event listeners', () => {
     /** <button (click)="onClick(); onClick2(); "> Click me </button> */
     function Template(rf: RenderFlags, ctx: any) {
       if (rf & RenderFlags.Create) {
-        ɵɵelementStart(0, 'button');
+        ɵɵelementStart(~0, 'button');
         {
           ɵɵlistener('click', function() {
             ctx.onClick();
@@ -264,7 +266,7 @@ describe('event listeners', () => {
     /** <button (click)="showing=!showing"> Click me </button> */
     function Template(rf: RenderFlags, ctx: any) {
       if (rf & RenderFlags.Create) {
-        ɵɵelementStart(0, 'button');
+        ɵɵelementStart(~0, 'button');
         {
           ɵɵlistener('click', function() {
             return ctx.showing = !ctx.showing;
@@ -373,7 +375,7 @@ describe('event listeners', () => {
 
     const fixture = new TemplateFixture({
       create: () => {
-        ɵɵelementStart(0, 'button', 0);
+        ɵɵelementStart(~0, 'button', 0);
         ɵɵtext(1, 'Click');
         ɵɵelementEnd();
       },
@@ -394,7 +396,7 @@ describe('event listeners', () => {
   it('should support global host listeners on directives', () => {
     const fixture = new TemplateFixture({
       create: () => {
-        ɵɵelement(0, 'div', 0);
+        ɵɵelement(~0, 'div', 0);
       },
       decls: 1,
       directives: [GlobalHostListenerDir],
@@ -432,7 +434,7 @@ describe('event listeners', () => {
         template:
             function CompTemplate(rf: RenderFlags, ctx: any) {
               if (rf & RenderFlags.Create) {
-                ɵɵelementStart(0, 'button');
+                ɵɵelementStart(~0, 'button');
                 {
                   ɵɵlistener('click', function() {
                     return ctx.onClick(ctx.data.a, ctx.data.b);
@@ -483,8 +485,8 @@ describe('event listeners', () => {
             (rf: RenderFlags, ctx: App) => {
               if (rf & RenderFlags.Create) {
                 const state = ɵɵgetCurrentView();
-                ɵɵelement(0, 'comp', null, 0);
-                ɵɵelementStart(2, 'button');
+                ɵɵelement(~0, 'comp', null, 0);
+                ɵɵelementStart(~2, 'button');
                 {
                   ɵɵlistener('click', function() {
                     ɵɵrestoreView(state);

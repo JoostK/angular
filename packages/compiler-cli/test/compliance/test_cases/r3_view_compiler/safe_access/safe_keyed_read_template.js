@@ -1,6 +1,6 @@
 template: function MyApp_Template(rf, ctx) {
   if (rf & 1) {
-    i0.ɵɵelementStart(0, "span", 0);
+    i0.ɵɵelementStart(-1, "span", 0);
     i0.ɵɵtext(1);
     i0.ɵɵelementEnd();
   }

@@ -70,7 +70,7 @@ import {defineBenchmarkTestDirective} from '../shared';
 </ng-template>`;
 function testTemplate(rf: RenderFlags, ctx: any) {
   if (rf & 1) {
-    ɵɵelementStart(0, 'section');
+    ɵɵelementStart(~0, 'section');
     ɵɵelement(1, 'div', 0);
     ɵɵelement(2, 'div', 0);
     ɵɵelement(3, 'div', 0);

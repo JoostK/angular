@@ -15,14 +15,14 @@ consts: function() {
 },
 template: function MyComponent_Template(rf, ctx) {
   if (rf & 1) {
-    $r3$.ɵɵelementStart(0, "div");
+    $r3$.ɵɵelementStart(-1, "div");
     $r3$.ɵɵi18nStart(1, 0);
     $r3$.ɵɵelementStart(2, "span", 1);
     $r3$.ɵɵi18nAttributes(3, 2);
     $r3$.ɵɵelementEnd();
     $r3$.ɵɵi18nEnd();
     $r3$.ɵɵelementEnd();
-    $r3$.ɵɵelementStart(4, "div");
+    $r3$.ɵɵelementStart(-5, "div");
     $r3$.ɵɵi18nStart(5, 3);
     $r3$.ɵɵpipe(6, "uppercase");
     $r3$.ɵɵelementStart(7, "span", 1);

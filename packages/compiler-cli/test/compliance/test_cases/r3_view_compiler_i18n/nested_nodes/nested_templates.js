@@ -1,6 +1,6 @@
 function MyComponent_div_2_Template(rf, ctx) {
   if (rf & 1) {
-    $r3$.ɵɵelementStart(0, "div");
+    $r3$.ɵɵelementStart(-1, "div");
     $r3$.ɵɵelementStart(1, "div");
     $r3$.ɵɵi18nStart(2, 1);
     $r3$.ɵɵelement(3, "div");
@@ -28,7 +28,7 @@ consts: function() {
 },
 template: function MyComponent_Template(rf, ctx) {
   if (rf & 1) {
-    $r3$.ɵɵelementStart(0, "div");
+    $r3$.ɵɵelementStart(-1, "div");
     $r3$.ɵɵtext(1, " Some content ");
     $r3$.ɵɵtemplate(2, MyComponent_div_2_Template, 5, 4, "div", 0);
     $r3$.ɵɵelementEnd();

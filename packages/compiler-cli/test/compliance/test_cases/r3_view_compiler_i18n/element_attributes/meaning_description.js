@@ -39,28 +39,28 @@ consts:
 
     template: function MyComponent_Template(rf, ctx) {
       if (rf & 1) {
-        $r3$.ɵɵelementStart(0, "div");
+        $r3$.ɵɵelementStart(-1, "div");
         $r3$.ɵɵi18n(1, 0);
         $r3$.ɵɵelementEnd();
-        $r3$.ɵɵelementStart(2, "div", 1);
+        $r3$.ɵɵelementStart(-3, "div", 1);
         $r3$.ɵɵtext(3, "Content B");
         $r3$.ɵɵelementEnd();
-        $r3$.ɵɵelementStart(4, "div", 2);
+        $r3$.ɵɵelementStart(-5, "div", 2);
         $r3$.ɵɵtext(5, "Content C");
         $r3$.ɵɵelementEnd();
-        $r3$.ɵɵelementStart(6, "div", 3);
+        $r3$.ɵɵelementStart(-7, "div", 3);
         $r3$.ɵɵtext(7, "Content D");
         $r3$.ɵɵelementEnd();
-        $r3$.ɵɵelementStart(8, "div", 4);
+        $r3$.ɵɵelementStart(-9, "div", 4);
         $r3$.ɵɵtext(9, "Content E");
         $r3$.ɵɵelementEnd();
-        $r3$.ɵɵelementStart(10, "div", 5);
+        $r3$.ɵɵelementStart(-11, "div", 5);
         $r3$.ɵɵtext(11, "Content F");
         $r3$.ɵɵelementEnd();
-        $r3$.ɵɵelementStart(12, "div", 6);
+        $r3$.ɵɵelementStart(-13, "div", 6);
         $r3$.ɵɵtext(13, "Content G");
         $r3$.ɵɵelementEnd();
-        $r3$.ɵɵelementStart(14, "div");
+        $r3$.ɵɵelementStart(-15, "div");
         $r3$.ɵɵi18n(15, 7);
         $r3$.ɵɵelementEnd();
       }

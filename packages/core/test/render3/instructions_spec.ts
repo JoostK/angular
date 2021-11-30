@@ -21,15 +21,15 @@ import {ComponentFixture, TemplateFixture} from './render_util';
 
 describe('instructions', () => {
   function createAnchor() {
-    ɵɵelement(0, 'a');
+    ɵɵelement(~0, 'a');
   }
 
   function createDiv() {
-    ɵɵelement(0, 'div');
+    ɵɵelement(~0, 'div');
   }
 
   function createScript() {
-    ɵɵelement(0, 'script');
+    ɵɵelement(~0, 'script');
   }
 
   describe('ɵɵadvance', () => {
@@ -98,7 +98,7 @@ describe('instructions', () => {
     it('should create an element with the correct perf counters', () => {
       const t = new TemplateFixture({
         create: () => {
-          ɵɵelement(0, 'div', 0);
+          ɵɵelement(~0, 'div', 0);
         },
         decls: 1,
         vars: 0,
@@ -195,7 +195,7 @@ describe('instructions', () => {
     const attrs = [[AttributeMarker.Styles, 'height', '10px']];
 
     function createDivWithStyle() {
-      ɵɵelement(0, 'div', 0);
+      ɵɵelement(~0, 'div', 0);
     }
 
     it('should add style', () => {
@@ -215,7 +215,7 @@ describe('instructions', () => {
 
   describe('elementClass', () => {
     function createDivWithStyling() {
-      ɵɵelement(0, 'div');
+      ɵɵelement(~0, 'div');
     }
 
     it('should add class', () => {
@@ -237,7 +237,7 @@ describe('instructions', () => {
       function ToDoAppComponent_NgForOf_Template_0(
           rf: RenderFlags, ctx0: NgForOfContext<any, any>) {
         if (rf & RenderFlags.Create) {
-          ɵɵelementStart(0, 'ul');
+          ɵɵelementStart(~0, 'ul');
           ɵɵtemplate(1, ToDoAppComponent_NgForOf_NgForOf_Template_1, 2, 1, 'li', 0);
           ɵɵelementEnd();
         }
@@ -251,7 +251,7 @@ describe('instructions', () => {
       function ToDoAppComponent_NgForOf_NgForOf_Template_1(
           rf: RenderFlags, ctx1: NgForOfContext<any, any>) {
         if (rf & RenderFlags.Create) {
-          ɵɵelementStart(0, 'li');
+          ɵɵelementStart(~0, 'li');
           ɵɵtext(1);
           ɵɵelementEnd();
         }

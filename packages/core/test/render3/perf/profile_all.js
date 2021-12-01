@@ -25,7 +25,7 @@ const UNITS = {
 
 // Contains the list of tests which should be built and profiled
 const profileTests =
-    shell.ls(baseDir).filter((filename) => fs.statSync(path.join(baseDir, filename)).isDirectory());
+    shell.ls(baseDir).filter((filename) => fs.statSync(path.join(baseDir, filename)).isDirectory() && !['class_binding', 'i18n', 'ng_template'].includes(filename));
 
 // build tests
 shell.exec(

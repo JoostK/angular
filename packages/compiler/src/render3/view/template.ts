@@ -646,7 +646,7 @@ export class TemplateDefinitionBuilder implements t.Visitor<void>, LocalResolver
     this.matchDirectives(element.name, element);
 
     // Regular element or ng-container creation mode
-    const encodedElementIndex = this._elementDepth === 0 ? ~elementIndex : elementIndex;
+    const encodedElementIndex = !isNgContainer && this._elementDepth === 0 ? ~elementIndex : elementIndex;
     const parameters: o.Expression[] = [o.literal(encodedElementIndex)];
     if (!isNgContainer) {
       parameters.push(o.literal(elementName));

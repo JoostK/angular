@@ -521,7 +521,6 @@ export function enterView(newView: LView): void {
     assertEqual(newLFrame.lView, null, 'Expected clean LFrame');
     assertEqual(newLFrame.tView, null, 'Expected clean LFrame');
     assertEqual(newLFrame.selectedIndex, -1, 'Expected clean LFrame');
-    assertEqual(newLFrame.elementDepthCount, 0, 'Expected clean LFrame');
     assertEqual(newLFrame.currentDirectiveIndex, -1, 'Expected clean LFrame');
     assertEqual(newLFrame.currentNamespace, null, 'Expected clean LFrame');
     assertEqual(newLFrame.bindingRootIndex, -1, 'Expected clean LFrame');
@@ -556,7 +555,6 @@ function createLFrame(parent: LFrame|null): LFrame {
     tView: null!,
     selectedIndex: -1,
     contextLView: null!,
-    elementDepthCount: 0,
     currentNamespace: null,
     currentDirectiveIndex: -1,
     bindingRootIndex: -1,
@@ -609,7 +607,6 @@ export function leaveView() {
   oldLFrame.tView = null!;
   oldLFrame.selectedIndex = -1;
   oldLFrame.contextLView = null!;
-  oldLFrame.elementDepthCount = 0;
   oldLFrame.currentDirectiveIndex = -1;
   oldLFrame.currentNamespace = null;
   oldLFrame.bindingRootIndex = -1;

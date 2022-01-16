@@ -7,9 +7,9 @@
  */
 import ts from 'typescript';
 
-import {absoluteFrom, LogicalFileSystem} from '../../file_system';
+import {absoluteFrom, AbsoluteFsPath, LogicalFileSystem} from '../../file_system';
 import {runInEachFileSystem, TestFile} from '../../file_system/testing';
-import {AbsoluteModuleStrategy, LocalIdentifierStrategy, LogicalProjectStrategy, ModuleResolver, ReferenceEmitter} from '../../imports';
+import {AbsoluteModuleStrategy, LocalIdentifierStrategy, LogicalProjectStrategy, ModuleResolver, OwningModule, ReferenceEmitter, RelativePathStrategy,} from '../../imports';
 import {isNamedClassDeclaration, TypeScriptReflectionHost} from '../../reflection';
 import {getDeclaration, makeProgram} from '../../testing';
 import {Environment} from '../src/environment';
@@ -20,31 +20,43 @@ import {ALL_ENABLED_CONFIG, angularCoreDts} from '../testing';
 
 runInEachFileSystem(() => {
   describe('type parameter emitter', () => {
-    function createEmitter(source: string, additionalFiles: TestFile[] = []) {
+    function createEmitter(
+        source: string, additionalFiles: TestFile[] = [],
+        options: {rootDir?: AbsoluteFsPath, ownedByModuleGuess?: string} = {}) {
       const files: TestFile[] = [
         angularCoreDts(),
-        {name: absoluteFrom('/app/main.ts'), contents: source},
+        {name: absoluteFrom('/test.ts'), contents: source},
         ...additionalFiles,
       ];
       const {program, host} = makeProgram(files, undefined, undefined, false);
       const checker = program.getTypeChecker();
       const reflector = new TypeScriptReflectionHost(checker);
 
-      const TestClass = getDeclaration(
-          program, absoluteFrom('/app/main.ts'), 'TestClass', isNamedClassDeclaration);
+      const TestClass =
+          getDeclaration(program, absoluteFrom('/test.ts'), 'TestClass', isNamedClassDeclaration);
 
       const moduleResolver = new ModuleResolver(
           program, program.getCompilerOptions(), host, /* moduleResolutionCache */ null);
+      const localProjectStrategy = options.rootDir !== undefined ?
+          new LogicalProjectStrategy(reflector, new LogicalFileSystem([options.rootDir], host)) :
+          new RelativePathStrategy(reflector);
       const refEmitter = new ReferenceEmitter([
         new LocalIdentifierStrategy(),
         new AbsoluteModuleStrategy(program, checker, moduleResolver, reflector),
-        new LogicalProjectStrategy(reflector, new LogicalFileSystem([absoluteFrom('/app')], host)),
+        localProjectStrategy,
       ]);
 
+      let owningModule: OwningModule|null = null;
+      if (options.ownedByModuleGuess !== undefined) {
+        owningModule = {
+          specifier: options.ownedByModuleGuess,
+          resolutionContext: TestClass.getSourceFile().fileName,
+        };
+      }
+
       const env = new TypeCheckFile(
-          absoluteFrom('/app/main.ngtypecheck.ts'), ALL_ENABLED_CONFIG, refEmitter, reflector,
-          host);
-      const emitter = new TypeParameterEmitter(TestClass.typeParameters, reflector);
+          absoluteFrom('/test.ngtypecheck.ts'), ALL_ENABLED_CONFIG, refEmitter, reflector, host);
+      const emitter = new TypeParameterEmitter(TestClass.typeParameters, owningModule, reflector);
       return {emitter, env};
     }
 
@@ -197,7 +209,7 @@ runInEachFileSystem(() => {
 
     it('can emit references into relative files', () => {
       const additionalFiles: TestFile[] = [{
-        name: absoluteFrom('/app/internal.ts'),
+        name: absoluteFrom('/internal.ts'),
         contents: `export class Internal {}`,
       }];
       const emitter = createEmitter(
@@ -220,9 +232,73 @@ runInEachFileSystem(() => {
           import {Internal} from '../internal';
 
           export class TestClass<T extends Internal> {}`,
-          additionalFiles);
+          additionalFiles, {rootDir: absoluteFrom('/app')});
 
       expect(() => emit(emitter)).toThrow();
+    });
+
+    it('can emit references into relative files that are outside of rootDirs if an absolute module guess is used',
+       () => {
+         const additionalFiles: TestFile[] = [
+           {
+             name: absoluteFrom('/internal.d.ts'),
+             contents: `export declare class Internal {}`,
+           },
+           {
+             name: absoluteFrom('/node_modules/absolute/index.d.ts'),
+             contents: `export {Internal} from '../../internal';`,
+           }
+         ];
+         const emitter = createEmitter(
+             `
+          import {Internal} from './internal';
+
+          export class TestClass<T extends Internal> {}`,
+             additionalFiles, {rootDir: absoluteFrom('/app'), ownedByModuleGuess: 'absolute'});
+
+         expect(emit(emitter)).toEqual('<T extends i0.Internal>');
+       });
+
+    it('xx', () => {
+      const additionalFiles: TestFile[] = [
+        {
+          name: absoluteFrom('/internal.d.ts'),
+          contents: `export declare class Internal {}`,
+        },
+        {
+          name: absoluteFrom('/node_modules/absolute/index.d.ts'),
+          contents: `export {};`,
+        }
+      ];
+      const emitter = createEmitter(
+          `
+          import {Internal} from './internal';
+
+          export class TestClass<T extends Internal> {}`,
+          additionalFiles, {rootDir: absoluteFrom('/app'), ownedByModuleGuess: 'absolute'});
+
+      expect(() => emit(emitter)).toThrow();
+    });
+
+    it('xxx', () => {
+      const additionalFiles: TestFile[] = [
+        {
+          name: absoluteFrom('/internal.d.ts'),
+          contents: `export declare class Internal {}`,
+        },
+        {
+          name: absoluteFrom('/node_modules/absolute/index.d.ts'),
+          contents: `export {};`,
+        }
+      ];
+      const emitter = createEmitter(
+          `
+          import {Internal} from './internal';
+
+          export class TestClass<T extends Internal> {}`,
+          additionalFiles, {ownedByModuleGuess: 'absolute'});
+
+      expect(emit(emitter)).toEqual('<T extends i0.Internal>');
     });
 
     it('cannot emit unresolved references', () => {
@@ -236,7 +312,7 @@ runInEachFileSystem(() => {
 
     it('can emit references to exported classes imported using a namespace import', () => {
       const additionalFiles: TestFile[] = [{
-        name: absoluteFrom('/app/internal.ts'),
+        name: absoluteFrom('/internal.ts'),
         contents: `export class Internal {}`,
       }];
       const emitter = createEmitter(
@@ -251,7 +327,7 @@ runInEachFileSystem(() => {
 
     it('cannot emit references to local classes exported within a namespace', () => {
       const additionalFiles: TestFile[] = [{
-        name: absoluteFrom('/app/ns.ts'),
+        name: absoluteFrom('/ns.ts'),
         contents: `
           export namespace ns {
             export class Nested {}

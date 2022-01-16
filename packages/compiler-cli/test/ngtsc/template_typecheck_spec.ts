@@ -19,7 +19,7 @@ import {NgtscTestEnvironment} from './env';
 
 const testFiles = loadStandardTestFiles({fakeCore: true, fakeCommon: true});
 
-runInEachFileSystem(() => {
+runInEachFileSystem.native(() => {
   describe('ngtsc type checking', () => {
     let env!: NgtscTestEnvironment;
 
@@ -2625,6 +2625,63 @@ suppress
         expectCompleteReuse(env.getTsProgram());
         expectCompleteReuse(env.getReuseTsProgram());
       });
+
+      fit('should allow for complete program reuse during incremental compilations with inline type-ctors',
+          () => {
+            env.enableMultipleCompilations();
+
+            env.write('/node_modules/lib/index.d.ts', `
+          export * from './dir';
+          export * from './mod';
+        `);
+            env.write('/node_modules/lib/dir.d.ts', `
+          import {ɵɵDirectiveDeclaration, ɵɵFactoryDeclaration} from '@angular/core';
+
+          interface InternalConstraint {}
+
+          export declare class Dir<T extends InternalConstraint> {
+            input: T;
+            static ɵdir: ɵɵDirectiveDeclaration<Dir, '[dir]', never, {'input': 'input'}, {}, never>;
+            static ɵfac: ɵɵFactoryDeclaration<Dir, never>;
+          }
+        `);
+            env.write('/node_modules/lib/mod.d.ts', `
+          import {ɵɵNgModuleDeclaration, ɵɵFactoryDeclaration} from '@angular/core';
+          import {Dir} from './dir';
+
+          export declare class Mod {
+            static ɵmod: ɵɵNgModuleDeclaration<Mod, [typeof Dir], never, [typeof Dir]>;
+            static ɵfac: ɵɵFactoryDeclaration<Mod, never>;
+          }
+        `);
+            env.write('/node_modules/lib/package.json', `{"name": "lib", "version": "1.0.0"}`);
+
+            env.write('test.ts', `
+          import {Component, NgModule} from '@angular/core';
+          import {Mod} from 'lib';
+
+          @Component({
+            selector: 'test-cmp',
+            template: '<div dir [input]="1"></div>'
+          })
+          export class TestCmp {}
+
+          @NgModule({
+            declarations: [TestCmp],
+            imports: [Mod],
+          })
+          export class TestMod {}
+        `);
+
+            env.driveMain();
+            const firstProgram = env.getReuseTsProgram();
+
+            env.invalidateCachedFile('test.ts');
+            env.driveMain();
+
+            expectCompleteReuse(env.getTsProgram());
+            expectCompleteReuse(env.getReuseTsProgram());
+          });
     });
   });
 });

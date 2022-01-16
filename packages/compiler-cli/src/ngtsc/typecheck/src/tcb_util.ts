@@ -73,16 +73,16 @@ export enum TcbInliningRequirement {
 }
 
 export function requiresInlineTypeCheckBlock(
-    node: ClassDeclaration<ts.ClassDeclaration>, env: ReferenceEmitEnvironment,
+    ref: Reference<ClassDeclaration<ts.ClassDeclaration>>, env: ReferenceEmitEnvironment,
     usedPipes: Map<string, Reference<ClassDeclaration<ts.ClassDeclaration>>>,
     reflector: ReflectionHost): TcbInliningRequirement {
   // In order to qualify for a declared TCB (not inline) two conditions must be met:
   // 1) the class must be exported
   // 2) it must not have contextual generic type bounds
-  if (!checkIfClassIsExported(node)) {
+  if (!checkIfClassIsExported(ref.node)) {
     // Condition 1 is false, the class is not exported.
     return TcbInliningRequirement.MustInline;
-  } else if (!checkIfGenericTypeBoundsCanBeEmitted(node, reflector, env)) {
+  } else if (!checkIfGenericTypeBoundsCanBeEmitted(ref, reflector, env)) {
     // Condition 2 is false, the class has constrained generic types. It should be checked with an
     // inline TCB if possible, but can potentially use fallbacks to avoid inlining if not.
     return TcbInliningRequirement.ShouldInlineForGenericBounds;
@@ -185,9 +185,14 @@ function getTemplateId(
 }
 
 export function checkIfGenericTypeBoundsCanBeEmitted(
-    node: ClassDeclaration<ts.ClassDeclaration>, reflector: ReflectionHost,
+    ref: Reference<ts.ClassDeclaration>, reflector: ReflectionHost,
     env: ReferenceEmitEnvironment): boolean {
   // Generic type parameters are considered context free if they can be emitted into any context.
-  const emitter = new TypeParameterEmitter(node.typeParameters, reflector);
+  const emitter = createTypeParameterEmitter(ref, reflector);
   return emitter.canEmit(ref => env.canReferenceType(ref));
+}
+
+export function createTypeParameterEmitter(
+    ref: Reference<ts.ClassDeclaration>, reflector: ReflectionHost): TypeParameterEmitter {
+  return new TypeParameterEmitter(ref.node.typeParameters, ref.bestGuessOwningModule, reflector);
 }

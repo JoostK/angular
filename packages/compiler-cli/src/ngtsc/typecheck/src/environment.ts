@@ -14,10 +14,9 @@ import {ClassDeclaration, ReflectionHost} from '../../reflection';
 import {ImportManager, translateExpression, translateType} from '../../translator';
 import {TypeCheckableDirectiveMeta, TypeCheckingConfig, TypeCtorMetadata} from '../api';
 
-import {ReferenceEmitEnvironment} from './tcb_util';
+import {createTypeParameterEmitter, ReferenceEmitEnvironment} from './tcb_util';
 import {tsDeclareVariable} from './ts_util';
 import {generateTypeCtorDeclarationFn, requiresInlineTypeCtor} from './type_constructor';
-import {TypeParameterEmitter} from './type_parameter_emitter';
 
 /**
  * A context which hosts one or more Type Check Blocks (TCBs).
@@ -60,7 +59,7 @@ export class Environment implements ReferenceEmitEnvironment {
       return this.typeCtors.get(node)!;
     }
 
-    if (requiresInlineTypeCtor(node, this.reflector, this)) {
+    if (requiresInlineTypeCtor(dirRef, this.reflector, this)) {
       // The constructor has already been created inline, we just need to construct a reference to
       // it.
       const ref = this.reference(dirRef);
@@ -84,7 +83,7 @@ export class Environment implements ReferenceEmitEnvironment {
         },
         coercedInputFields: dir.coercedInputFields,
       };
-      const typeParams = this.emitTypeParameters(node);
+      const typeParams = this.emitTypeParameters(dirRef);
       const typeCtor = generateTypeCtorDeclarationFn(node, meta, nodeTypeRef.typeName, typeParams);
       this.typeCtorStatements.push(typeCtor);
       const fnId = ts.createIdentifier(fnName);
@@ -129,7 +128,9 @@ export class Environment implements ReferenceEmitEnvironment {
 
   canReferenceType(ref: Reference): boolean {
     const result = this.refEmitter.emit(
-        ref, this.contextFile, ImportFlags.NoAliasing | ImportFlags.AllowTypeImports);
+        ref, this.contextFile,
+        ImportFlags.NoAliasing | ImportFlags.AllowTypeImports |
+            ImportFlags.AllowUnresolvedAbsoluteModules);
     return result.kind === ReferenceEmitKind.Success;
   }
 
@@ -140,7 +141,9 @@ export class Environment implements ReferenceEmitEnvironment {
    */
   referenceType(ref: Reference): ts.TypeNode {
     const ngExpr = this.refEmitter.emit(
-        ref, this.contextFile, ImportFlags.NoAliasing | ImportFlags.AllowTypeImports);
+        ref, this.contextFile,
+        ImportFlags.NoAliasing | ImportFlags.AllowTypeImports |
+            ImportFlags.AllowUnresolvedAbsoluteModules);
     assertSuccessfulReferenceEmit(ngExpr, this.contextFile, 'symbol');
 
     // Create an `ExpressionType` from the `Expression` and translate it via `translateType`.
@@ -148,9 +151,9 @@ export class Environment implements ReferenceEmitEnvironment {
     return translateType(new ExpressionType(ngExpr.expression), this.importManager);
   }
 
-  private emitTypeParameters(declaration: ClassDeclaration<ts.ClassDeclaration>):
+  private emitTypeParameters(ref: Reference<ClassDeclaration<ts.ClassDeclaration>>):
       ts.TypeParameterDeclaration[]|undefined {
-    const emitter = new TypeParameterEmitter(declaration.typeParameters, this.reflector);
+    const emitter = createTypeParameterEmitter(ref, this.reflector);
     return emitter.emit(ref => this.referenceType(ref));
   }
 

@@ -50,6 +50,22 @@ export enum ImportFlags {
    * type-only declarations as used in e.g. template type-checking.
    */
   AllowTypeImports = 0x04,
+
+  /**
+   * Indicates that a reference with an absolute module guess may also be imported using a relative
+   * path as a fallback.
+   *
+   * A reference for a declaration that has an `bestGuessOwningModule` is typically required to use
+   * the absolute module specifier to import the declaration from, but enabling this flag allows for
+   * the export to be unresolved and fallback to using the next emit strategy (which ends up
+   * generating a relative import).
+   *
+   * This mode is used in template type-checking, where it is acceptable to generate imports using a
+   * relative module specifier if the declaration is not exported from the guessed owning module.
+   * Using the guessed owning module if available may still be helpful in this context, as a
+   * relative module specifier may not be available if a `rootDir` is configured.
+   */
+  AllowUnresolvedAbsoluteModules = 0x08,
 }
 
 /**
@@ -283,6 +299,9 @@ export class AbsoluteModuleStrategy implements ReferenceEmitStrategy {
     const {specifier, resolutionContext} = ref.bestGuessOwningModule;
     const exports = this.getExportsOfModule(specifier, resolutionContext);
     if (exports.module === null) {
+      if (importFlags & ImportFlags.AllowUnresolvedAbsoluteModules) {
+        return null;
+      }
       return {
         kind: ReferenceEmitKind.Failed,
         ref,
@@ -290,6 +309,9 @@ export class AbsoluteModuleStrategy implements ReferenceEmitStrategy {
         reason: `The module '${specifier}' could not be found.`,
       };
     } else if (exports.exportMap === null || !exports.exportMap.has(ref.node)) {
+      if (importFlags & ImportFlags.AllowUnresolvedAbsoluteModules) {
+        return null;
+      }
       return {
         kind: ReferenceEmitKind.Failed,
         ref,

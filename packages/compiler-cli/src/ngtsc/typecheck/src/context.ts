@@ -235,7 +235,7 @@ export class TypeCheckContextImpl implements TypeCheckContext {
         const dirRef = dir.ref as Reference<ClassDeclaration<ts.ClassDeclaration>>;
         const dirNode = dirRef.node;
 
-        if (!dir.isGeneric || !requiresInlineTypeCtor(dirNode, this.reflector, shimData.file)) {
+        if (!dir.isGeneric || !requiresInlineTypeCtor(dirRef, this.reflector, shimData.file)) {
           // inlining not required
           continue;
         }
@@ -264,7 +264,7 @@ export class TypeCheckContextImpl implements TypeCheckContext {
     });
 
     const inliningRequirement =
-        requiresInlineTypeCheckBlock(ref.node, shimData.file, pipes, this.reflector);
+        requiresInlineTypeCheckBlock(ref, shimData.file, pipes, this.reflector);
 
     // If inlining is not supported, but is required for either the TCB or one of its directive
     // dependencies, then exit here with an error.

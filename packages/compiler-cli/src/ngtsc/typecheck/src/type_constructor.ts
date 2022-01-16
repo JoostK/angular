@@ -8,6 +8,7 @@
 
 import ts from 'typescript';
 
+import {Reference} from '../../imports';
 import {ClassDeclaration, ReflectionHost} from '../../reflection';
 import {TypeCtorMetadata} from '../api';
 
@@ -186,11 +187,11 @@ function generateGenericArgs(params: ReadonlyArray<ts.TypeParameterDeclaration>)
 }
 
 export function requiresInlineTypeCtor(
-    node: ClassDeclaration<ts.ClassDeclaration>, host: ReflectionHost,
+    ref: Reference<ts.ClassDeclaration>, host: ReflectionHost,
     env: ReferenceEmitEnvironment): boolean {
   // The class requires an inline type constructor if it has generic type bounds that can not be
   // emitted into the provided type-check environment.
-  return !checkIfGenericTypeBoundsCanBeEmitted(node, host, env);
+  return !checkIfGenericTypeBoundsCanBeEmitted(ref, host, env);
 }
 
 /**

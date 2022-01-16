@@ -19,7 +19,7 @@ import {canEmitType, TypeEmitter} from './type_emitter';
 export class TypeParameterEmitter {
   constructor(
       private typeParameters: ts.NodeArray<ts.TypeParameterDeclaration>|undefined,
-      private reflector: ReflectionHost) {}
+      private originModule: OwningModule|null, private reflector: ReflectionHost) {}
 
   /**
    * Determines whether the type parameters can be emitted. If this returns true, then a call to
@@ -97,7 +97,7 @@ export class TypeParameterEmitter {
       return type;
     }
 
-    let owningModule: OwningModule|null = null;
+    let owningModule = this.originModule;
     if (declaration.viaModule !== null) {
       owningModule = {
         specifier: declaration.viaModule,

@@ -63,9 +63,10 @@ export class NgtscProgram implements api.Program {
       retagAllTsFiles(reuseProgram);
     }
 
-    this.tsProgram = perfRecorder.inPhase(
-        PerfPhase.TypeScriptProgramCreate,
-        () => ts.createProgram(this.host.inputFiles, options, this.host, reuseProgram));
+    this.tsProgram = perfRecorder.inPhase(PerfPhase.TypeScriptProgramCreate, () => {
+      debugger;
+      return ts.createProgram(this.host.inputFiles, options, this.host, reuseProgram);
+    });
 
     perfRecorder.phase(PerfPhase.Unaccounted);
     perfRecorder.memory(PerfCheckpoint.TypeScriptProgramCreate);

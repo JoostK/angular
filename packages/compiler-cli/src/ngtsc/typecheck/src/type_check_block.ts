@@ -20,10 +20,10 @@ import {DomSchemaChecker} from './dom';
 import {Environment} from './environment';
 import {astToTypescript, NULL_AS_ANY} from './expression';
 import {OutOfBandDiagnosticRecorder} from './oob';
+import {createTypeParameterEmitter} from './tcb_util';
 import {ExpressionSemanticVisitor} from './template_semantics';
 import {tsCallMethod, tsCastToAny, tsCreateElement, tsCreateTypeQueryForCoercedInput, tsCreateVariable, tsDeclareVariable} from './ts_util';
 import {requiresInlineTypeCtor} from './type_constructor';
-import {TypeParameterEmitter} from './type_parameter_emitter';
 
 /**
  * Controls how generics for the component context class will be handled during TCB generation.
@@ -102,7 +102,7 @@ export function generateTypeCheckBlock(
     switch (genericContextBehavior) {
       case TcbGenericContextBehavior.UseEmitter:
         // Guaranteed to emit type parameters since we checked that the class has them above.
-        typeParameters = new TypeParameterEmitter(ref.node.typeParameters, env.reflector)
+        typeParameters = createTypeParameterEmitter(ref, env.reflector)
                              .emit(typeRef => env.referenceType(typeRef))!;
         typeArguments = typeParameters.map(param => ts.factory.createTypeReferenceNode(param.name));
         break;
@@ -1509,7 +1509,7 @@ class Scope {
         // `TcbNonDirectiveTypeOp`.
         directiveOp = new TcbNonGenericDirectiveTypeOp(this.tcb, this, node, dir);
       } else if (
-          !requiresInlineTypeCtor(dirRef.node, host, this.tcb.env) ||
+          !requiresInlineTypeCtor(dirRef, host, this.tcb.env) ||
           this.tcb.env.config.useInlineTypeConstructors) {
         // For generic directives, we use a type constructor to infer types. If a directive requires
         // an inline type constructor, then inlining must be available to use the
